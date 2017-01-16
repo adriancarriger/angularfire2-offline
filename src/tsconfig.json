@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "declaration": false,
+    "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["es6", "dom"],
     "mapRoot": "./",
     "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": "../dist",
+    "outDir": "../lib/",
     "sourceMap": true,
     "target": "es5",
     "typeRoots": [

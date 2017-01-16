@@ -2,7 +2,7 @@
   "name": "angularfire2-offline",
   "version": "0.0.1",
   "description": "Cache angularfire2 data for offline use.",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p ./src"

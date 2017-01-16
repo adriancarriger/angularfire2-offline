@@ -1,6 +1,6 @@
 {
   "name": "angularfire2-offline",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Cache angularfire2 data for offline use.",
   "main": "./lib/index.js",
   "scripts": {

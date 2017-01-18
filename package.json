@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf ./lib ** tsc -p ./src"
+    "build": "rm -rf ./lib && tsc -p ./src"
   },
   "keywords": [
     "angularfire2",

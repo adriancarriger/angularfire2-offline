@@ -3,6 +3,10 @@
   "version": "0.0.4",
   "description": "Cache angularfire2 data for offline use.",
   "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url" : "https://github.com/adriancarriger/angularfire2-offline"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf ./lib && tsc -p ./src"

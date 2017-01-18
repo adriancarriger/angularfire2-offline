@@ -6,6 +6,8 @@ import { AngularFire } from 'angularfire2';
 import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
 import { ReplaySubject, Observable } from 'rxjs';
 import { LocalForageService } from 'ng2-localforage';
+
+import { Angularfire2Offline, ObjectObservable, ListObservable } from './interfaces';
 /**
  * @whatItDoes Wraps some angularfire2 read methods for returning data from Firebase with the added
  * function of storing the data locally for offline use.
@@ -61,7 +63,7 @@ export class Angularfire2OfflineService {
    * @param objKey used as the object key when storing each list item as an object for offline use
    * via {@link setupList}
    */
-  list(key: string, query?: FirebaseListFactoryOpts, objKey?: string): Observable<[any]> {
+  list(key: string, query?: FirebaseListFactoryOpts, objKey?: string): ListObservable {
     if (!(key in this.cache)) { this.setupList(key, query, objKey); }
     return this.cache[key].sub.asObservable();
   }
@@ -78,7 +80,7 @@ export class Angularfire2OfflineService {
    * @param objKey used as the object key when storing each list item as an object for offline use
    * via {@link setupList}
    */
-  object(key: string, query?: FirebaseObjectFactoryOpts): Observable<{}> {
+  object(key: string, query?: FirebaseObjectFactoryOpts): ObjectObservable {
     if (!(key in this.cache)) { this.setupObject(key, query); }
     return this.cache[key].sub.asObservable();
   }
@@ -177,15 +179,4 @@ export class Angularfire2OfflineService {
     // Local
     this.getList(key);
   }
-}
-/**
- * Each cacheItem is related to a Firebase reference.
- * - If loaded through the network, loaded is set to true
- * - sub is the `ReplaySubject` that the is made available to the rest of the app
- */
-export interface Angularfire2Offline {
-  [cacheItem: string]: {
-    loaded: boolean;
-    sub: ReplaySubject<any>;
-  };
 }

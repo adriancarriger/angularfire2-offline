@@ -26,7 +26,7 @@
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/@angular/router/-/router-3.4.1.tgz#079c8580943547a710f292026ac86a08d336a49d"
 
-"@types/localforage@^0.0.33":
+"@types/localforage@0.0.33":
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/@types/localforage/-/localforage-0.0.33.tgz#dac2f28cdce54c3095bc4d5555b4e89cb7c5063c"
 
@@ -515,7 +515,7 @@ lie@3.0.2:
     inline-process-browser "^1.0.0"
     unreachable-branch-transform "^0.3.0"
 
-localforage@^1.4.2, localforage@^1.4.3:
+localforage@1.4.3, localforage@^1.4.2:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/localforage/-/localforage-1.4.3.tgz#a212543c39c7c76424edd12bf474c489aaca494c"
   dependencies:
@@ -561,7 +561,7 @@ ms@^0.7.1:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
-ng2-localforage@^0.1.30:
+ng2-localforage@0.1.30:
   version "0.1.30"
   resolved "https://registry.yarnpkg.com/ng2-localforage/-/ng2-localforage-0.1.30.tgz#65bf06f4058a7ce2ee8b9942bd09e8c756bf2c5b"
   dependencies:

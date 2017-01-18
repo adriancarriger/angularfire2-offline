@@ -27,7 +27,7 @@ import { Angularfire2OfflineService, ListObservable, ObjectObservable } from 'an
 @Component({
   selector: 'project-name-app',
   template: `
-  <h1>{{ (item | async)?.name }}</h1>
+  <h1>{{ (info | async)?.name }}</h1>
   <ul>
     <li *ngFor="let item of items | async">
       {{ item.name }}
@@ -36,15 +36,15 @@ import { Angularfire2OfflineService, ListObservable, ObjectObservable } from 'an
   `
 })
 export class MyApp {
-  item: ObjectObservable;
+  info: ObjectObservable;
   items: ListObservable;
   constructor(afo: Angularfire2OfflineService) {
-    this.item = af.database.object('/item');
+    this.info = afo.database.object('/info');
     this.items = afo.database.list('/items');
   }
 }
 ```
 
- ## License
+## License
 
- angularfire2-offline is licensed under the MIT Open Source license. For more information, see the LICENSE file in this repository.
+angularfire2-offline is licensed under the MIT Open Source license. For more information, see the [LICENSE](LICENSE) file in this repository.

@@ -38,7 +38,7 @@ import { Angularfire2OfflineService, ListObservable, ObjectObservable } from 'an
 export class MyApp {
   item: ObjectObservable;
   items: ListObservable;
-  constructor(afo: AngularFire) {
+  constructor(afo: Angularfire2OfflineService) {
     this.item = af.database.object('/item');
     this.items = afo.database.list('/items');
   }

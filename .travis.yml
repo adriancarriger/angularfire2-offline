@@ -16,10 +16,10 @@ before_install:
 before_script:
   - npm prune
 after_success:
-  # Send coverage data to Codecov
-  - bash <(curl -s https://codecov.io/bash)
   # Release to npm
   - npm run semantic-release
+  # Send coverage data to Codecov
+  - bash <(curl -s https://codecov.io/bash)
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

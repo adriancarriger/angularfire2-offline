@@ -1,7 +1,14 @@
-## AngularFire2 Offline
+# AngularFire2 Offline
 
-- This library is a work in progress
-- Caches [angularfire2](https://github.com/angular/angularfire2) data for offline use
+Cache [angularfire2](https://github.com/angular/angularfire2) data for offline use
+
+[![Build Status](http://img.shields.io/travis/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://travis-ci.org/adriancarriger/angularfire2-offline)
+[![Codecov](https://img.shields.io/codecov/c/github/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://codecov.io/gh/adriancarriger/angularfire2-offline)
+[![Dependency Status](https://img.shields.io/david/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline)
+[![devDependency Status](https://img.shields.io/david/dev/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline?type=dev)
+[![npm version](https://badge.fury.io/js/angularfire2-offline.svg)](https://badge.fury.io/js/angularfire2-offline)
+
+## [WIP] This library is a work in progress
 
 ## Install
 

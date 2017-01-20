@@ -1,6 +1,6 @@
 {
   "name": "angularfire2-offline",
-  "version": "0.0.7",
+  "version": "0.0.0-development",
   "description": "Cache angularfire2 data for offline use.",
   "scripts": {
     "test": "karma start",
@@ -70,7 +70,7 @@
     "ng2-localforage": "^0.1.30",
     "reflect-metadata": "0.1.8",
     "rxjs": "5.0.3",
-    "semantic-release": "6.3.2",
+    "semantic-release": "^6.3.2",
     "source-map-loader": "0.1.5",
     "ts-helpers": "1.1.2",
     "tslint": "4.0.2",

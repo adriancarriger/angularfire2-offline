@@ -4,7 +4,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFire } from 'angularfire2';
 import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
-import { ReplaySubject, Observable } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { LocalForageService } from 'ng2-localforage';
 
 import { Angularfire2Offline, ObjectObservable, ListObservable } from './interfaces';

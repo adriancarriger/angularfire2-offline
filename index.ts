@@ -1,13 +1,14 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
-import { Angularfire2OfflineService } from './angularfire2-offline.service';
+import { Angularfire2OfflineService } from './src/angularfire2-offline.service';
+
+export * from './src/angularfire2-offline.service';
 
 @NgModule({
   imports: [],
   declarations: []
 })
-export class Angularfire2OfflineModule {
+export class AngularFire2OfflineModule {
   /**
    * The root {@link AppModule} imports the {@link CoreModule} and adds the `providers` to the {@link AppModule}
    * providers. Recommended in the
@@ -15,7 +16,7 @@ export class Angularfire2OfflineModule {
    */
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: Angularfire2OfflineModule,
+      ngModule: AngularFire2OfflineModule,
       providers: [
         Angularfire2OfflineService
       ]

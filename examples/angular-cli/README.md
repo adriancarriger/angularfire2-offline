@@ -29,7 +29,7 @@ You should see a message that says *App works!*
 ### 4. Install Dependencies
 
 ```bash
-npm install --save angularfire2-offline angularfire2 firebase
+npm install angularfire2-offline angularfire2 firebase --save
 ```
 
 Now that you have a new project setup, install AngularFire2 and Firebase from npm.

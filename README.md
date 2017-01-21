@@ -12,7 +12,7 @@ A simple wrapper for [AngularFire2](https://github.com/angular/angularfire2) to 
 ## Install
 
 ```bash
-npm install firebase angularfire2-offline --save
+npm install angularfire2-offline angularfire2 firebase --save
 ```
 
 ## Setup @NgModule

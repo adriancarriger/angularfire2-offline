@@ -9,6 +9,8 @@ A simple wrapper for [AngularFire2](https://github.com/angular/angularfire2) to 
 [![npm version](https://badge.fury.io/js/angularfire2-offline.svg)](https://badge.fury.io/js/angularfire2-offline)
 [![Angular 2 Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://angular.io/styleguide)
 
+Complete changelog: [https://github.com/adriancarriger/angularfire2-offline/releases](https://github.com/adriancarriger/angularfire2-offline/releases)
+
 ## Install
 
 ```bash

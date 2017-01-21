@@ -1,6 +1,6 @@
 # AngularFire2 Offline
 
-Cache [angularfire2](https://github.com/angular/angularfire2) data for offline use
+A simple wrapper for [AngularFire2](https://github.com/angular/angularfire2) to cache Firebase data for offline use, even after a complete refresh.
 
 [![Build Status](http://img.shields.io/travis/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://travis-ci.org/adriancarriger/angularfire2-offline)
 [![Codecov](https://img.shields.io/codecov/c/github/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://codecov.io/gh/adriancarriger/angularfire2-offline)
@@ -8,8 +8,6 @@ Cache [angularfire2](https://github.com/angular/angularfire2) data for offline u
 [![devDependency Status](https://img.shields.io/david/dev/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline?type=dev)
 [![npm version](https://badge.fury.io/js/angularfire2-offline.svg)](https://badge.fury.io/js/angularfire2-offline)
 [![Angular 2 Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://angular.io/styleguide)
-
-## This library is a work in progress
 
 ## Install
 
@@ -49,6 +47,8 @@ export class AppModule { }
 
 ## Usage
 
+Methods mirror AngularFire2 database read methods.
+
 ```ts
 import { Component } from '@angular/core';
 import {
@@ -79,11 +79,10 @@ export class MyApp {
 
 ## How it works
 
- - While online Firebase data is stored locally (as data changes the local store is updated)
+ - While online, Firebase data is stored locally (as data changes the local store is updated)
  - While offline, local data is served if available
  - On reconnect, Observables update app with new Firebase data
  - Even while online, local data is used first when available which results in a faster load
- - If loaded from local store while online and Firebase sends changes (usually a few moments later), the changes will be sent to all subscribers and the local store will be updated.
 
 ## License
 

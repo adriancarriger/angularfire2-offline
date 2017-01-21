@@ -11,21 +11,15 @@ import { Angularfire2Offline, ObjectObservable, ListObservable } from './interfa
 /**
  * @whatItDoes Wraps some angularfire2 read methods for returning data from Firebase with the added
  * function of storing the data locally for offline use.
- * @consumers {@link ApiService}
- * @providerScope {@link AppComponent}
  * 
  * --------------------------------------------------------
  * --------------------------------------------------------
  * 
  * **Features:**
- * - Returns real-time Firebase data via Observables
- * - While online Firebase data is stored locally (as data changes the local store is updated)
- * - While offline local data is served if available
+ * - While online, Firebase data is stored locally (as data changes the local store is updated)
+ * - While offline, local data is served if available
  * - On reconnect, Observables update app with new Firebase data
- * - Even while online, local data is used first when available which results in a faster load ux
- * - If loaded from local store while online, and Firebase sends changes (usually a few moments
- * later), the changes will be sent to all subscribers and the local store will be updated right
- * away.
+ * - Even while online, local data is used first when available which results in a faster load
  * 
  */
 @Injectable()
@@ -33,8 +27,8 @@ export class Angularfire2OfflineService {
   /**
    * - In-memory cache containing `ReplaySubject`s that return the latest value for any given
    * Firebase reference.
-   * - That value can come from a Firebase subscription or from the device
-   * if there is no internet connection.
+   * - That value can come from a Firebase subscription or from the device if there is no
+   * internet connection.
    */
   cache: Angularfire2Offline = {};
   /**
@@ -89,8 +83,7 @@ export class Angularfire2OfflineService {
     this.localforage.getItem(key).subscribe(listMap => {
       if (!this.cache[key].loaded && listMap !== null) {
         const promises = listMap.map(partialKey => {
-          const itemKey = `${key}/${partialKey}`;
-          return this.localforage.getItem(itemKey).toPromise();
+          return this.localforage.getItem(`${key}/${partialKey}`).toPromise();
         });
         Promise.all(promises).then(value => this.cache[key].sub.next(value));
       }
@@ -136,8 +129,7 @@ export class Angularfire2OfflineService {
    */
   private setList(key: string, array: Array<any>) {
     const listMap = array.reduce((p, c, i) => {
-      const storeKey = `${key}/${c.key}`;
-      this.localforage.setItem({key: storeKey, value: c.val()});
+      this.localforage.setItem({key: `${key}/${c.key}`, value: c.val()});
       p[i] = c.key;
       return p;
     }, []);

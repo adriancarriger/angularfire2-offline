@@ -3,6 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { Angularfire2OfflineService } from './src/angularfire2-offline.service';
 
 export * from './src/angularfire2-offline.service';
+export * from './src/interfaces';
 
 @NgModule({
   imports: [],

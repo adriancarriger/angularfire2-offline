@@ -49,7 +49,8 @@ export class AppModule { }
 
 ## Usage
 
-Methods mirror AngularFire2 database read methods.
+- Methods mirror AngularFire2 database read methods for [`object`](https://github.com/angular/angularfire2/blob/master/docs/2-retrieving-data-as-objects.md#retrieve-data) and [`list`](https://github.com/angular/angularfire2/blob/master/docs/3-retrieving-data-as-lists.md#retrieve-data).
+- [Querying lists](https://github.com/angular/angularfire2/blob/master/docs/4-querying-lists.md) is supported
 
 ```ts
 import { Component } from '@angular/core';

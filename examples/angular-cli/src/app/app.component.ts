@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import {
   Angularfire2OfflineService,
-  ObjectObservable,
-  ListObservable } from 'angularfire2-offline';
+  ListObservable,
+  ObjectObservable } from 'angularfire2-offline';
 
 @Component({
   selector: 'app-root',

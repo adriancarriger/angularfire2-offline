@@ -1,4 +1,4 @@
-# AngularCli Progressive Web App
+# Angular-Cli Progressive Web App
 
 ## Steps to create project
 
@@ -36,7 +36,7 @@ Now that you have a new project setup, install AngularFire2 and Firebase from np
 
 ### 5. Setup @NgModule
 
-Open `/src/app/app.module.ts`, inject the Firebase providers, and specify your Firebase configuration.
+Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
 This can be found in your project at [the Firebase Console](https://console.firebase.google.com):
 
 ```ts
@@ -72,7 +72,7 @@ export class AppModule { }
 
 ### 6. Use in a component
 
-In `/src/app/app.component.ts`:
+In [`/src/app/app.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.component.ts):
 
 ```ts
 import { Component } from '@angular/core';
@@ -95,7 +95,7 @@ export class MyApp {
 }
 ```
 
-Open `/src/app/app.component.html`:
+Open [`/src/app/app.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.component.html):
 
 ```html
 <h1>{{ (info | async)?.name }}</h1>
@@ -124,7 +124,7 @@ The following steps are based on [this tuorial](https://coryrylan.com/blog/fast-
 
 ### 1. Add service worker
 
-In `/src/index.html` add the following just before the closing `body` tag:
+In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/index.html#L13-L21) add the following just before the closing `body` tag:
 
 ```html
 <script>
@@ -138,13 +138,13 @@ In `/src/index.html` add the following just before the closing `body` tag:
 </script>
 ```
 
-### 2. Add `service-worker.js` to root
+### 2. Add `service-worker.js`
 
-Create an empty file called `service-worker.js` located at `/src/service-worker.js`
+Create an empty file called `service-worker.js` located at [`/src/service-worker.js`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/service-worker.js)
 
 ### 2. Add assets
 
-In `/angular-cli.json` add `service-worker.js` to the assets array:
+In [`/angular-cli.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/angular-cli.json#L10-L14) add `service-worker.js` to the assets array:
 
 ```json
 "assets": [
@@ -162,7 +162,7 @@ npm install sw-precache --save-dev
 
 ### 4. Add `package.json` scripts
 
-In `/package.json` add the `sw` and `build:prod` scripts:
+In [`/package.json`]((https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L13-L14)) add the `sw` and `build:prod` scripts:
 
 ```json
 "scripts": {
@@ -178,7 +178,7 @@ In `/package.json` add the `sw` and `build:prod` scripts:
 
 ### 5. Create `sw-precache-config.js`
 
-In the root of your project create a file called `sw-precache-config.js` with the following config:
+In the root of your project create a file called [`sw-precache-config.js`]((https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/sw-precache-config.js)) with the following config:
 
 ```js
 module.exports = {
@@ -215,7 +215,7 @@ npm install live-server --save-dev
 
 ### 2. Add `static-serve` script
 
-In `/package.json` add the `static-serve` script:
+In [`/package.json`]((https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L15)) add the `static-serve` script:
 
 ```json
 "scripts": {

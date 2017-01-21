@@ -162,7 +162,7 @@ npm install sw-precache --save-dev
 
 ### 4. Add `package.json` scripts
 
-In [`/package.json`]((https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L13-L14)) add the `sw` and `build:prod` scripts:
+In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L13-L14) add the `sw` and `build:prod` scripts:
 
 ```json
 "scripts": {
@@ -178,7 +178,7 @@ In [`/package.json`]((https://github.com/adriancarriger/angularfire2-offline/blo
 
 ### 5. Create `sw-precache-config.js`
 
-In the root of your project create a file called [`sw-precache-config.js`]((https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/sw-precache-config.js)) with the following config:
+In the root of your project create a file called [`sw-precache-config.js`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/sw-precache-config.js) with the following config:
 
 ```js
 module.exports = {
@@ -215,7 +215,7 @@ npm install live-server --save-dev
 
 ### 2. Add `static-serve` script
 
-In [`/package.json`]((https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L15)) add the `static-serve` script:
+In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L15) add the `static-serve` script:
 
 ```json
 "scripts": {

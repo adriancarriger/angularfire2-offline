@@ -1,30 +1,115 @@
-# AngularCli
+# AngularCli Progressive Web App
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.26.
+## Steps to create project
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### 1. Install [angular-cli](https://github.com/angular/angular-cli)
 
-## Code scaffolding
+```bash
+npm install -g angular-cli
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+### 2. Create a new project
 
-## Build
+```bash
+ng new <project-name>
+cd <project-name>
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+The Angular CLI's `new` command will set up the latest Angular build in a new project structure.
 
-## Running unit tests
+### 3. Test your Setup
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+ng serve
+open http://localhost:4200
+```
 
-## Running end-to-end tests
+You should see a message that says *App works!*
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+### 4. Install Dependencies
 
-## Deploying to GitHub Pages
+```bash
+npm install --save angularfire2-offline angularfire2 firebase
+```
 
-Run `ng github-pages:deploy` to deploy to GitHub Pages.
+Now that you have a new project setup, install AngularFire2 and Firebase from npm.
+
+### 5. Setup @NgModule
+
+Open `/src/app/app.module.ts`, inject the Firebase providers, and specify your Firebase configuration.
+This can be found in your project at [the Firebase Console](https://console.firebase.google.com):
+
+```ts
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFire2OfflineModule } from 'angularfire2-offline';
+
+// Must export the config
+export const firebaseConfig = {
+  apiKey: '<your-key>',
+  databaseURL: '<your-database-URL>'
+};
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFire2OfflineModule.forRoot(),
+    BrowserModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+### 6. Use in a component
+
+In `/src/app/app.component.ts`:
+
+```ts
+import { Component } from '@angular/core';
+import {
+  Angularfire2OfflineService,
+  ObjectObservable,
+  ListObservable } from 'angularfire2-offline';
+
+@Component({
+  selector: 'project-name-app',
+  templateUrl: 'app.component.html'
+})
+export class MyApp {
+  info: ObjectObservable;
+  items: ListObservable;
+  constructor(afo: Angularfire2OfflineService) {
+    this.info = afo.database.object('/info');
+    this.items = afo.database.list('/items');
+  }
+}
+```
+
+Open `/src/app/app.component.html`:
+
+```html
+<h1>{{ (info | async)?.name }}</h1>
+<ul>
+  <li *ngFor="let item of items | async">
+    {{ item.name }}
+  </li>
+</ul>
+```
+
+### 7. Run your app
+
+```bash
+ng serve
+```
+
+Run the serve command and go to `localhost:4200` in your browser.
 
 ## Further help
 

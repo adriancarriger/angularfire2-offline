@@ -40,11 +40,12 @@ Open `/src/app/app.module.ts`, inject the Firebase providers, and specify your F
 This can be found in your project at [the Firebase Console](https://console.firebase.google.com):
 
 ```ts
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFire2OfflineModule } from 'angularfire2-offline';
+
+import { AppComponent } from './app.component';
 
 // Must export the config
 export const firebaseConfig = {
@@ -77,8 +78,8 @@ In `/src/app/app.component.ts`:
 import { Component } from '@angular/core';
 import {
   Angularfire2OfflineService,
-  ObjectObservable,
-  ListObservable } from 'angularfire2-offline';
+  ListObservable,
+  ObjectObservable } from 'angularfire2-offline';
 
 @Component({
   selector: 'project-name-app',

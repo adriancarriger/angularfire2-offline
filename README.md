@@ -7,8 +7,9 @@ Cache [angularfire2](https://github.com/angular/angularfire2) data for offline u
 [![Dependency Status](https://img.shields.io/david/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline)
 [![devDependency Status](https://img.shields.io/david/dev/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline?type=dev)
 [![npm version](https://badge.fury.io/js/angularfire2-offline.svg)](https://badge.fury.io/js/angularfire2-offline)
+[![Angular 2 Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://angular.io/styleguide)
 
-## [WIP] This library is a work in progress
+## This library is a work in progress
 
 ## Install
 
@@ -19,13 +20,29 @@ npm install firebase angularfire2-offline --save
 ## Setup @NgModule
 
 ```ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AngularFireModule } from 'angularfire2';
 import { AngularFire2OfflineModule } from 'angularfire2-offline';
 
+import { AppComponent } from './app.component';
+
+// Must export the config
+export const firebaseConfig = {
+  apiKey: '<your-key>',
+  authDomain: '<your-project-authdomain>',
+  databaseURL: '<your-database-URL>',
+  storageBucket: '<your-storage-bucket>'
+};
+
 @NgModule({
+  declarations: [AppComponent],
   imports: [
-    /* Other imports here */
-    AngularFire2OfflineModule.forRoot()
-  ]
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFire2OfflineModule.forRoot(),
+    BrowserModule
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
 ```
@@ -34,7 +51,10 @@ export class AppModule { }
 
 ```ts
 import { Component } from '@angular/core';
-import { Angularfire2OfflineService, ListObservable, ObjectObservable } from 'angularfire2-offline';
+import {
+  Angularfire2OfflineService,
+  ListObservable,
+  ObjectObservable } from 'angularfire2-offline';
 
 @Component({
   selector: 'project-name-app',

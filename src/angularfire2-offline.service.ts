@@ -60,11 +60,9 @@ export class Angularfire2OfflineService {
    * @param key the Firebase reference for this list
    * @param query optional angularfire2 query param. Allows all
    * [valid queries](https://goo.gl/iHiAuB)
-   * @param objKey used as the object key when storing each list item as an object for offline use
-   * via {@link setupList}
    */
-  list(key: string, query?: FirebaseListFactoryOpts, objKey?: string): ListObservable {
-    if (!(key in this.cache)) { this.setupList(key, query, objKey); }
+  list(key: string, query?: FirebaseListFactoryOpts): ListObservable {
+    if (!(key in this.cache)) { this.setupList(key, query); }
     return this.cache[key].sub.asObservable();
   }
   /**
@@ -77,8 +75,6 @@ export class Angularfire2OfflineService {
    * @param key the Firebase reference for this list
    * @param query optional angularfire2 query param. Allows all
    * [valid queries](https://goo.gl/iHiAuB) available [for objects](https://goo.gl/IV8DYA)
-   * @param objKey used as the object key when storing each list item as an object for offline use
-   * via {@link setupList}
    */
   object(key: string, query?: FirebaseObjectFactoryOpts): ObjectObservable {
     if (!(key in this.cache)) { this.setupObject(key, query); }
@@ -138,12 +134,11 @@ export class Angularfire2OfflineService {
    * to allow offline use of the entire list or just a specific object
    * - Stores a map of all the objects, used to stitch together the list for local use 
    */
-  private setList(key: string, array: Array<any>, objKeyPartial: string) {
+  private setList(key: string, array: Array<any>) {
     const listMap = array.reduce((p, c, i) => {
-      const objKey = c[objKeyPartial];
-      const storeKey = `${key}/${objKey}`;
-      this.localforage.setItem({key: storeKey, value: c});
-      p[i] = objKey;
+      const storeKey = `${key}/${c.key}`;
+      this.localforage.setItem({key: storeKey, value: c.val()});
+      p[i] = c.key;
       return p;
     }, []);
     this.localforage.setItem({key: key, value: listMap});
@@ -159,9 +154,8 @@ export class Angularfire2OfflineService {
    * 
    * @param key passed directly from {@link list}'s key param
    * @param query passed directly from {@link list}'s query param 
-   * @param objKey passed directly from {@link list}'s objKey param
    */
-  private setupList(key: string, query: FirebaseListFactoryOpts = {}, objKey?: string) {
+  private setupList(key: string, query: FirebaseListFactoryOpts = {}) {
     // Create cache
     this.cache[key] = {
       loaded: false,
@@ -170,11 +164,10 @@ export class Angularfire2OfflineService {
     // Firebase
     query.preserveSnapshot = true;
     this.af.database.list(key, query)
-      .map(arr => arr.map(snap => snap.val()))
       .subscribe(value => {
         this.cache[key].loaded = true;
-        this.cache[key].sub.next(value);
-        this.setList(key, value, objKey);
+        this.cache[key].sub.next(value.map(snap => snap.val()));
+        this.setList(key, value);
       });
     // Local
     this.getList(key);

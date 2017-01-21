@@ -10,7 +10,9 @@ import { AppComponent } from './app.component';
 // Must export the config
 export const firebaseConfig = {
   apiKey: 'AIzaSyBIsrtVNmZJ9dDQleuItDsz3ZXtvzhiWv8',
-  databaseURL: 'https://angularfire2-offline.firebaseio.com'
+  authDomain: 'https://angularfire2-offline.firebaseio.com',
+  databaseURL: 'https://angularfire2-offline.firebaseio.com',
+  storageBucket: 'gs://angularfire2-offline.appspot.com'
 };
 
 @NgModule({

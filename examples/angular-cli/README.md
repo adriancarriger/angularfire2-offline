@@ -49,7 +49,9 @@ import { AngularFire2OfflineModule } from 'angularfire2-offline';
 // Must export the config
 export const firebaseConfig = {
   apiKey: '<your-key>',
-  databaseURL: '<your-database-URL>'
+  authDomain: '<your-project-authdomain>',
+  databaseURL: '<your-database-URL>',
+  storageBucket: '<your-storage-bucket>'
 };
 
 @NgModule({

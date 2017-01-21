@@ -100,7 +100,7 @@ Open `/src/app/app.component.html`:
 <h1>{{ (info | async)?.name }}</h1>
 <ul>
   <li *ngFor="let item of items | async">
-    {{ item.name }}
+    {{ item?.name }}
   </li>
 </ul>
 ```

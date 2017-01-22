@@ -1,3 +1,12 @@
+<h1>This page works offline</h1>
+<p>This page will work after a complete page refresh if your browser <a href="http://caniuse.com/#feat=serviceworkers">supports service workers</a>.</p>
+<p>To test if Firebase data is being served offline, disconnect from the internet (e.g. turn off Wi-Fi) and refresh this page.</p>
+<ul>
+  <li>Firebase data cached using <a href="https://github.com/adriancarriger/angularfire2-offline">angularfire2-offline</a></li>
+  <li>Static assets cached using <a href="https://github.com/GoogleChrome/sw-precache">sw-precache</a></li>
+  <li><a href="https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli">Repository for this example</a></li>
+</ul>
+
 <h1>{{ (info | async)?.name }}</h1>
 <ul>
   <li *ngFor="let item of items | async">

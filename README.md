@@ -11,6 +11,7 @@ A simple wrapper for [AngularFire2](https://github.com/angular/angularfire2) to 
 
 - Complete changelog: [https://github.com/adriancarriger/angularfire2-offline/releases](https://github.com/adriancarriger/angularfire2-offline/releases)
 - [Full tutorial](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli) using this library and the [Angular-CLI](https://github.com/angular/angular-cli) to setup an Angular 2+ progressive web app
+- [Demo](https://angularfire2-offline.firebaseapp.com/) using this project
 
 ## Install
 

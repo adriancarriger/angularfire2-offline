@@ -1,4 +1,6 @@
-# Angular-Cli Progressive Web App
+# Angular-CLI Progressive Web App
+
+## [View Demo](https://angularfire2-offline.firebaseapp.com/)
 
 ## Steps to create project
 

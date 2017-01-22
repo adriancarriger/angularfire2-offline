@@ -34,7 +34,7 @@ You should see a message that says *App works!*
 npm install angularfire2-offline angularfire2 firebase --save
 ```
 
-Now that you have a new project setup, install AngularFire2 and Firebase from npm.
+Now that you have a new project setup, install AngularFire2Offline, AngularFire2 and Firebase from npm.
 
 ### 5. Setup @NgModule
 
@@ -97,7 +97,7 @@ export class MyApp {
 }
 ```
 
-Open [`/src/app/app.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.component.html):
+In [`/src/app/app.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.component.html):
 
 ```html
 <h1>{{ (info | async)?.name }}</h1>
@@ -118,13 +118,13 @@ Run the serve command and go to `localhost:4200` in your browser.
 
 ### Result
 
-At this point everything should be working, including offline support for your Firebase data. That won't help too much if you if the rest of your app doesn't work offline, so the optional following steps show how to add full offline support
+At this point everything should be working, including offline support for your Firebase data. That won't help too much if the rest of your app doesn't work offline, so the optional following steps show how to add full offline support.
 
 ## Steps to get full offline support (optional)
 
 The following steps are based on [this tuorial](https://coryrylan.com/blog/fast-offline-angular-apps-with-service-workers) by [Cory Rylan](https://coryrylan.com/)
 
-### 1. Add service worker
+### 1. Add a service worker
 
 In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/index.html#L13-L21) add the following just before the closing `body` tag:
 

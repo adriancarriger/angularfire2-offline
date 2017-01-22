@@ -34,7 +34,7 @@ You should see a message that says *App works!*
 npm install angularfire2-offline angularfire2 firebase --save
 ```
 
-Now that you have a new project setup, install AngularFire2Offline, AngularFire2 and Firebase from npm.
+Now that you have a new project setup, install [AngularFire2Offline](https://www.npmjs.com/package/angularfire2-offline), [AngularFire2](https://www.npmjs.com/package/angularfire2) and [Firebase](https://www.npmjs.com/package/firebase) from npm.
 
 ### 5. Setup @NgModule
 

@@ -34,7 +34,7 @@ Now that you have a new project setup, install [AngularFire2Offline](https://www
 
 ### 5. Setup @NgModule
 
-Open `/src/app/app.module.ts`, inject the Firebase providers, and specify your Firebase configuration.
+Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/ionic/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
 This can be found in your project at [the Firebase Console](https://console.firebase.google.com):
 
 ```ts
@@ -84,7 +84,7 @@ export class AppModule { }
 
 ### 6. Use in a component
 
-In `/src/pages/home/home.ts`:
+In [`/src/pages/home/home.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/ionic/src/pages/home/home.ts):
 
 ```ts
 import { Component } from '@angular/core';
@@ -109,7 +109,7 @@ export class HomePage {
   }
 }
 ```
-In `/src/app/app.component.html`:
+In [`/src/pages/home/home.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/ionic/src/pages/home/home.html):
 
 ```html
 <ion-header>
@@ -142,7 +142,7 @@ At this point everything should be working, including offline support for your F
 
 ### 1. Add a service worker
 
-In `/src/index.html` find and uncomment the provided service worker script:
+In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/ionic/src/index.html#L17-L23) find and uncomment the provided service worker script:
 
 ```html
 <script>

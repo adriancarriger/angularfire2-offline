@@ -1,6 +1,6 @@
 # AngularFire2 Offline
 
-A simple wrapper for [AngularFire2](https://github.com/angular/angularfire2) to cache Firebase data for offline use, even after a complete refresh.
+🔌 A simple wrapper for [AngularFire2](https://github.com/angular/angularfire2) to cache Firebase data for offline use, even after a complete refresh.
 
 [![Build Status](http://img.shields.io/travis/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://travis-ci.org/adriancarriger/angularfire2-offline)
 [![Codecov](https://img.shields.io/codecov/c/github/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://codecov.io/gh/adriancarriger/angularfire2-offline)

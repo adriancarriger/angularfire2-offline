@@ -7,7 +7,7 @@ import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2
 import { ReplaySubject } from 'rxjs';
 import { LocalForageService } from 'ng2-localforage';
 
-import { Angularfire2Offline, ObjectObservable, ListObservable } from './interfaces';
+import { AngularFireOfflineCache, ObjectObservable, ListObservable } from './interfaces';
 /**
  * @whatItDoes Wraps some angularfire2 read methods for returning data from Firebase with the added
  * function of storing the data locally for offline use.
@@ -23,16 +23,16 @@ import { Angularfire2Offline, ObjectObservable, ListObservable } from './interfa
  * 
  */
 @Injectable()
-export class Angularfire2OfflineService {
+export class AngularFireOfflineDatabase {
   /**
    * - In-memory cache containing `ReplaySubject`s that return the latest value for any given
    * Firebase reference.
    * - That value can come from a Firebase subscription or from the device if there is no
    * internet connection.
    */
-  cache: Angularfire2Offline = {};
+  cache: AngularFireOfflineCache = {};
   /**
-   * Creates the {@link Angularfire2OfflineService}
+   * Creates the {@link AngularFireOfflineDatabase}
    * 
    * @param af Angular Fire service used to connect to Firebase
    * @param localforage Angular 2 wrapper of [localforage](https://goo.gl/4RJ7Iy) that allows

@@ -4,10 +4,10 @@ import { async, inject, TestBed } from '@angular/core/testing';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
-import { Angularfire2OfflineService } from '../src/angularfire2-offline.service';
+import { AngularFireOfflineDatabase } from '../src/database';
 import { LocalForageService } from 'ng2-localforage';
 
-describe('Service: Angularfire2OfflineService', () => {
+describe('Service: AngularFireOfflineDatabase', () => {
   let mockAngularFire: MockAngularFire;
   let mockNg2LocalforageService: MockNg2LocalforageService;
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('Service: Angularfire2OfflineService', () => {
     mockNg2LocalforageService = new MockNg2LocalforageService();
     TestBed.configureTestingModule({
       providers: [
-        Angularfire2OfflineService,
+        AngularFireOfflineDatabase,
         { provide: AngularFire, useValue: mockAngularFire },
         { provide: LocalForageService, useValue: mockNg2LocalforageService }
       ]
@@ -26,11 +26,11 @@ describe('Service: Angularfire2OfflineService', () => {
     TestBed.compileComponents();
   }));
 
-  it('should create the service', inject([Angularfire2OfflineService], (service: Angularfire2OfflineService) => {
+  it('should create the service', inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     expect(service).toBeTruthy();
   }));
 
-  it('should return a list', async(inject([Angularfire2OfflineService], (service: Angularfire2OfflineService) => {
+  it('should return a list', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     let newValue = [
       { val: () => { return 'xyz'; } }
     ];
@@ -41,7 +41,7 @@ describe('Service: Angularfire2OfflineService', () => {
     mockAngularFire.update(newValue);
   })));
 
-  it('should not setup a list', inject([Angularfire2OfflineService], (service: Angularfire2OfflineService) => {
+  it('should not setup a list', inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     // Setup test - Set up list
     service.list('slug-2', {});
     // If `setupObject` is called, then this will be false: 
@@ -54,7 +54,7 @@ describe('Service: Angularfire2OfflineService', () => {
     expect(service.cache['slug-2'].loaded).toBe(true);
   }));
 
-  it('should return an object', async(inject([Angularfire2OfflineService], (service: Angularfire2OfflineService) => {
+  it('should return an object', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     let newValue = { val: () => { return 'abc23-7'; } };
     service.object('slug-2').subscribe(object => {
       expect(object).toBe('abc23-7');
@@ -62,7 +62,7 @@ describe('Service: Angularfire2OfflineService', () => {
     mockAngularFire.update(newValue);
   })));
 
-  it('should not setup an object', inject([Angularfire2OfflineService], (service: Angularfire2OfflineService) => {
+  it('should not setup an object', inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     // Setup test - Set up list
     service.object('slug-2', {});
     // If `setupObject` is called, then this will be false: 
@@ -75,7 +75,7 @@ describe('Service: Angularfire2OfflineService', () => {
     expect(service.cache['slug-2'].loaded).toBe(true);
   }));
 
-  it('should return a locally stored value', async(inject([Angularfire2OfflineService], (service: Angularfire2OfflineService) => {
+  it('should return a locally stored value', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     service.object('slug-2').subscribe(object => {
       expect(object).toBe('293846488sxjfhslsl20201-4ghcjs');
     });
@@ -83,7 +83,7 @@ describe('Service: Angularfire2OfflineService', () => {
   })));
 
   it('should not return a locally stored value if loaded', done => {
-    inject([Angularfire2OfflineService], (service: Angularfire2OfflineService) => {
+    inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
       let returnedValue = false;
       service.object('slug-2').subscribe(object => {
         returnedValue = true;
@@ -99,7 +99,7 @@ describe('Service: Angularfire2OfflineService', () => {
   });
 
   it('should return a locally stored list', done => {
-    inject([Angularfire2OfflineService], (service: Angularfire2OfflineService) => {
+    inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
       service.list('list-2').subscribe(object => {
         expect(object).toEqual(['1', '1', '1']);
         done();
@@ -110,7 +110,7 @@ describe('Service: Angularfire2OfflineService', () => {
   });
 
   it('should not return alocally stored list if loaded', done => {
-    inject([Angularfire2OfflineService], (service: Angularfire2OfflineService) => {
+    inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
       let returnedValue = false;
       service.list('list-2').subscribe(object => {
         returnedValue = true;

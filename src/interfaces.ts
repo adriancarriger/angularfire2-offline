@@ -4,7 +4,7 @@ import { ReplaySubject, Observable } from 'rxjs';
  * - If loaded through the network, loaded is set to true
  * - sub is the `ReplaySubject` that the is made available to the rest of the app
  */
-export interface Angularfire2Offline {
+export interface AngularFireOfflineCache {
   [cacheItem: string]: {
     loaded: boolean;
     sub: ReplaySubject<any>;

@@ -1,10 +1,14 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { Injectable, ModuleWithProviders, NgModule } from '@angular/core';
 import { LocalForageModule } from 'ng2-localforage';
 
-import { Angularfire2OfflineService } from './src/angularfire2-offline.service';
+import { AngularFireOfflineDatabase } from './src/database';
 
-export * from './src/angularfire2-offline.service';
-export * from './src/interfaces';
+export { ListObservable, ObjectObservable } from './src/interfaces';
+
+@Injectable()
+export class AngularFireOffline {
+  constructor(public database: AngularFireOfflineDatabase) { }
+}
 
 @NgModule({
   imports: [
@@ -12,7 +16,7 @@ export * from './src/interfaces';
   ],
   declarations: []
 })
-export class AngularFire2OfflineModule {
+export class AngularFireOfflineModule {
   /**
    * The root {@link AppModule} imports the {@link CoreModule} and adds the `providers` to the {@link AppModule}
    * providers. Recommended in the
@@ -20,9 +24,10 @@ export class AngularFire2OfflineModule {
    */
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: AngularFire2OfflineModule,
+      ngModule: AngularFireOfflineModule,
       providers: [
-        Angularfire2OfflineService
+        AngularFireOffline,
+        AngularFireOfflineDatabase
       ]
     };
   }

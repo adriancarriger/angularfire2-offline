@@ -15,8 +15,8 @@
   "files": [
     "index.ts",
     "angularfire2-offline.ts",
-    "./src/angularfire2-offline.service.ts",
-    "tests/angularfire2-offline.service.spec.ts"
+    "./src/database.ts",
+    "tests/database.spec.ts"
   ],
   "exclude": [
     "node_modules",

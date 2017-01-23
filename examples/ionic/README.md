@@ -1,4 +1,6 @@
-# Ionic Progressive Web App
+# Ionic Offline Tutorial 📘
+
+How to create an app that loads Firebase data and static resources while offline.
 
 ## [View Demo](https://ionic-pwa-ad85b.firebaseapp.com)
 

@@ -1,4 +1,6 @@
-# Angular-CLI Progressive Web App
+# Angular-CLI Offline Tutorial 📗
+
+How to create an app that loads Firebase data and static resources while offline.
 
 ## [View Demo](https://angularfire2-offline.firebaseapp.com/)
 

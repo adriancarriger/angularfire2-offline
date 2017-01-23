@@ -28,7 +28,7 @@ npm install angularfire2-offline angularfire2 firebase --save
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFire2OfflineModule } from 'angularfire2-offline';
+import { AngularFireOfflineModule } from 'angularfire2-offline';
 
 import { AppComponent } from './app.component';
 
@@ -44,7 +44,7 @@ export const firebaseConfig = {
   declarations: [AppComponent],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFire2OfflineModule.forRoot(),
+    AngularFireOfflineModule.forRoot(),
     BrowserModule
   ],
   bootstrap: [AppComponent]
@@ -60,7 +60,7 @@ export class AppModule { }
 ```ts
 import { Component } from '@angular/core';
 import {
-  Angularfire2OfflineService,
+  AngularFireOffline,
   ListObservable,
   ObjectObservable } from 'angularfire2-offline';
 
@@ -78,7 +78,7 @@ import {
 export class MyApp {
   info: ObjectObservable<any>;
   items: ListObservable<any[]>;
-  constructor(afo: Angularfire2OfflineService) {
+  constructor(afo: AngularFireOffline) {
     this.info = afo.database.object('/info');
     this.items = afo.database.list('/items');
   }

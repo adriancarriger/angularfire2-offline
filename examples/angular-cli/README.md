@@ -45,7 +45,7 @@ This can be found in your project at [the Firebase Console](https://console.fire
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFire2OfflineModule } from 'angularfire2-offline';
+import { AngularFireOfflineModule } from 'angularfire2-offline';
 
 import { AppComponent } from './app.component';
 
@@ -63,7 +63,7 @@ export const firebaseConfig = {
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFire2OfflineModule.forRoot(),
+    AngularFireOfflineModule.forRoot(),
     BrowserModule
   ],
   providers: [],
@@ -79,7 +79,7 @@ In [`/src/app/app.component.ts`](https://github.com/adriancarriger/angularfire2-
 ```ts
 import { Component } from '@angular/core';
 import {
-  Angularfire2OfflineService,
+  AngularFireOffline,
   ListObservable,
   ObjectObservable } from 'angularfire2-offline';
 
@@ -90,7 +90,7 @@ import {
 export class MyApp {
   info: ObjectObservable<any>;
   items: ListObservable<any[]>;
-  constructor(afo: Angularfire2OfflineService) {
+  constructor(afo: AngularFireOffline) {
     this.info = afo.database.object('/info');
     this.items = afo.database.list('/items');
   }

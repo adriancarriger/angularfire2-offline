@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFire2OfflineModule } from 'angularfire2-offline';
+import { AngularFireOfflineModule } from 'angularfire2-offline';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { MyApp } from './app.component';
@@ -27,7 +27,7 @@ export const firebaseConfig = {
   imports: [
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFire2OfflineModule.forRoot(),
+    AngularFireOfflineModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [

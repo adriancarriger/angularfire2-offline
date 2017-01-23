@@ -90,10 +90,10 @@ export class AngularFireOfflineDatabase {
     });
   }
   /**
-   * - Sets up a {@link Angularfire2Offline} item that provides Firebase data
+   * - Sets up a {@link AngularFireOfflineCache} item that provides Firebase data
    * - Subscribes to the object's Firebase reference
    * - Gets the most recent locally stored non-null value and sends to all app subscribers
-   * - When Firebase sends a value this {@link Angularfire2Offline} item is set to loaded, 
+   * - When Firebase sends a value this {@link AngularFireOfflineCache} item is set to loaded, 
    * the new value is sent to all app subscribers, and the value is stored locally
    * 
    * @param key passed directly from {@link object}'s key param
@@ -136,11 +136,11 @@ export class AngularFireOfflineDatabase {
     this.localforage.setItem({key: key, value: listMap});
   }
   /**
-   * - Sets up a {@link Angularfire2Offline} item that provides Firebase data
+   * - Sets up a {@link AngularFireOfflineCache} item that provides Firebase data
    * - Subscribes to the list's Firebase reference
    * - Gets the most recent locally stored non-null value and sends to all app subscribers
    * via {@link getList}
-   * - When Firebase sends a value this {@link Angularfire2Offline} item is set to loaded, 
+   * - When Firebase sends a value this {@link AngularFireOfflineCache} item is set to loaded, 
    * the new value is sent to all app subscribers, and the value is stored locally via
    * {@link setList}
    * 

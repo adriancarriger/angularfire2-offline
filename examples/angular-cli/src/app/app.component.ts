@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {
-  Angularfire2OfflineService,
+  AngularFireOffline,
   ListObservable,
   ObjectObservable } from 'angularfire2-offline';
 
@@ -12,8 +12,8 @@ import {
 export class AppComponent {
   info: ObjectObservable<any>;
   items: ListObservable<any[]>;
-  constructor(afo: Angularfire2OfflineService) {
-    this.info = afo.object('/info');
-    this.items = afo.list('/items');
+  constructor(afo: AngularFireOffline) {
+    this.info = afo.database.object('/info');
+    this.items = afo.database.list('/items');
   }
 }

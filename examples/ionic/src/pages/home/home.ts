@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {
-  Angularfire2OfflineService,
+  AngularFireOffline,
   ListObservable,
   ObjectObservable } from 'angularfire2-offline';
 import { NavController } from 'ionic-angular';
@@ -14,8 +14,8 @@ export class HomePage {
   items: ListObservable<any[]>;
   constructor(
     public navCtrl: NavController,
-    afo: Angularfire2OfflineService) {
-    this.info = afo.object('/info');
-    this.items = afo.list('/items');
+    afo: AngularFireOffline) {
+    this.info = afo.database.object('/info');
+    this.items = afo.database.list('/items');
   }
 }

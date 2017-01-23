@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFire2OfflineModule } from 'angularfire2-offline';
+import { AngularFireOfflineModule } from 'angularfire2-offline';
 
 import { AppComponent } from './app.component';
 
@@ -19,7 +19,7 @@ export const firebaseConfig = {
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFire2OfflineModule.forRoot(),
+    AngularFireOfflineModule.forRoot(),
     BrowserModule
   ],
   providers: [],

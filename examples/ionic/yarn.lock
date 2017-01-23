@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@angular/common@2.2.1":
+"@angular/common@2.2.1", "@angular/common@^2.0.0":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@angular/common/-/common-2.2.1.tgz#ad7996a865b7b11fc315363827f2414a48c6589c"
 
@@ -14,7 +14,7 @@
     minimist "^1.2.0"
     reflect-metadata "^0.1.2"
 
-"@angular/compiler@2.2.1":
+"@angular/compiler@2.2.1", "@angular/compiler@^2.0.0":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-2.2.1.tgz#16e7faf588cf9121a0f6c16d0bae2830f4cafdc1"
 
@@ -30,11 +30,11 @@
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@angular/http/-/http-2.2.1.tgz#1626884a6c5f0cc602ce9d81e7420fcc02db3353"
 
-"@angular/platform-browser-dynamic@2.2.1":
+"@angular/platform-browser-dynamic@2.2.1", "@angular/platform-browser-dynamic@^2.0.0":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-2.2.1.tgz#561d32982fee4b68b474ba474c7f3c4d94bfeb6c"
 
-"@angular/platform-browser@2.2.1":
+"@angular/platform-browser@2.2.1", "@angular/platform-browser@^2.0.0":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-2.2.1.tgz#d51b36260089f3054e745efad05993523d5a5293"
 
@@ -144,15 +144,23 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angularfire2-offline@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-0.0.14.tgz#3abb8221e30f147927cf71f34b40a24c11f5a00e"
+angularfire2-offline@^0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-0.1.1.tgz#dc8c74c9dc7aa8c137d166bf756762f3d53ffc46"
   dependencies:
     ng2-localforage "0.1.30"
 
 angularfire2@^2.0.0-beta.7:
-  version "2.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/angularfire2/-/angularfire2-2.0.0-beta.7.tgz#ce4f98467c5a8b2cc1dfd607fda718aee8d64521"
+  version "2.0.0-beta.7-pre"
+  resolved "https://registry.yarnpkg.com/angularfire2/-/angularfire2-2.0.0-beta.7-pre.tgz#596419077187f2d6e79e46e8beac2e685d92f045"
+  dependencies:
+    "@angular/common" "^2.0.0"
+    "@angular/compiler" "^2.0.0"
+    "@angular/core" "^2.0.0"
+    "@angular/platform-browser" "^2.0.0"
+    "@angular/platform-browser-dynamic" "^2.0.0"
+    firebase "^3.0.0"
+    rxjs "^5.0.1"
 
 ansi-regex@^2.0.0:
   version "2.1.1"
@@ -1034,7 +1042,7 @@ findup-sync@~0.3.0:
   dependencies:
     glob "~5.0.0"
 
-firebase@^3.6.6:
+firebase@^3.0.0, firebase@^3.6.6:
   version "3.6.6"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-3.6.6.tgz#3062036e6f47e78a23f300cd168eda1bc02a5908"
   dependencies:
@@ -1854,8 +1862,8 @@ ms@^0.7.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
 nan@^2.3.0, nan@^2.3.2:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.0.tgz#aa8f1e34531d807e9e27755b234b4a6ec0c152a8"
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.1.tgz#d5b01691253326a97a2bbee9e61c55d8d60351e2"
 
 negotiator@0.6.1:
   version "0.6.1"
@@ -2243,11 +2251,11 @@ punycode@^1.2.4, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
-qs@6.2.0, qs@^6.2.0:
+qs@6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.2.0.tgz#3b7848c03c2dece69a9522b0fae8c4126d745f3b"
 
-qs@~6.3.0:
+qs@^6.2.0, qs@~6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.0.tgz#f403b264f23bc01228c74131b407f18d5ea5d442"
 
@@ -2505,9 +2513,15 @@ rsvp@3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-3.2.1.tgz#07cb4a5df25add9e826ebc67dcc9fd89db27d84a"
 
-rxjs@5.0.0-beta.12, rxjs@^5.0.0-beta.6:
+rxjs@5.0.0-beta.12:
   version "5.0.0-beta.12"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.0.0-beta.12.tgz#cdfde2d8c4639d20ae7794bff8fddf32da7ad337"
+  dependencies:
+    symbol-observable "^1.0.1"
+
+rxjs@^5.0.0-beta.6, rxjs@^5.0.1:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.0.3.tgz#fc8bdf464ebf938812748e4196788f392fef9754"
   dependencies:
     symbol-observable "^1.0.1"
 

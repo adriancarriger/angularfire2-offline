@@ -40,7 +40,7 @@ This can be found in your project at [the Firebase Console](https://console.fire
 ```ts
 import { NgModule, ErrorHandler } from '@angular/core';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFire2OfflineModule } from 'angularfire2-offline';
+import { AngularFireOfflineModule } from 'angularfire2-offline';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { MyApp } from './app.component';
@@ -67,7 +67,7 @@ export const firebaseConfig = {
   imports: [
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFire2OfflineModule.forRoot(),
+    AngularFireOfflineModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -89,7 +89,7 @@ In [`/src/pages/home/home.ts`](https://github.com/adriancarriger/angularfire2-of
 ```ts
 import { Component } from '@angular/core';
 import {
-  Angularfire2OfflineService,
+  AngularFireOffline,
   ListObservable,
   ObjectObservable } from 'angularfire2-offline';
 import { NavController } from 'ionic-angular';
@@ -103,7 +103,7 @@ export class HomePage {
   items: ListObservable<any[]>;
   constructor(
     public navCtrl: NavController,
-    afo: Angularfire2OfflineService) {
+    afo: AngularFireOffline) {
     this.info = afo.object('/info');
     this.items = afo.list('/items');
   }

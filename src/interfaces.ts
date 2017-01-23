@@ -11,5 +11,5 @@ export interface AngularFireOfflineCache {
   };
 }
 
-export interface ListObservable extends Observable<[any]> { }
-export interface ObjectObservable extends Observable<{}> { }
+export interface ListObservable<T> extends Observable<T> { }
+export interface ObjectObservable<T> extends Observable<T> { }

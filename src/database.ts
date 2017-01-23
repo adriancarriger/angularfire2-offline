@@ -55,7 +55,7 @@ export class AngularFireOfflineDatabase {
    * @param query optional angularfire2 query param. Allows all
    * [valid queries](https://goo.gl/iHiAuB)
    */
-  list(key: string, query?: FirebaseListFactoryOpts): ListObservable {
+  list(key: string, query?: FirebaseListFactoryOpts): ListObservable<any[]> {
     if (!(key in this.cache)) { this.setupList(key, query); }
     return this.cache[key].sub.asObservable();
   }
@@ -70,7 +70,7 @@ export class AngularFireOfflineDatabase {
    * @param query optional angularfire2 query param. Allows all
    * [valid queries](https://goo.gl/iHiAuB) available [for objects](https://goo.gl/IV8DYA)
    */
-  object(key: string, query?: FirebaseObjectFactoryOpts): ObjectObservable {
+  object(key: string, query?: FirebaseObjectFactoryOpts): ObjectObservable<any> {
     if (!(key in this.cache)) { this.setupObject(key, query); }
     return this.cache[key].sub.asObservable();
   }

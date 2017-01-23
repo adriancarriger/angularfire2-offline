@@ -99,8 +99,8 @@ import { NavController } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  info: ObjectObservable;
-  items: ListObservable;
+  info: ObjectObservable<any>;
+  items: ListObservable<any[]>;
   constructor(
     public navCtrl: NavController,
     afo: Angularfire2OfflineService) {

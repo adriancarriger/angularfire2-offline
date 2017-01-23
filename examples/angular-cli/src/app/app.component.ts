@@ -10,8 +10,8 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  info: ObjectObservable;
-  items: ListObservable;
+  info: ObjectObservable<any>;
+  items: ListObservable<any[]>;
   constructor(afo: Angularfire2OfflineService) {
     this.info = afo.object('/info');
     this.items = afo.list('/items');

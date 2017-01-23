@@ -76,8 +76,8 @@ import {
   `
 })
 export class MyApp {
-  info: ObjectObservable;
-  items: ListObservable;
+  info: ObjectObservable<any>;
+  items: ListObservable<any[]>;
   constructor(afo: Angularfire2OfflineService) {
     this.info = afo.database.object('/info');
     this.items = afo.database.list('/items');

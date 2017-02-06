@@ -65,7 +65,7 @@ export const firebaseConfig = {
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireOfflineModule,
+    AngularFireOfflineModule.forRoot(),
     BrowserModule
   ],
   providers: [],

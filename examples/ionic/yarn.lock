@@ -144,9 +144,9 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angularfire2-offline@^0.1.0:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-0.1.1.tgz#dc8c74c9dc7aa8c137d166bf756762f3d53ffc46"
+angularfire2-offline@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-0.3.0.tgz#b6e41b2f603a9771baac09167caf6e62b93f5e35"
   dependencies:
     ng2-localforage "0.1.30"
 
@@ -2251,11 +2251,11 @@ punycode@^1.2.4, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
-qs@6.2.0:
+qs@6.2.0, qs@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.2.0.tgz#3b7848c03c2dece69a9522b0fae8c4126d745f3b"
 
-qs@^6.2.0, qs@~6.3.0:
+qs@~6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.0.tgz#f403b264f23bc01228c74131b407f18d5ea5d442"
 

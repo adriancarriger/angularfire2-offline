@@ -27,7 +27,7 @@ export const firebaseConfig = {
   imports: [
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireOfflineModule.forRoot(),
+    AngularFireOfflineModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

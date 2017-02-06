@@ -43,7 +43,7 @@ export const firebaseConfig = {
   declarations: [AppComponent],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireOfflineModule.forRoot(),
+    AngularFireOfflineModule,
     BrowserModule
   ],
   bootstrap: [AppComponent]

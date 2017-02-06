@@ -1,7 +1,10 @@
 /**
  * @module CoreModule
  */ /** */
-import { Injectable } from '@angular/core';
+import {
+  Injectable,
+  Optional,
+  SkipSelf } from '@angular/core';
 import { AngularFire } from 'angularfire2';
 import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
 import { ReplaySubject } from 'rxjs';
@@ -165,3 +168,14 @@ export class AngularFireOfflineDatabase {
     this.getList(key);
   }
 }
+
+export function DATABASE_PROVIDER_FACTORY(
+    parentRegistry: AngularFireOfflineDatabase, angularFire: AngularFire, localForageService: LocalForageService) {
+  return parentRegistry || new AngularFireOfflineDatabase(angularFire, localForageService);
+};
+
+export const DATABASE_PROVIDER = {
+  provide: AngularFireOfflineDatabase,
+  deps: [[new Optional(), new SkipSelf(), AngularFireOfflineDatabase], AngularFire, LocalForageService],
+  useFactory: DATABASE_PROVIDER_FACTORY,
+};

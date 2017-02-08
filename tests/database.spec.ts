@@ -4,7 +4,7 @@ import { async, inject, TestBed } from '@angular/core/testing';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
-import { AngularFireOfflineDatabase } from '../src/database';
+import { AngularFireOfflineDatabase, DATABASE_PROVIDER_FACTORY } from '../src/database';
 import { LocalForageToken } from '../src/localforage';
 
 describe('Service: AngularFireOfflineDatabase', () => {
@@ -125,6 +125,19 @@ describe('Service: AngularFireOfflineDatabase', () => {
       }, 500);
     })();
   });
+
+  it('should create a provider', async(inject([AngularFireOfflineDatabase, AngularFire],
+    (service: AngularFireOfflineDatabase, af: AngularFire) => {
+    const provider = DATABASE_PROVIDER_FACTORY(service, af);
+    expect(provider instanceof AngularFireOfflineDatabase).toBe(true);
+  })));
+
+  it('should create a provider that creates a new service if one does not exist',
+    async(inject([AngularFireOfflineDatabase, AngularFire],
+    (service: AngularFireOfflineDatabase, af: AngularFire) => {
+    const provider = DATABASE_PROVIDER_FACTORY(null, af);
+    expect(provider instanceof AngularFireOfflineDatabase).toBe(true);
+  })));
 });
 
 export const MockApiData = [

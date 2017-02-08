@@ -33,7 +33,7 @@
   "typings": "index.d.ts",
   "homepage": "https://github.com/ocombe/angularfire2-offline",
   "dependencies": {
-    "ng2-localforage": "0.1.30"
+    "localforage": "^1.4.3"
   },
   "peerDependencies": {
     "@angular/core": "^2.0.0",

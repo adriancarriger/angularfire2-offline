@@ -4,9 +4,9 @@ import {
   NgModule,
   Optional,
   SkipSelf } from '@angular/core';
-import { LocalForageModule } from 'ng2-localforage';
 
 import { AngularFireOfflineDatabase, DATABASE_PROVIDER } from './src/database';
+import { LOCALFORAGE_PROVIDER } from './src/localforage';
 
 export { ListObservable, ObjectObservable } from './src/interfaces';
 
@@ -27,12 +27,11 @@ export const ANGULAR_FIRE_OFFLINE_PROVIDER = {
 };
 
 @NgModule({
-  imports: [
-    LocalForageModule.forRoot()
-  ],
+  imports: [],
   providers: [
     ANGULAR_FIRE_OFFLINE_PROVIDER,
-    DATABASE_PROVIDER
+    DATABASE_PROVIDER,
+    LOCALFORAGE_PROVIDER
   ],
   declarations: []
 })

@@ -8,11 +8,12 @@ import {
   SkipSelf } from '@angular/core';
 import { AngularFire } from 'angularfire2';
 import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
+import * as localforage from 'localforage';
 import { ReplaySubject } from 'rxjs';
 
 import { AngularFireOfflineCache, ObjectObservable, ListObservable } from './interfaces';
 import { LocalForageToken } from './localforage';
-import * as localforage from 'localforage';
+import { ProvideOnce } from './provide-once';
 /**
  * @whatItDoes Wraps some angularfire2 read methods for returning data from Firebase with the added
  * function of storing the data locally for offline use.
@@ -171,13 +172,4 @@ export class AngularFireOfflineDatabase {
   }
 }
 
-export function DATABASE_PROVIDER_FACTORY(
-    parentRegistry: AngularFireOfflineDatabase, angularFire: AngularFire) {
-  return parentRegistry || new AngularFireOfflineDatabase(angularFire, localforage);
-};
-
-export const DATABASE_PROVIDER = {
-  provide: AngularFireOfflineDatabase,
-  deps: [[new Optional(), new SkipSelf(), AngularFireOfflineDatabase], AngularFire],
-  useFactory: DATABASE_PROVIDER_FACTORY,
-};
+export const DATABASE_PROVIDER = ProvideOnce(AngularFireOfflineDatabase);

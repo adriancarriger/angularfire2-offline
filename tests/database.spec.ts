@@ -1,11 +1,12 @@
 /* tslint:disable:no-unused-variable */
-import { Injectable } from '@angular/core';
+import { Injectable, ReflectiveInjector } from '@angular/core';
 import { async, inject, TestBed } from '@angular/core/testing';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
-import { AngularFireOfflineDatabase, DATABASE_PROVIDER_FACTORY } from '../src/database';
+import { AngularFireOfflineDatabase } from '../src/database';
 import { LocalForageToken } from '../src/localforage';
+import { ProvideOnce } from '../src/provide-once';
 
 describe('Service: AngularFireOfflineDatabase', () => {
   let mockAngularFire: MockAngularFire;
@@ -128,15 +129,19 @@ describe('Service: AngularFireOfflineDatabase', () => {
 
   it('should create a provider', async(inject([AngularFireOfflineDatabase, AngularFire],
     (service: AngularFireOfflineDatabase, af: AngularFire) => {
-    const provider = DATABASE_PROVIDER_FACTORY(service, af);
-    expect(provider instanceof AngularFireOfflineDatabase).toBe(true);
+    const provider = ProvideOnce(AngularFireOfflineDatabase);
+    const factory = provider.useFactory;
+    const newService = factory(service, AngularFire);
+    expect(newService).toBe(service);
   })));
 
   it('should create a provider that creates a new service if one does not exist',
     async(inject([AngularFireOfflineDatabase, AngularFire],
     (service: AngularFireOfflineDatabase, af: AngularFire) => {
-    const provider = DATABASE_PROVIDER_FACTORY(null, af);
-    expect(provider instanceof AngularFireOfflineDatabase).toBe(true);
+    const provider = ProvideOnce(AngularFireOfflineDatabase);
+    const factory = provider.useFactory;
+    const newService = factory(null, AngularFire);
+    expect(newService instanceof AngularFireOfflineDatabase).toBe(true);
   })));
 });
 

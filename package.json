@@ -31,7 +31,7 @@
   "main": "bundles/angularfire2-offline.umd.js",
   "module": "index.js",
   "typings": "index.d.ts",
-  "homepage": "https://github.com/ocombe/angularfire2-offline",
+  "homepage": "https://github.com/adriancarriger/angularfire2-offline",
   "dependencies": {
     "localforage": "^1.4.3"
   },

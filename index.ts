@@ -25,12 +25,4 @@ export class AngularFireOffline {
   ],
   declarations: []
 })
-export class AngularFireOfflineModule {
-  /** @deprecated */
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: AngularFireOfflineModule,
-      providers: []
-    };
-  }
-}
+export class AngularFireOfflineModule { }

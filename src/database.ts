@@ -13,7 +13,6 @@ import { ReplaySubject } from 'rxjs';
 
 import { AngularFireOfflineCache, ObjectObservable, ListObservable } from './interfaces';
 import { LocalForageToken } from './localforage';
-import { ProvideOnce } from './provide-once';
 /**
  * @whatItDoes Wraps some angularfire2 read methods for returning data from Firebase with the added
  * function of storing the data locally for offline use.
@@ -171,5 +170,3 @@ export class AngularFireOfflineDatabase {
     this.getList(key);
   }
 }
-
-export const DATABASE_PROVIDER = ProvideOnce(AngularFireOfflineDatabase);

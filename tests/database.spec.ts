@@ -6,7 +6,6 @@ import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
 import { AngularFireOfflineDatabase } from '../src/database';
 import { LocalForageToken } from '../src/localforage';
-import { ProvideOnce } from '../src/provide-once';
 
 describe('Service: AngularFireOfflineDatabase', () => {
   let mockAngularFire: MockAngularFire;
@@ -126,23 +125,6 @@ describe('Service: AngularFireOfflineDatabase', () => {
       }, 500);
     })();
   });
-
-  it('should create a provider', async(inject([AngularFireOfflineDatabase, AngularFire],
-    (service: AngularFireOfflineDatabase, af: AngularFire) => {
-    const provider = ProvideOnce(AngularFireOfflineDatabase);
-    const factory = provider.useFactory;
-    const newService = factory(service, AngularFire);
-    expect(newService).toBe(service);
-  })));
-
-  it('should create a provider that creates a new service if one does not exist',
-    async(inject([AngularFireOfflineDatabase, AngularFire],
-    (service: AngularFireOfflineDatabase, af: AngularFire) => {
-    const provider = ProvideOnce(AngularFireOfflineDatabase);
-    const factory = provider.useFactory;
-    const newService = factory(null, AngularFire);
-    expect(newService instanceof AngularFireOfflineDatabase).toBe(true);
-  })));
 });
 
 export const MockApiData = [

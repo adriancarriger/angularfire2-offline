@@ -144,6 +144,10 @@ amdefine@1.0.0, amdefine@>=0.0.4:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.0.tgz#fd17474700cb5cc9c2b709f0be9d23ce3c198c33"
 
+angular-provide-once@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/angular-provide-once/-/angular-provide-once-1.0.0.tgz#dcbb1ec3525ff7ac7349a816aa97482a053a28da"
+
 angularfire2@^2.0.0-beta.7:
   version "2.0.0-beta.7-pre"
   resolved "https://registry.yarnpkg.com/angularfire2/-/angularfire2-2.0.0-beta.7-pre.tgz#596419077187f2d6e79e46e8beac2e685d92f045"
@@ -2308,7 +2312,7 @@ loader-utils@0.2.16, loader-utils@0.x.x, loader-utils@^0.2.16, loader-utils@^0.2
     json5 "^0.5.0"
     object-assign "^4.0.1"
 
-localforage@^1.4.2, localforage@^1.4.3:
+localforage@^1.4.3:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/localforage/-/localforage-1.4.3.tgz#a212543c39c7c76424edd12bf474c489aaca494c"
   dependencies:
@@ -2647,12 +2651,6 @@ nerf-dart@^1.0.0:
 netrc@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/netrc/-/netrc-0.1.4.tgz#6be94fcaca8d77ade0a9670dc460914c94472444"
-
-ng2-localforage@0.1.30:
-  version "0.1.30"
-  resolved "https://registry.yarnpkg.com/ng2-localforage/-/ng2-localforage-0.1.30.tgz#65bf06f4058a7ce2ee8b9942bd09e8c756bf2c5b"
-  dependencies:
-    localforage "^1.4.2"
 
 node-libs-browser@^1.0.0:
   version "1.1.1"

@@ -4,10 +4,10 @@ import {
   NgModule,
   Optional,
   SkipSelf } from '@angular/core';
+import { ProvideOnce } from 'angular-provide-once';
 
-import { AngularFireOfflineDatabase, DATABASE_PROVIDER } from './src/database';
+import { AngularFireOfflineDatabase } from './src/database';
 import { LOCALFORAGE_PROVIDER } from './src/localforage';
-import { ProvideOnce } from './src/provide-once';
 
 export { ListObservable, ObjectObservable } from './src/interfaces';
 
@@ -16,13 +16,11 @@ export class AngularFireOffline {
   constructor(public database: AngularFireOfflineDatabase) { }
 }
 
-export const ANGULAR_FIRE_OFFLINE_PROVIDER = ProvideOnce(AngularFireOffline);
-
 @NgModule({
   imports: [],
   providers: [
-    ANGULAR_FIRE_OFFLINE_PROVIDER,
-    DATABASE_PROVIDER,
+    ProvideOnce(AngularFireOffline),
+    ProvideOnce(AngularFireOfflineDatabase),
     LOCALFORAGE_PROVIDER
   ],
   declarations: []

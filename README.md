@@ -1,5 +1,7 @@
 # AngularFire2 Offline [![npm version](https://badge.fury.io/js/angularfire2-offline.svg)](https://badge.fury.io/js/angularfire2-offline)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/adriancarriger/angularfire2-offline.svg)](https://greenkeeper.io/)
+
 🔌 A simple wrapper for [AngularFire2](https://github.com/angular/angularfire2) to cache Firebase data for offline use, even after a complete refresh.
 
 [![Build Status](http://img.shields.io/travis/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://travis-ci.org/adriancarriger/angularfire2-offline)

@@ -44,7 +44,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
   it('should not setup a list', inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     // Setup test - Set up list
     service.list('slug-2', {});
-    // If `setupObject` is called, then this will be false: 
+    // If `setupObject` is called, then this will be false:
     expect(service.cache['slug-2'].loaded).toBe(false);
     // Setting to true
     service.cache['slug-2'].loaded = true;
@@ -65,7 +65,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
   it('should not setup an object', inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     // Setup test - Set up list
     service.object('slug-2', {});
-    // If `setupObject` is called, then this will be false: 
+    // If `setupObject` is called, then this will be false:
     expect(service.cache['slug-2'].loaded).toBe(false);
     // Setting to true
     service.cache['slug-2'].loaded = true;

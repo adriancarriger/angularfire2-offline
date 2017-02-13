@@ -19,8 +19,8 @@ export class AngularFireOffline {
 @NgModule({
   imports: [],
   providers: [
-    ProvideOnce(AngularFireOffline),
-    ProvideOnce(AngularFireOfflineDatabase),
+    ...ProvideOnce(AngularFireOffline),
+    ...ProvideOnce(AngularFireOfflineDatabase),
     LOCALFORAGE_PROVIDER
   ],
   declarations: []

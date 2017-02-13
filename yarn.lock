@@ -144,9 +144,9 @@ amdefine@1.0.0, amdefine@>=0.0.4:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.0.tgz#fd17474700cb5cc9c2b709f0be9d23ce3c198c33"
 
-angular-provide-once@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/angular-provide-once/-/angular-provide-once-1.0.0.tgz#dcbb1ec3525ff7ac7349a816aa97482a053a28da"
+angular-provide-once@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/angular-provide-once/-/angular-provide-once-2.0.0.tgz#5d0cc09464f6a341ccbe23551b67b39aac9a0552"
 
 angularfire2@^2.0.0-beta.7:
   version "2.0.0-beta.7-pre"

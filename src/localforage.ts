@@ -8,5 +8,5 @@ export const LocalForageToken = new OpaqueToken('localforage');
 
 export const LOCALFORAGE_PROVIDER = {
   provide: LocalForageToken,
-  useValue: LocalForageToken,
+  useValue: localforage,
 };

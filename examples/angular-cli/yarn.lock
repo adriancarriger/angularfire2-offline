@@ -219,10 +219,15 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angularfire2-offline@0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-0.3.1.tgz#17d36ca8399919b70552e62545f04815e60f51ac"
+angular-provide-once@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/angular-provide-once/-/angular-provide-once-3.1.0.tgz#18ae5c0b6bb35a0695f09587471be78edd2af899"
+
+angularfire2-offline@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-1.1.2.tgz#dc3ae989c90be51c2c1e1e52f6df8f182c2d03d1"
   dependencies:
+    angular-provide-once "3.1.0"
     localforage "^1.4.3"
 
 angularfire2@^2.0.0-beta.7:

@@ -1,18 +1,16 @@
 /**
  * @module CoreModule
  */ /** */
-import {
-  Inject,
-  Injectable,
-  Optional,
-  SkipSelf } from '@angular/core';
-import { AngularFire } from 'angularfire2';
+import { Inject, Injectable } from '@angular/core';
+import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
 import * as localforage from 'localforage';
-import { ReplaySubject } from 'rxjs';
 
-import { AngularFireOfflineCache, ObjectObservable, ListObservable } from './interfaces';
+import { AngularFireOfflineCache } from './interfaces';
+import { ListObservable } from './list-observable';
 import { LocalForageToken } from './localforage';
+import { ObjectObservable } from './object-observable';
+import { ReplayItem } from './replay-item';
 /**
  * @whatItDoes Wraps some angularfire2 read methods for returning data from Firebase with the added
  * function of storing the data locally for offline use.
@@ -30,8 +28,8 @@ import { LocalForageToken } from './localforage';
 @Injectable()
 export class AngularFireOfflineDatabase {
   /**
-   * - In-memory cache containing `ReplaySubject`s that return the latest value for any given
-   * Firebase reference.
+   * - In-memory cache containing `ReplayItem`s that return the latest value
+   * for any given Firebase reference.
    * - That value can come from a Firebase subscription or from the device if there is no
    * internet connection.
    */
@@ -62,7 +60,7 @@ export class AngularFireOfflineDatabase {
    */
   list(key: string, query?: FirebaseListFactoryOpts): ListObservable<any[]> {
     if (!(key in this.cache)) { this.setupList(key, query); }
-    return this.cache[key].sub.asObservable();
+    return this.cache[key].sub.asListObservable();
   }
   /**
    * Returns an Observable object of Firebase snapshot data
@@ -77,7 +75,7 @@ export class AngularFireOfflineDatabase {
    */
   object(key: string, query?: FirebaseObjectFactoryOpts): ObjectObservable<any> {
     if (!(key in this.cache)) { this.setupObject(key, query); }
-    return this.cache[key].sub.asObservable();
+    return this.cache[key].sub.asObjectObservable();
   }
   /**
    * Retrives a list if locally stored on the device
@@ -105,15 +103,16 @@ export class AngularFireOfflineDatabase {
    * @param query passed directly from {@link object}'s query param
    */
   private setupObject(key: string, query: FirebaseObjectFactoryOpts = {}) {
+    // Get Firebase ref
+    query.preserveSnapshot = true;
+    const ref: FirebaseObjectObservable<any> = this.af.database.object(key, query);
     // Create cache
     this.cache[key] = {
       loaded: false,
-      sub: new ReplaySubject()
+      sub: new ReplayItem(ref)
     };
     // Firebase
-    query.preserveSnapshot = true;
-    this.af.database.object(key, query)
-      .map(obj => obj.val())
+    ref.map(obj => obj.val())
       .subscribe(value => {
         this.cache[key].loaded = true;
         this.cache[key].sub.next(value);
@@ -153,15 +152,16 @@ export class AngularFireOfflineDatabase {
    * @param query passed directly from {@link list}'s query param
    */
   private setupList(key: string, query: FirebaseListFactoryOpts = {}) {
+    // Get Firebase ref
+    query.preserveSnapshot = true;
+    const ref: FirebaseListObservable<any[]> = this.af.database.list(key, query);
     // Create cache
     this.cache[key] = {
       loaded: false,
-      sub: new ReplaySubject()
+      sub: new ReplayItem(ref)
     };
     // Firebase
-    query.preserveSnapshot = true;
-    this.af.database.list(key, query)
-      .subscribe(value => {
+    ref.subscribe(value => {
         this.cache[key].loaded = true;
         this.cache[key].sub.next(value.map(snap => snap.val()));
         this.setList(key, value);

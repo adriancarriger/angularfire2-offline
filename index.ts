@@ -10,7 +10,8 @@ import { AngularFire } from 'angularfire2';
 import { AngularFireOfflineDatabase } from './src/database';
 import { LOCALFORAGE_PROVIDER, LocalForageToken } from './src/localforage';
 
-export { ListObservable, ObjectObservable } from './src/interfaces';
+export { ListObservable } from './src/list-observable';
+export { ObjectObservable } from './src/object-observable';
 
 @Injectable()
 export class AngularFireOffline {

@@ -6,10 +6,11 @@ import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'a
 import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
 import * as localforage from 'localforage';
 
-import { AngularFireOfflineCache } from './interfaces';
+import { AngularFireOfflineCache, CacheItem, WriteCache } from './interfaces';
 import { ListObservable } from './list-observable';
 import { LocalForageToken } from './localforage';
 import { ObjectObservable } from './object-observable';
+import { WriteComplete } from './offline-write';
 import { ReplayItem } from './replay-item';
 /**
  * @whatItDoes Wraps some angularfire2 read methods for returning data from Firebase with the added
@@ -42,9 +43,20 @@ export class AngularFireOfflineDatabase {
    * storing data offline using asynchronous storage (IndexedDB or WebSQL) with a simple,
    * localStorage-like API
    */
-  constructor(
-    private af: AngularFire,
-    @Inject(LocalForageToken) private localForage: any) { }
+  constructor(private af: AngularFire,
+    @Inject(LocalForageToken) private localForage: any) {
+    this.init();
+  }
+  init() {
+    this.localForage.getItem('write').then((writeCache: WriteCache) => {
+      if (!writeCache) { return; }
+      Object.keys(writeCache.cache).forEach(cacheId => {
+        const cacheItem: CacheItem = writeCache.cache[cacheId];
+        this.af.database[cacheItem.type](cacheItem.ref)[cacheItem.method](...cacheItem.args)
+          .then(() => WriteComplete(cacheId, this.localForage));
+      });
+    });
+  }
   /**
    * Returns an Observable array of Firebase snapshot data
    * - This method can be used in place of angularfire2's list method and it will work offline
@@ -83,10 +95,10 @@ export class AngularFireOfflineDatabase {
    * - Each locally stored list uses a map to stitch together the list from individual objects
    */
   private getList(key: string) {
-    this.localForage.getItem(key).then(listMap => {
+    this.localForage.getItem(`read${key}`).then(listMap => {
       if (!this.cache[key].loaded && listMap !== null) {
         const promises = listMap.map(partialKey => {
-          return this.localForage.getItem(`${key}/${partialKey}`);
+          return this.localForage.getItem(`read${key}/${partialKey}`);
         });
         Promise.all(promises).then(value => this.cache[key].sub.next(value));
       }
@@ -109,17 +121,17 @@ export class AngularFireOfflineDatabase {
     // Create cache
     this.cache[key] = {
       loaded: false,
-      sub: new ReplayItem(ref)
+      sub: new ReplayItem(ref, this.localForage)
     };
     // Firebase
     ref.map(obj => obj.val())
       .subscribe(value => {
         this.cache[key].loaded = true;
         this.cache[key].sub.next(value);
-        this.localForage.setItem(key, value);
+        this.localForage.setItem(`read${key}`, value);
       });
     // Local
-    this.localForage.getItem(key).then(value => {
+    this.localForage.getItem(`read${key}`).then(value => {
       if (!this.cache[key].loaded && value !== null) {
         this.cache[key].sub.next(value);
       }
@@ -133,11 +145,11 @@ export class AngularFireOfflineDatabase {
    */
   private setList(key: string, array: Array<any>) {
     const listMap = array.reduce((p, c, i) => {
-      this.localForage.setItem(`${key}/${c.key}`, c.val());
+      this.localForage.setItem(`read${key}/${c.key}`, c.val());
       p[i] = c.key;
       return p;
     }, []);
-    this.localForage.setItem(key, listMap);
+    this.localForage.setItem(`read${key}`, listMap);
   }
   /**
    * - Sets up a {@link AngularFireOfflineCache} item that provides Firebase data
@@ -158,7 +170,7 @@ export class AngularFireOfflineDatabase {
     // Create cache
     this.cache[key] = {
       loaded: false,
-      sub: new ReplayItem(ref)
+      sub: new ReplayItem(ref, this.localForage)
     };
     // Firebase
     ref.subscribe(value => {

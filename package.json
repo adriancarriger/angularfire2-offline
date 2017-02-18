@@ -34,7 +34,6 @@
   "typings": "index.d.ts",
   "homepage": "https://github.com/adriancarriger/angularfire2-offline",
   "dependencies": {
-    "angular-provide-once": "3.1.0",
     "localforage": "^1.4.3"
   },
   "peerDependencies": {

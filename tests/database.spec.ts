@@ -6,18 +6,19 @@ import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
 import { AngularFireOfflineDatabase } from '../src/database';
 import { LocalForageToken } from '../src/localforage';
+import { WriteCache } from '../src/interfaces';
 
 describe('Service: AngularFireOfflineDatabase', () => {
   let mockAngularFire: MockAngularFire;
-  let mockNg2LocalforageService: MockNg2LocalforageService;
+  let mockLocalForageService: MockLocalForageService;
   beforeEach(() => {
     mockAngularFire = new MockAngularFire();
-    mockNg2LocalforageService = new MockNg2LocalforageService();
+    mockLocalForageService = new MockLocalForageService();
     TestBed.configureTestingModule({
       providers: [
         AngularFireOfflineDatabase,
         { provide: AngularFire, useValue: mockAngularFire },
-        { provide: LocalForageToken, useValue: mockNg2LocalforageService }
+        { provide: LocalForageToken, useValue: mockLocalForageService }
       ]
     });
   });
@@ -31,65 +32,70 @@ describe('Service: AngularFireOfflineDatabase', () => {
   }));
 
   it('should return a list', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+    const key = '/slug-2';
     let newValue = [
       { val: () => { return 'xyz'; } }
     ];
-    service.list('slug-2').subscribe(list => {
+    service.list(key).subscribe(list => {
       expect(list[0]).toBe('xyz');
     });
-    expect(service.cache['slug-2'].loaded).toBe(false);
+    expect(service.cache[key].loaded).toBe(false);
     mockAngularFire.update(newValue);
   })));
 
   it('should not setup a list', inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+    const key = '/slug-2';
     // Setup test - Set up list
-    service.list('slug-2', {});
+    service.list(key, {});
     // If `setupObject` is called, then this will be false:
-    expect(service.cache['slug-2'].loaded).toBe(false);
+    expect(service.cache[key].loaded).toBe(false);
     // Setting to true
-    service.cache['slug-2'].loaded = true;
+    service.cache[key].loaded = true;
     // Test
-    service.list('slug-2');
+    service.list(key);
     // Will still be true if `setupObject` was not called
-    expect(service.cache['slug-2'].loaded).toBe(true);
+    expect(service.cache[key].loaded).toBe(true);
   }));
 
   it('should return an object', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     let newValue = { val: () => { return 'abc23-7'; } };
-    service.object('slug-2').subscribe(object => {
+    service.object('/slug-2').subscribe(object => {
       expect(object).toBe('abc23-7');
     });
     mockAngularFire.update(newValue);
   })));
 
   it('should not setup an object', inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+    const key = '/slug-2';
     // Setup test - Set up list
-    service.object('slug-2', {});
+    service.object(key, {});
     // If `setupObject` is called, then this will be false:
-    expect(service.cache['slug-2'].loaded).toBe(false);
+    expect(service.cache[key].loaded).toBe(false);
     // Setting to true
-    service.cache['slug-2'].loaded = true;
+    service.cache[key].loaded = true;
     // Test
-    service.object('slug-2');
+    service.object(key);
     // Will still be true if `setupObject` was not called
-    expect(service.cache['slug-2'].loaded).toBe(true);
+    expect(service.cache[key].loaded).toBe(true);
   }));
 
   it('should return a locally stored value', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
-    service.object('slug-2').subscribe(object => {
+    const key = '/slug-2';
+    service.object(key).subscribe(object => {
       expect(object).toBe('293846488sxjfhslsl20201-4ghcjs');
     });
-   mockNg2LocalforageService.update('293846488sxjfhslsl20201-4ghcjs');
+    mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
   })));
 
   it('should not return a locally stored value if loaded', done => {
     inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+      const key = '/slug-2';
       let returnedValue = false;
-      service.object('slug-2').subscribe(object => {
+      service.object(key).subscribe(object => {
         returnedValue = true;
       });
-      service.cache['slug-2'].loaded = true;
-      mockNg2LocalforageService.update('293846488sxjfhslsl20201-4ghcjs');
+      service.cache[key].loaded = true;
+      mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
       // Wait for 500 ms to see if a value is returned
       setTimeout(() => {
         expect(returnedValue).toBe(false);
@@ -98,26 +104,38 @@ describe('Service: AngularFireOfflineDatabase', () => {
     })();
   });
 
-  // it('should return a locally stored list', done => {
-  //   inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
-  //     service.list('list-2').subscribe(object => {
-  //       expect(object).toEqual(['1', '1', '1']);
-  //       done();
-  //     });
-  //     mockNg2LocalforageService.update(['key-1', 'key-2', 'key-3'], true);
-  //     mockNg2LocalforageService.update('1');
-  //   })();
-  // });
-
-  it('should not return alocally stored list if loaded', done => {
+  it('should return a locally stored list', done => {
     inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+      const key = '/list-2';
+      const listKeys = ['key-1', 'key-2', 'key-3'];
+      service.list(key).subscribe(object => {
+        expect(object).toEqual(['1', '1', '1']);
+        done();
+      });
+      mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
+      setTimeout(() => {
+        listKeys.forEach(listKey => {
+          mockLocalForageService.update(`read${key}/${listKey}`, '1');
+        });
+      });
+    })();
+  });
+
+  it('should not return a locally stored list if loaded', done => {
+    inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+      const key = '/list-2';
+      const listKeys = ['key-1', 'key-2', 'key-3'];
       let returnedValue = false;
-      service.list('list-2').subscribe(object => {
+      service.list(key).subscribe(object => {
         returnedValue = true;
       });
-      service.cache['list-2'].loaded = true;
-      mockNg2LocalforageService.update(['key-1', 'key-2', 'key-3'], true);
-      mockNg2LocalforageService.update('1');
+      service.cache[key].loaded = true;
+      mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
+      setTimeout(() => {
+        listKeys.forEach(listKey => {
+          mockLocalForageService.update(`read${key}/${listKey}`, '1', true);
+        });
+      });
       // Wait for 500 ms to see if a value is returned
       setTimeout(() => {
         expect(returnedValue).toBe(false);
@@ -125,6 +143,30 @@ describe('Service: AngularFireOfflineDatabase', () => {
       }, 500);
     })();
   });
+
+  it('should do nothing if write cache is empty', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+    mockLocalForageService.update('write', null);
+  })));
+
+  it('should trigger offline writes', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+    let resolve;
+    const promise = new Promise(r => resolve = r);
+    const ref = {set: value => promise};
+    mockAngularFire.writeSetup(ref, mockLocalForageService);
+    const writeCache: WriteCache = {
+      lastId: 1,
+      cache: {
+        '1': {
+          type: 'object',
+          ref: '/slug-2',
+          method: 'set',
+          args: ['test value']
+        }
+      }
+    };
+    mockLocalForageService.update('write', writeCache);
+    resolve();
+  })));
 });
 
 export const MockApiData = [
@@ -139,65 +181,88 @@ export const MockApiData = [
 ];
 
 @Injectable()
-export class MockNg2LocalforageService {
-  item;
-  list;
-  constructor() {
-    this.onInit();
+export class MockLocalForageService {
+  resolves = {};
+  setValue;
+  getItem(key) {
+    let resolve;
+    const promise = new Promise(r => resolve = r);
+    this.resolves[key] = resolve;
+    return promise;
   }
-  onInit() {
-    this.item = new Subject();
-    this.list = new ReplaySubject();
+  setItem(setValue) { this.setValue = setValue; }
+  update(key, value, skipIfNotFound?) {
+    if (skipIfNotFound && !(key in this.resolves)) { return; }
+    this.resolves[key](value);
   }
-  getItem(input) {
-    if (input === 'list-2') {
-      return this.list.asObservable().toPromise();
-    }
-    return this.item.asObservable().toPromise();
+}
+
+export class ObjectObservable<T> extends Observable<T> {
+  constructor(private ref: FirebaseObjectObservable<any>, private localForage) {
+    super();
   }
-  setItem(input) {
+  set(value: any): firebase.Promise<void> {
+    const promise: firebase.Promise<void> = this.ref.set(value);
+    this.offlineWrite(promise, 'set', [value]);
+    return promise;
+  }
+  update(value: Object): firebase.Promise<void> {
+    const promise = this.ref.update(value);
+    this.offlineWrite(promise, 'update', [value]);
+    return promise;
+  }
+  remove(): firebase.Promise<void> {
+    const promise = this.ref.remove();
+    this.offlineWrite(promise, 'remove', []);
+    return promise;
+  }
+  private offlineWrite(promise: firebase.Promise<void>, type: string, args: any[]) {
 
   }
-  update(updateInput, list?: boolean) {
-    if (list) {
-      this.list.next(updateInput);
-    } else {
-      this.item.next(updateInput);
-      this.item.complete();
-    }
+}
+
+export class ReplayItem<T> extends Subject<T> {
+  constructor(private ref, private localForage) { super(); }
+  asListObservable() { }
+  asObjectObservable(): ObjectObservable<T> {
+    const observable = new ObjectObservable<T>(this.ref, this.localForage);
+    (<any>observable).source = this;
+    return observable;
   }
 }
 
 @Injectable()
 export class MockAngularFire {
-  recipeList$;
-  input;
+  dataList$;
   database = {
     list: (input: string, query?) => {
-      return this.recipeList$.asObservable();
+      return this.dataList$.asObservable();
     },
     object: (input: string, query?) => {
-      this.input = input;
-      return this.recipeList$.asObservable();
+      return this.dataList$.asObservable();
     }
   };
   private mockArray: Array<Object>;
   constructor() {
-    this.mockArray = MockApiData;
-    this.recipeList$ = new Subject();
-    this.update();
+    this.init();
   }
-  update(newValue?) {
-    let nextObj;
-    if (this.input === 'client/recipes/slug-2') {
-      nextObj = this.mockArray[1];
-    } else {
-      nextObj = this.mockArray;
-    }
-    nextObj = { val: () => { return nextObj; } };
-    if (newValue) {
-      nextObj = newValue;
-    }
-    this.recipeList$.next(nextObj);
+  init() {
+    this.mockArray = MockApiData;
+    this.dataList$ = new Subject();
+    this.update(this.mockArray);
+  }
+  writeSetup(ref, localforage) {
+    this.dataList$ = new ReplayItem(ref, localforage);
+    this.database = {
+      list: (input: string, query?) => {
+        return this.dataList$.asListObservable();
+      },
+      object: (input: string, query?) => {
+        return this.dataList$.asObjectObservable();
+      }
+    };
+  }
+  update(newValue) {
+    this.dataList$.next(newValue);
   }
 }

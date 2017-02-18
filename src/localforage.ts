@@ -4,9 +4,15 @@ import {
   SkipSelf } from '@angular/core';
 import * as localforage from 'localforage';
 
-export const LocalForageToken = new OpaqueToken('localforage');
+export function LocalForageToken() {
+  return new OpaqueToken('localforage');
+}
+
+export function localforageFactory() {
+  return localforage;
+}
 
 export const LOCALFORAGE_PROVIDER = {
   provide: LocalForageToken,
-  useValue: localforage,
+  useFactory: localforageFactory
 };

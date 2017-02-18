@@ -12,3 +12,17 @@ export interface AngularFireOfflineCache {
     sub: ReplayItem<any>;
   };
 }
+
+export interface WriteCache {
+  lastId: number;
+  cache: {
+    [id: number]: CacheItem;
+  };
+}
+
+export interface CacheItem {
+  type: string;
+  ref: string;
+  method: string;
+  args: Array<any>;
+}

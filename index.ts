@@ -5,7 +5,6 @@ import {
   NgModule,
   Optional,
   SkipSelf } from '@angular/core';
-import { ProvideOnce } from 'angular-provide-once';
 import { AngularFire } from 'angularfire2';
 
 import { AngularFireOfflineDatabase } from './src/database';

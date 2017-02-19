@@ -1,6 +1,10 @@
 {
   "rules": {
     ".read": "true",
-    ".write": "auth != null"
+    ".write": "auth != null",
+    "counter": {
+      ".write": "true",
+      ".validate": "newData.isNumber()"
+    }
   }
 }

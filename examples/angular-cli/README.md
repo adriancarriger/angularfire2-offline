@@ -40,7 +40,7 @@ Now that you have a new project setup, install [AngularFire2Offline](https://www
 
 ### 5. Setup @NgModule
 
-Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
+Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/b3eed643262c8f38f54b062c1aa664017bc85dd3/examples/angular-cli/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
 This can be found in your project at [the Firebase Console](https://console.firebase.google.com):
 
 ```ts
@@ -76,7 +76,7 @@ export class AppModule { }
 
 ### 6. Use in a component
 
-In [`/src/app/app.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.component.ts):
+In [`/src/app/app.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/b3eed643262c8f38f54b062c1aa664017bc85dd3/examples/angular-cli/src/app/app.component.ts):
 
 ```ts
 import { Component } from '@angular/core';
@@ -99,7 +99,7 @@ export class MyApp {
 }
 ```
 
-In [`/src/app/app.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.component.html):
+In [`/src/app/app.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/b3eed643262c8f38f54b062c1aa664017bc85dd3/examples/angular-cli/src/app/app.component.html):
 
 ```html
 <h1>{{ (info | async)?.name }}</h1>

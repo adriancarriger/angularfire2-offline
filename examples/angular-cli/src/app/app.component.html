@@ -1,15 +1,59 @@
-<h1>This page works offline</h1>
-<p>This page will work offline after a complete page refresh if your browser <a href="http://caniuse.com/#feat=serviceworkers">supports service workers</a>.</p>
-<p>To test if Firebase data is being served offline, disconnect from the internet (e.g. turn off Wi-Fi) and refresh this page.</p>
-<ul>
-  <li>Firebase data cached using <a href="https://github.com/adriancarriger/angularfire2-offline">angularfire2-offline</a></li>
-  <li>Static assets cached using <a href="https://github.com/GoogleChrome/sw-precache">sw-precache</a></li>
-  <li><a href="https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli">Repository for this example</a></li>
-</ul>
+<md-toolbar color="primary">
 
-<h1>{{ (info | async)?.name }}</h1>
-<ul>
-  <li *ngFor="let item of items | async">
-    {{ item?.name }}
-  </li>
-</ul>
+  AngularFire2 Offline Demo
+
+</md-toolbar>
+
+<div class="app-content">
+
+  <md-card>
+    
+    <h1>🔌 This page works offline</h1>
+    
+    <md-card-content>
+      This page will work offline after a complete page refresh if your browser <a href="http://caniuse.com/#feat=serviceworkers">supports service workers</a>.
+    </md-card-content>
+
+  </md-card>
+
+  <md-card>
+    
+    <h2>Try it</h2>
+
+    <md-card-content>
+      <p>To test if Firebase data is being served offline, disconnect from the internet (e.g. turn off Wi-Fi) and refresh this page.</p>
+      <ul>
+        <li>Firebase data cached using <a href="https://github.com/adriancarriger/angularfire2-offline">angularfire2-offline</a></li>
+        <li>Static assets cached using <a href="https://github.com/GoogleChrome/sw-precache">sw-precache</a></li>
+        <li><a href="https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli">Repository for this example</a></li>
+      </ul>
+    </md-card-content>
+
+  </md-card>
+
+  <md-card>
+
+    <md-tab-group>
+      <md-tab label="Read Object">
+        <app-demo [code]="readObjectCode">
+          <app-read-object></app-read-object>
+        </app-demo>
+      </md-tab>
+      <md-tab label="Read List">
+        <app-demo [code]="readListCode">
+          <app-read-list></app-read-list>
+        </app-demo>
+      </md-tab>
+      <md-tab label="Write Object">
+        <md-tab-group>
+          <md-tab label="Set">
+            <app-demo [code]="setObjectCode">
+              <app-set-object></app-set-object>
+            </app-demo>
+          </md-tab>
+        </md-tab-group>
+      </md-tab>
+    </md-tab-group>
+  </md-card>
+
+</div>

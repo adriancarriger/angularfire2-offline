@@ -124,7 +124,7 @@ At this point everything should be working, including offline support for your F
 
 ## Steps to get full offline support (optional)
 
-The following steps are based on [this tuorial](https://coryrylan.com/blog/fast-offline-angular-apps-with-service-workers) by [Cory Rylan](https://coryrylan.com/)
+The following steps are based on [this tutorial](https://coryrylan.com/blog/fast-offline-angular-apps-with-service-workers) by [Cory Rylan](https://coryrylan.com/)
 
 ### 1. Add a service worker
 
@@ -219,7 +219,7 @@ npm install live-server --save-dev
 
 ### 2. Add `static-serve` script
 
-In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L15) add the `static-serve` script:
+In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L14) add the `static-serve` script:
 
 ```json
 "scripts": {
@@ -251,4 +251,4 @@ At [localhost:4200](http://localhost:4200/) you should see your app running.
 
 ## Further help
 
-To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+To get more help on the `angular-cli` use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

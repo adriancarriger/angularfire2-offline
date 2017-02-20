@@ -174,10 +174,10 @@ export class AngularFireOfflineDatabase {
     };
     // Firebase
     ref.subscribe(value => {
-        this.cache[key].loaded = true;
-        this.cache[key].sub.next(value.map(snap => snap.val()));
-        this.setList(key, value);
-      });
+      this.cache[key].loaded = true;
+      this.cache[key].sub.next(value.map(snap => snap.val()));
+      this.setList(key, value);
+    });
     // Local
     this.getList(key);
   }

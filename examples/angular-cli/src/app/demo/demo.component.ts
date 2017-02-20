@@ -14,8 +14,7 @@ export class DemoComponent implements OnInit {
   constructor(private demoService: DemoService) { }
 
   ngOnInit() {
-    this.html = this.demoService.highlite(this.code.html, 'html');
-    this.typescript = this.demoService.highlite(this.code.typescript, 'javascript');
+    this.html = this.demoService.highlight(this.code.html, 'html');
+    this.typescript = this.demoService.highlight(this.code.typescript, 'javascript');
   }
-
 }

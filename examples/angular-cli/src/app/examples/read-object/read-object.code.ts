@@ -1,4 +1,5 @@
 export const ReadObjectCode = {
+  name: 'read-object',
   html: `<h2>{{ (info | async)?.title }}</h2>`,
   typescript:
 `

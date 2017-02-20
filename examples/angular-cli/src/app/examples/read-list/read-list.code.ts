@@ -1,4 +1,5 @@
 export const ReadListCode = {
+  name: 'read-list',
   html:
 `
 <ul>

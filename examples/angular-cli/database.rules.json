@@ -5,6 +5,26 @@
     "counter": {
       ".write": "true",
       ".validate": "newData.isNumber()"
+    },
+    "car": {
+      ".write": "true",
+      ".validate": "newData.hasChildren(['tires', 'type', 'maxSpeed'])",
+      "tires": {
+        ".validate": "newData.isNumber()"
+      },
+      "engine": {
+        ".validate": "newData.val() === 'V8'"
+      },
+      "type": {
+        ".validate": "newData.val() === 'Sedan'"
+      },
+      "maxSpeed": {
+        ".validate": "newData.isNumber() && newData.val() > 79"
+      },
+      "$other": { ".validate": false }
+    },
+    "groceries":{
+      ".write": "true"
     }
   }
 }

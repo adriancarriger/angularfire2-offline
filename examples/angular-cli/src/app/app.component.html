@@ -45,13 +45,14 @@
         </app-demo>
       </md-tab>
       <md-tab label="Write Object">
-        <md-tab-group>
-          <md-tab label="Set">
-            <app-demo [code]="setObjectCode">
-              <app-set-object></app-set-object>
-            </app-demo>
-          </md-tab>
-        </md-tab-group>
+        <app-demo [code]="writeObjectCode">
+          <app-write-object></app-write-object>
+        </app-demo>
+      </md-tab>
+      <md-tab label="Write List">
+        <app-demo [code]="writeListCode">
+          <app-write-list></app-write-list>
+        </app-demo>
       </md-tab>
     </md-tab-group>
   </md-card>

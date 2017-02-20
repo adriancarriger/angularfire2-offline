@@ -1,0 +1,14 @@
+<ul *ngIf="(groceries | async)?.length > 0">
+  <li *ngFor="let item of groceries | async">
+    {{item.text}}
+    <button (click)="deleteItem(2)" *ngIf="item.text === 'bread'" md-raised-button>Make gluten free ❌ 🍞</button>
+  </li>
+</ul>
+<p *ngIf="(groceries | async)?.length === 0">List empty</p>
+
+<button (click)="addItem('Milk')" md-raised-button>Add Milk 🥛</button>
+<button (click)="prioritize(1)" md-raised-button>Make eggs important ‼️</button>
+
+<button (click)="deleteEverything()" md-raised-button>Remove Everything 🔥</button>
+
+<button (click)="reset()" md-raised-button>Reset ♻️</button>

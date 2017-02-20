@@ -4,13 +4,15 @@ import { MaterialModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireOfflineModule } from 'angularfire2-offline';
+import 'hammerjs';
 
 import { AppComponent } from './app.component';
 import { ReadObjectComponent } from './examples/read-object/read-object.component';
 import { DemoComponent } from './demo/demo.component';
 import { DemoService } from './demo.service';
 import { ReadListComponent } from './examples/read-list/read-list.component';
-import { SetObjectComponent } from './examples/set-object/set-object.component';
+import { WriteObjectComponent } from './examples/write-object/write-object.component';
+import { WriteListComponent } from './examples/write-list/write-list.component';
 
 // Must export the config
 export const firebaseConfig = {
@@ -26,7 +28,8 @@ export const firebaseConfig = {
     ReadObjectComponent,
     DemoComponent,
     ReadListComponent,
-    SetObjectComponent
+    WriteObjectComponent,
+    WriteListComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),

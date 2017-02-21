@@ -14,8 +14,8 @@ export class WriteListComponent {
   addItem(newName: string) {
     this.groceries.push({ text: newName });
   }
-  prioritize(key: string, newText: string) {
-    this.groceries.update(key, { important: true });
+  prioritize(item) {
+    this.groceries.update(item.$key, { text: item.text + '‼️' });
   }
   deleteItem(key: string) {
     this.groceries.remove(key);
@@ -23,12 +23,10 @@ export class WriteListComponent {
   deleteEverything() {
     this.groceries.remove();
   }
-  // Reset
   reset() {
-    this.afo.database.object('/groceries').set({
-      '0': {text: 'milk'},
-      '1': {text: 'eggs'},
-      '2': {text: 'bread'}
-    });
+    this.groceries.remove();
+    this.groceries.push({text: 'milk'});
+    this.groceries.push({text: 'eggs'});
+    this.groceries.push({text: 'bread'});
   }
 }

@@ -37,7 +37,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
       { val: () => { return 'xyz'; } }
     ];
     service.list(key).subscribe(list => {
-      expect(list[0]).toBe('xyz');
+      expect(list[0].$value).toBe('xyz');
     });
     expect(service.cache[key].loaded).toBe(false);
     mockAngularFire.update(newValue);
@@ -60,7 +60,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
   it('should return an object', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     let newValue = { val: () => { return 'abc23-7'; } };
     service.object('/slug-2').subscribe(object => {
-      expect(object).toBe('abc23-7');
+      expect(object.$value).toBe('abc23-7');
     });
     mockAngularFire.update(newValue);
   })));
@@ -79,10 +79,11 @@ describe('Service: AngularFireOfflineDatabase', () => {
     expect(service.cache[key].loaded).toBe(true);
   }));
 
-  it('should return a locally stored value', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+  it('should return a locally stored object value', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     const key = '/slug-2';
     service.object(key).subscribe(object => {
-      expect(object).toBe('293846488sxjfhslsl20201-4ghcjs');
+      expect(object.$value).toBe('293846488sxjfhslsl20201-4ghcjs');
+      expect(object.$exists()).toEqual(true);
     });
     mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
   })));
@@ -109,7 +110,11 @@ describe('Service: AngularFireOfflineDatabase', () => {
       const key = '/list-2';
       const listKeys = ['key-1', 'key-2', 'key-3'];
       service.list(key).subscribe(object => {
-        expect(object).toEqual(['1', '1', '1']);
+        expect(object[0].$value).toEqual('1');
+        expect(object[1].$value).toEqual('1');
+        expect(object[2].$value).toEqual('1');
+        expect(object[2].$exists()).toEqual(true);
+        expect(object[3]).toEqual(undefined);
         done();
       });
       mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
@@ -166,6 +171,15 @@ describe('Service: AngularFireOfflineDatabase', () => {
     };
     mockLocalForageService.update('write', writeCache);
     resolve();
+  })));
+
+  it('should return a null value', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+    let newValue = { val: () => { return null; } };
+    service.object('/slug-2').subscribe(object => {
+      console.log(object);
+      expect(object.$value).toBe(null);
+    });
+    mockAngularFire.update(newValue);
   })));
 });
 

@@ -98,7 +98,11 @@ export class AngularFireOfflineDatabase {
     this.localForage.getItem(`read${key}`).then(listMap => {
       if (!this.cache[key].loaded && listMap !== null) {
         const promises = listMap.map(partialKey => {
-          return this.localForage.getItem(`read${key}/${partialKey}`);
+          return new Promise(resolve => {
+            this.localForage.getItem(`read${key}/${partialKey}`).then(itemValue => {
+              resolve(this.unwrap(partialKey, itemValue, () => itemValue !== null));
+            });
+          });
         });
         Promise.all(promises).then(value => this.cache[key].sub.next(value));
       }
@@ -124,16 +128,15 @@ export class AngularFireOfflineDatabase {
       sub: new ReplayItem(ref, this.localForage)
     };
     // Firebase
-    ref.map(obj => obj.val())
-      .subscribe(value => {
-        this.cache[key].loaded = true;
-        this.cache[key].sub.next(value);
-        this.localForage.setItem(`read${key}`, value);
-      });
+    ref.subscribe(snap => {
+      this.cache[key].loaded = true;
+      this.cache[key].sub.next( this.unwrap(snap.key, snap.val(), snap.exists) );
+      this.localForage.setItem(`read${key}`, snap.val());
+    });
     // Local
     this.localForage.getItem(`read${key}`).then(value => {
-      if (!this.cache[key].loaded && value !== null) {
-        this.cache[key].sub.next(value);
+      if (!this.cache[key].loaded) {
+        this.cache[key].sub.next( this.unwrap(key.split('/').pop(), value, () => value !== null) );
       }
     });
   }
@@ -175,10 +178,23 @@ export class AngularFireOfflineDatabase {
     // Firebase
     ref.subscribe(value => {
       this.cache[key].loaded = true;
-      this.cache[key].sub.next(value.map(snap => snap.val()));
+      this.cache[key].sub.next(value.map(snap => this.unwrap(snap.key, snap.val(), snap.exists)));
       this.setList(key, value);
     });
     // Local
     this.getList(key);
   }
+  private unwrap(key, value, exists) {
+    let unwrapped = !isNil(value) ? value : { $value: null };
+    if ((/string|number|boolean/).test(typeof value)) {
+      unwrapped = { $value: value };
+    }
+    unwrapped.$exists = exists;
+    unwrapped.$key = key;
+    return unwrapped;
+  }
+}
+
+export function isNil(obj: any): boolean {
+  return obj === undefined || obj === null;
 }

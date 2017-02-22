@@ -64,7 +64,10 @@ export class MockLocalForageService {
     this.resolves[key] = resolve;
     return promise;
   }
-  setItem(key, setValue) { this.setValue = setValue; }
+  setItem(key, setValue) {
+    this.setValue = setValue;
+    return new Promise(resolve => resolve());
+  }
   update(key, value, skipIfNotFound?) {
     if (skipIfNotFound && !(key in this.resolves)) { return; }
     this.resolves[key](value);

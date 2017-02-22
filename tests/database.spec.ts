@@ -153,6 +153,19 @@ describe('Service: AngularFireOfflineDatabase', () => {
     mockLocalForageService.update('write', null);
   })));
 
+  it('should do nothing if write cache is undefined', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+    let resolve;
+    const promise = new Promise(r => resolve = r);
+    const ref = {set: value => promise};
+    mockAngularFire.writeSetup(ref, mockLocalForageService);
+    const writeCache: WriteCache = {
+      lastId: 1,
+      cache: {}
+    };
+    mockLocalForageService.update('write', writeCache);
+    resolve();
+  })));
+
   it('should trigger offline writes', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     let resolve;
     const promise = new Promise(r => resolve = r);
@@ -171,12 +184,12 @@ describe('Service: AngularFireOfflineDatabase', () => {
     };
     mockLocalForageService.update('write', writeCache);
     resolve();
+    setTimeout(() => mockLocalForageService.update('write', writeCache));
   })));
 
   it('should return a null value', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     let newValue = { val: () => { return null; } };
     service.object('/slug-2').subscribe(object => {
-      console.log(object);
       expect(object.$value).toBe(null);
     });
     mockAngularFire.update(newValue);
@@ -204,7 +217,10 @@ export class MockLocalForageService {
     this.resolves[key] = resolve;
     return promise;
   }
-  setItem(setValue) { this.setValue = setValue; }
+  setItem(setValue) {
+    this.setValue = setValue;
+    return new Promise(resolve => resolve());
+  }
   update(key, value, skipIfNotFound?) {
     if (skipIfNotFound && !(key in this.resolves)) { return; }
     this.resolves[key](value);

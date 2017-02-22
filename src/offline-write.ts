@@ -29,8 +29,12 @@ export function OfflineWrite(
 }
 
 export function WriteComplete(id, localForage) {
-  localForage.getItem('write').then((writeCache: WriteCache) => {
-    delete writeCache.cache[id];
-    localForage.setItem(`write`, writeCache);
+  return new Promise(resolve => {
+    localForage.getItem('write').then((writeCache: WriteCache) => {
+      delete writeCache.cache[id];
+      localForage.setItem(`write`, writeCache).then(() => {
+        resolve();
+      });
+    });
   });
 }

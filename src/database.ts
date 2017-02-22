@@ -45,16 +45,17 @@ export class AngularFireOfflineDatabase {
    */
   constructor(private af: AngularFire,
     @Inject(LocalForageToken) private localForage: any) {
-    this.init();
+    this.processWrites();
   }
-  init() {
+  processWrites() {
     this.localForage.getItem('write').then((writeCache: WriteCache) => {
       if (!writeCache) { return; }
-      Object.keys(writeCache.cache).forEach(cacheId => {
-        const cacheItem: CacheItem = writeCache.cache[cacheId];
-        this.af.database[cacheItem.type](cacheItem.ref)[cacheItem.method](...cacheItem.args)
-          .then(() => WriteComplete(cacheId, this.localForage));
-      });
+      const cacheId = Object.keys(writeCache.cache)[0];
+      if (cacheId === undefined) { return; }
+      const cacheItem: CacheItem = writeCache.cache[cacheId];
+      this.af.database[cacheItem.type](cacheItem.ref)[cacheItem.method](...cacheItem.args)
+        .then(() => WriteComplete(cacheId, this.localForage))
+        .then(() => this.processWrites());
     });
   }
   /**

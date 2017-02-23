@@ -9,7 +9,7 @@ import { AngularFire } from 'angularfire2';
 
 import { AngularFireOfflineDatabase } from './src/database';
 import { LOCALFORAGE_PROVIDER, LocalForageToken } from './src/localforage';
-
+import { LocalUpdateService, LOCAL_UPDATE_SERVICE_PROVIDER } from './src/local-update-service';
 export { ListObservable } from './src/list-observable';
 export { ObjectObservable } from './src/object-observable';
 
@@ -36,7 +36,8 @@ export const ANGULARFIRE_OFFLINE_PROVIDER = {
   imports: [],
   providers: [
     ANGULARFIRE_OFFLINE_PROVIDER,
-    LOCALFORAGE_PROVIDER
+    LOCALFORAGE_PROVIDER,
+    LOCAL_UPDATE_SERVICE_PROVIDER
   ],
   declarations: []
 })

@@ -4,7 +4,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
-import * as localforage from 'localforage';
 
 import { AngularFireOfflineCache, CacheItem, WriteCache } from './interfaces';
 import { ListObservable } from './list-observable';

@@ -7,7 +7,7 @@ import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 import { AngularFireOfflineDatabase } from '../src/database';
 import { LocalForageToken } from '../src/localforage';
 import { LocalUpdateService } from '../src/local-update-service';
-import { WriteCache } from '../src/interfaces';
+import { CacheItem, WriteCache } from '../src/interfaces';
 
 describe('Service: AngularFireOfflineDatabase', () => {
   let mockAngularFire: MockAngularFire;
@@ -33,8 +33,21 @@ describe('Service: AngularFireOfflineDatabase', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should return a list', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+  it('should return a list (1)', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     const key = '/slug-2';
+    let newValue = [
+      { val: () => { return 'xyz'; } }
+    ];
+    service.list(key).subscribe(list => {
+      expect(list[0].$value).toBe('xyz');
+    });
+    expect(service.cache[key].loaded).toBe(false);
+    mockAngularFire.update(newValue);
+  })));
+
+  it('should return a list (2)', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+    const key = '/slug-2';
+    service.processing.current = false;
     let newValue = [
       { val: () => { return 'xyz'; } }
     ];
@@ -90,8 +103,20 @@ describe('Service: AngularFireOfflineDatabase', () => {
     expect(service.cache[key].loaded).toBe(true);
   }));
 
-  it('should return a locally stored object value', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+  it('should return a locally stored object value (1)',
+    async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     const key = '/slug-2';
+    service.object(key).subscribe(object => {
+      expect(object.$value).toBe('293846488sxjfhslsl20201-4ghcjs');
+      expect(object.$exists()).toEqual(true);
+    });
+    mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
+  })));
+
+  it('should return a locally stored object value (2)',
+    async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+    const key = '/slug-2';
+    service.processing.current = false;
     service.object(key).subscribe(object => {
       expect(object.$value).toBe('293846488sxjfhslsl20201-4ghcjs');
       expect(object.$exists()).toEqual(true);
@@ -199,7 +224,57 @@ describe('Service: AngularFireOfflineDatabase', () => {
               mockLocalForageService.update(`read${key}/${listKey2}`, '1');
             });
             expect(service.processing.cache[key].length).toBe(3);
+            mockLocalForageService.update('write', null);
             done();
+          });
+        });
+      });
+    })();
+  });
+
+  it('should remove an item from a list', done => {
+    inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+      const key = 'item-1';
+      const listKeys = ['key-1', 'key-2', 'key-3'];
+      const cacheItem: CacheItem = {
+        type: 'list',
+        ref: key,
+        method: 'remove',
+        args: []
+      };
+      const writeCache: WriteCache = {
+        lastId: 3,
+        cache: {
+          '3': cacheItem
+        }
+      };
+      service.cache[key] = {
+        loaded: false,
+        listInit: false,
+        sub: undefined
+      };
+      service.processing.current = true;
+      let resolve;
+      const promise = new Promise(r => resolve = r);
+      const testObj = {wasCalled: false};
+      mockAngularFire.writeSetup({remove: () => {
+        testObj.wasCalled = true;
+        return promise;
+      }}, mockLocalForageService);
+      mockLocalForageService.update(`write`, writeCache);
+      setTimeout(() => {
+        service.cache[key].loaded = true;
+        mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
+        setTimeout(() => {
+          listKeys.forEach(listKey => {
+            mockLocalForageService.update(`read${key}/${listKey}`, '1');
+          });
+          setTimeout(() => {
+            resolve();
+            setTimeout(() => {
+              expect(testObj.wasCalled).toBe(true);
+              done();
+            });
           });
         });
       });
@@ -307,6 +382,16 @@ export class MockLocalForageService {
   }
 }
 
+export class ListObservable<T> extends Observable<T> {
+  constructor(private ref, private localForage) {
+    super();
+  }
+  remove(key?: string): firebase.Promise<void> {
+    const promise = this.ref.remove(key);
+    return promise;
+  }
+}
+
 export class ObjectObservable<T> extends Observable<T> {
   constructor(private ref: FirebaseObjectObservable<any>, private localForage) {
     super();
@@ -333,7 +418,11 @@ export class ObjectObservable<T> extends Observable<T> {
 
 export class ReplayItem<T> extends Subject<T> {
   constructor(private ref, private localForage) { super(); }
-  asListObservable() { }
+  asListObservable() {
+    const observable = new ListObservable<T>(this.ref, this.localForage);
+    (<any>observable).source = this;
+    return observable;
+  }
   asObjectObservable(): ObjectObservable<T> {
     const observable = new ObjectObservable<T>(this.ref, this.localForage);
     (<any>observable).source = this;

@@ -5,9 +5,11 @@ import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
 import { OfflineWrite, WriteComplete } from '../src/offline-write';
 import { WriteCache } from '../src/interfaces';
+import { LocalUpdateService } from '../src/local-update-service';
 
 describe('Object Observable', () => {
   let mockLocalForageService: MockLocalForageService;
+  let localUpdateService: LocalUpdateService;
   let promise;
   const writeCache: WriteCache = {
     lastId: 1,
@@ -22,12 +24,13 @@ describe('Object Observable', () => {
   };
   beforeEach(() => {
     mockLocalForageService = new MockLocalForageService();
+    localUpdateService = new LocalUpdateService( mockLocalForageService );
   });
 
   it('should get incomplete writes that were saved offline (1)', () => {
     let resolve;
     promise = new Promise(r => resolve = r);
-    OfflineWrite(promise, 'list', 'ref', 'push', ['offline write value'], mockLocalForageService);
+    OfflineWrite(promise, 'list', 'ref', 'push', ['offline write value'], localUpdateService);
     mockLocalForageService.update('write', null);
     resolve();
   });
@@ -35,7 +38,7 @@ describe('Object Observable', () => {
   it('should get incomplete writes that were saved offline (2)', () => {
     let resolve;
     promise = new Promise(r => resolve = r);
-    OfflineWrite(promise, 'list', 'ref', 'push', ['offline write value'], mockLocalForageService);
+    OfflineWrite(promise, 'list', 'ref', 'push', ['offline write value'], localUpdateService);
     mockLocalForageService.update('write', writeCache);
     resolve();
   });
@@ -43,13 +46,13 @@ describe('Object Observable', () => {
   it('should skip saving offline if write completes before localstorage value is returned', () => {
     let resolve;
     promise = new Promise(r => resolve = r);
-    OfflineWrite(promise, 'list', 'ref', 'push', ['offline write value'], mockLocalForageService);
+    OfflineWrite(promise, 'list', 'ref', 'push', ['offline write value'], localUpdateService);
     resolve();
     mockLocalForageService.update('write', writeCache);
   });
 
   it('should remove an item after it completes', () => {
-    WriteComplete(1, mockLocalForageService);
+    WriteComplete(1, localUpdateService);
     mockLocalForageService.update('write', writeCache);
   });
 });

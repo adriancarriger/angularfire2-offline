@@ -14,24 +14,29 @@ export class LocalUpdateService {
   que: LocalUpdateQue = {};
   constructor(@Inject(LocalForageToken) private localForage: any) { }
   update(key, valueFunction) {
-    if (!(key in this.que)) {
-      this.que[key] = {
-        running: false,
-        updates: []
-      };
-    }
-    this.que[key].updates.push(valueFunction);
-    if (!this.que[key].running) {
-      this.que[key].running = true;
-      this.updateNext(key);
-    }
+    return new Promise(resolve => {
+      if (!(key in this.que)) {
+        this.que[key] = {
+          running: false,
+          updates: [],
+        };
+      }
+      this.que[key].updates.push({
+        function: valueFunction,
+        resolve: resolve
+      });
+      if (!this.que[key].running) {
+        this.que[key].running = true;
+        this.updateNext(key);
+      }
+    });
   }
   private updateNext(key: string) {
     if (this.que[key].updates.length === 0) {
       this.que[key].running = false;
       return;
     }
-    const nextUpdate: Function = this.que[key].updates.pop();
+    const nextUpdate: LocalUpdate = this.que[key].updates.pop();
     return new Promise(resolve => this.checkCache(key)
       .then(() => this.updateValue(key, nextUpdate)
       .then(() => this.updateNext(key))));
@@ -48,11 +53,12 @@ export class LocalUpdateService {
       }
     });
   }
-  private updateValue(key: string, valueFunction: Function) {
+  private updateValue(key: string, localUpdate: LocalUpdate) {
     return new Promise(resolve => {
-      const newValue = valueFunction(this.cache[key]);
+      const newValue = localUpdate.function(this.cache[key]);
       this.cache[key] = newValue;
       this.localForage.setItem(key, newValue).then(() => {
+        localUpdate.resolve(newValue);
         resolve();
       });
     });
@@ -62,13 +68,17 @@ export class LocalUpdateService {
 export interface LocalUpdateQue {
   [key: string]: {
     running: boolean;
-    updates: Array<any>;
+    updates: LocalUpdate[];
   };
+}
+
+export interface LocalUpdate {
+  resolve: Function;
+  function: Function;
 }
 
 export function LOCAL_UPDATE_SERVICE_PROVIDER_FACTORY(
   parent: LocalUpdateService,
-  LocalUpdateService,
   token) {
   return parent || new LocalUpdateService(token);
 };

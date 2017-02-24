@@ -40,12 +40,12 @@ describe('Service: LocalUpdateService', () => {
   }));
 
   it('should return the parent provider', () => {
-    const value = LOCAL_UPDATE_SERVICE_PROVIDER_FACTORY(<any>'parent value', null, null);
+    const value = LOCAL_UPDATE_SERVICE_PROVIDER_FACTORY(<any>'parent value', null);
     expect(value).toBe('parent value');
   });
 
   it('should create a new provider', () => {
-    const value = LOCAL_UPDATE_SERVICE_PROVIDER_FACTORY(null, LocalUpdateService, LocalForageToken);
+    const value = LOCAL_UPDATE_SERVICE_PROVIDER_FACTORY(null, LocalForageToken);
     expect(value instanceof LocalUpdateService).toBe(true);
   });
 });

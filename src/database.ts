@@ -8,6 +8,7 @@ import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2
 import { AngularFireOfflineCache, CacheItem, WriteCache } from './interfaces';
 import { ListObservable } from './list-observable';
 import { LocalForageToken } from './localforage';
+import { LocalUpdateService } from './local-update-service';
 import { ObjectObservable } from './object-observable';
 import { WriteComplete } from './offline-write';
 import { ReplayItem } from './replay-item';
@@ -42,19 +43,35 @@ export class AngularFireOfflineDatabase {
    * storing data offline using asynchronous storage (IndexedDB or WebSQL) with a simple,
    * localStorage-like API
    */
+  cacheIndex = 0;
+  processing = {
+    current: true,
+    cache: {}
+  };
   constructor(private af: AngularFire,
-    @Inject(LocalForageToken) private localForage: any) {
+    @Inject(LocalForageToken) private localForage: any,
+    private localUpdateService: LocalUpdateService) {
     this.processWrites();
   }
   processWrites() {
     this.localForage.getItem('write').then((writeCache: WriteCache) => {
-      if (!writeCache) { return; }
-      const cacheId = Object.keys(writeCache.cache)[0];
-      if (cacheId === undefined) { return; }
+      if (!writeCache) { this.processingComplete(); return; }
+      const cacheId = Object.keys(writeCache.cache)[this.cacheIndex];
+      this.cacheIndex++;
+      if (cacheId === undefined) { this.processingComplete(); return; }
       const cacheItem: CacheItem = writeCache.cache[cacheId];
-      this.af.database[cacheItem.type](cacheItem.ref)[cacheItem.method](...cacheItem.args)
-        .then(() => WriteComplete(cacheId, this.localForage))
-        .then(() => this.processWrites());
+      new Promise(resolve => {
+        if (cacheItem.type === 'list') {
+          this.offlineListInit(cacheItem.ref)
+            .then(() => resolve());
+        } else {
+          resolve();
+        }
+      }).then(() => {
+        this.af.database[cacheItem.type](cacheItem.ref)[cacheItem.method](...cacheItem.args)
+          .then(() => WriteComplete(cacheId, this.localUpdateService));
+        this.processWrites();
+      });
     });
   }
   /**
@@ -89,6 +106,24 @@ export class AngularFireOfflineDatabase {
     if (!(key in this.cache)) { this.setupObject(key, query); }
     return this.cache[key].sub.asObjectObservable();
   }
+  private offlineListInit(key: string) {
+    return new Promise(resolve => {
+      if (this.cache[key].listInit) { return resolve(); }
+      this.cache[key].listInit = true;
+      this.localForage.getItem(`read${key}`).then(listMap => {
+        const listObject = {};
+        const promises = listMap.map(partialKey => {
+          const promise =  this.localForage.getItem(`read${key}/${partialKey}`);
+          promise.then(value => listObject[partialKey] = value);
+          return promise;
+        });
+        Promise.all(promises).then(value => {
+          if (!this.cache[key].loaded) { this.af.database.object(key).set(listObject); }
+          resolve();
+        });
+      });
+    });
+  }
   /**
    * Retrives a list if locally stored on the device
    * - Lists are stored as individual objects, to allow for better offline reuse.
@@ -104,8 +139,21 @@ export class AngularFireOfflineDatabase {
             });
           });
         });
-        Promise.all(promises).then(value => this.cache[key].sub.next(value));
+        Promise.all(promises).then(cacheValue => {
+          if (this.processing.current) {
+            this.processing.cache[key] = cacheValue;
+          } else {
+            this.cache[key].sub.next(cacheValue);
+          }
+          this.offlineListInit(key);
+        });
       }
+    });
+  }
+  private processingComplete() {
+    this.processing.current = false;
+    Object.keys(this.processing.cache).forEach(cacheKey => {
+      this.cache[cacheKey].sub.next( this.processing.cache[cacheKey] );
     });
   }
   /**
@@ -125,18 +173,28 @@ export class AngularFireOfflineDatabase {
     // Create cache
     this.cache[key] = {
       loaded: false,
-      sub: new ReplayItem(ref, this.localForage)
+      sub: new ReplayItem(ref, this.localUpdateService)
     };
     // Firebase
     ref.subscribe(snap => {
       this.cache[key].loaded = true;
-      this.cache[key].sub.next( this.unwrap(snap.key, snap.val(), snap.exists) );
+      const cacheValue = this.unwrap(snap.key, snap.val(), snap.exists);
+      if (this.processing.current) {
+        this.processing.cache[key] = cacheValue;
+      } else {
+        this.cache[key].sub.next( cacheValue );
+      }
       this.localForage.setItem(`read${key}`, snap.val());
     });
     // Local
     this.localForage.getItem(`read${key}`).then(value => {
       if (!this.cache[key].loaded) {
-        this.cache[key].sub.next( this.unwrap(key.split('/').pop(), value, () => value !== null) );
+        const cacheValue = this.unwrap(key.split('/').pop(), value, () => value !== null);
+        if (this.processing.current) {
+          this.processing.cache[key] = cacheValue;
+        } else {
+          this.cache[key].sub.next( cacheValue );
+        }
       }
     });
   }
@@ -173,12 +231,17 @@ export class AngularFireOfflineDatabase {
     // Create cache
     this.cache[key] = {
       loaded: false,
-      sub: new ReplayItem(ref, this.localForage)
+      sub: new ReplayItem(ref, this.localUpdateService)
     };
     // Firebase
     ref.subscribe(value => {
       this.cache[key].loaded = true;
-      this.cache[key].sub.next(value.map(snap => this.unwrap(snap.key, snap.val(), snap.exists)));
+      const cacheValue = value.map(snap => this.unwrap(snap.key, snap.val(), snap.exists));
+      if (this.processing.current) {
+        this.processing.cache[key] = cacheValue;
+      } else {
+        this.cache[key].sub.next( cacheValue );
+      }
       this.setList(key, value);
     });
     // Local

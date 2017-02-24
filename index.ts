@@ -18,8 +18,8 @@ export class AngularFireOffline {
   constructor(public database: AngularFireOfflineDatabase) { }
 }
 
-export function ANGULARFIRE_OFFLINE_PROVIDER_FACTORY(parent: AngularFireOffline, AngularFire, token) {
-  return parent || new AngularFireOffline( new AngularFireOfflineDatabase(AngularFire, token) );
+export function ANGULARFIRE_OFFLINE_PROVIDER_FACTORY(parent: AngularFireOffline, AngularFire, token, LocalUpdateService) {
+  return parent || new AngularFireOffline( new AngularFireOfflineDatabase(AngularFire, token, LocalUpdateService ));
 };
 
 export const ANGULARFIRE_OFFLINE_PROVIDER = {
@@ -27,7 +27,8 @@ export const ANGULARFIRE_OFFLINE_PROVIDER = {
   deps: [
     [new Optional(), new SkipSelf(), AngularFireOffline],
     AngularFire,
-    [new Inject(LocalForageToken)]
+    [new Inject(LocalForageToken)],
+    LocalUpdateService
   ],
   useFactory: ANGULARFIRE_OFFLINE_PROVIDER_FACTORY
 };

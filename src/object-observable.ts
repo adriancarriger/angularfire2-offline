@@ -2,9 +2,10 @@ import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
 
 import { OfflineWrite } from './offline-write';
+import { LocalUpdateService } from './local-update-service';
 
 export class ObjectObservable<T> extends Observable<T> {
-  constructor(private ref: FirebaseObjectObservable<any>, private localForage) {
+  constructor(private ref: FirebaseObjectObservable<any>, private localUpdateService: LocalUpdateService) {
     super();
   }
   set(value: any): firebase.Promise<void> {
@@ -23,6 +24,12 @@ export class ObjectObservable<T> extends Observable<T> {
     return promise;
   }
   private offlineWrite(promise: firebase.Promise<void>, type: string, args: any[]) {
-    OfflineWrite(promise, 'object', this.ref.$ref.key, type, args, this.localForage);
+    OfflineWrite(
+      promise,
+      'object',
+      `/${this.ref.$ref.key}`,
+      type,
+      args,
+      this.localUpdateService);
   }
 }

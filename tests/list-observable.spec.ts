@@ -4,32 +4,41 @@ import { async, inject, TestBed } from '@angular/core/testing';
 import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
 import { ListObservable } from '../src/list-observable';
+import { LocalUpdateService } from '../src/local-update-service';
 
 describe('List Observable', () => {
   let listObservable: ListObservable<any>;
   let mockLocalForageService: MockLocalForageService;
+  let localUpdateService: LocalUpdateService;
   let resolve;
   let promise;
   let ref;
   beforeEach(() => {
     promise = new Promise(r => resolve = r);
-    ref = {$ref: {ref: {key: 'key-1'}}};
+    ref = {$ref: {
+      ref: {key: 'key-1'},
+      push: undefined,
+      resolve: undefined
+    }};
+    let pushPromise;
+    ref.$ref.push = (value, callback) => {
+      callback();
+      return 'key-1';
+    };
     mockLocalForageService = new MockLocalForageService();
+    localUpdateService = new LocalUpdateService(mockLocalForageService);
   });
 
   it('should push', done => {
-    ref.push = value => promise;
-    listObservable = new ListObservable<any>(ref, mockLocalForageService);
-    listObservable.push('new value').then(value => {
-      expect(value).toBe(23425667532);
+    listObservable = new ListObservable<any>(ref, localUpdateService);
+    listObservable.push('new value').then(() => {
       done();
     });
-    resolve(23425667532);
   });
 
   it('should update', done => {
     ref.update = value => promise;
-    listObservable = new ListObservable<any>(ref, mockLocalForageService);
+    listObservable = new ListObservable<any>(ref, localUpdateService);
     listObservable.update('key', 'new value').then(value => {
       expect(value).toBe(2326347897);
       done();
@@ -39,7 +48,7 @@ describe('List Observable', () => {
 
   it('should remove', done => {
     ref.remove = value => promise;
-    listObservable = new ListObservable<any>(ref, mockLocalForageService);
+    listObservable = new ListObservable<any>(ref, localUpdateService);
     listObservable.remove('key').then(value => {
       expect(value).toBe(234580008754);
       done();

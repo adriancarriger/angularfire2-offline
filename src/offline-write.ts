@@ -1,16 +1,14 @@
 import { WriteCache } from './interfaces';
+import { LocalUpdateService } from './local-update-service';
 
 export function OfflineWrite(
-  promise: firebase.Promise<void>,
+  firebasePromise,
   type: string,
   ref: string,
   method: string,
   args: any[],
-  localForage) {
-  let id;
-  let done = false;
-  localForage.getItem('write').then((writeCache: WriteCache) => {
-    if (done) { return; }
+  localUpdateService: LocalUpdateService) {
+  localUpdateService.update('write', (writeCache: WriteCache) => {
     if (!writeCache) {
       writeCache = {
         lastId: 0,
@@ -18,23 +16,19 @@ export function OfflineWrite(
       };
     }
     writeCache.lastId++;
-    id = writeCache.lastId;
-    writeCache.cache[id] = {type: type, ref: ref, method: method, args: args};
-    localForage.setItem(`write`, writeCache);
-  });
-  promise.then(() => {
-    if (id) { WriteComplete(id, localForage); }
-    done = true;
+    writeCache.cache[writeCache.lastId] = {type: type, ref: ref, method: method, args: args};
+    return writeCache;
+  }).then((writeCache: WriteCache) => {
+    const id = writeCache.lastId;
+    firebasePromise.then(() => {
+      WriteComplete(id, localUpdateService);
+    });
   });
 }
 
-export function WriteComplete(id, localForage) {
-  return new Promise(resolve => {
-    localForage.getItem('write').then((writeCache: WriteCache) => {
-      delete writeCache.cache[id];
-      localForage.setItem(`write`, writeCache).then(() => {
-        resolve();
-      });
-    });
+export function WriteComplete(id, localUpdateService: LocalUpdateService) {
+  return localUpdateService.update('write', (writeCache: WriteCache) => {
+    delete writeCache.cache[id];
+    return writeCache;
   });
 }

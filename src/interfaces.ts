@@ -8,7 +8,7 @@ import { ReplayItem } from './replay-item';
  */
 export interface AngularFireOfflineCache {
   [cacheItem: string]: {
-    listInit?: boolean;
+    offlineInit: boolean;
     loaded: boolean;
     sub: ReplayItem<any>;
   };

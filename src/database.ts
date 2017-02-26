@@ -60,18 +60,9 @@ export class AngularFireOfflineDatabase {
       this.cacheIndex++;
       if (cacheId === undefined) { this.processingComplete(); return; }
       const cacheItem: CacheItem = writeCache.cache[cacheId];
-      new Promise(resolve => {
-        if (cacheItem.type === 'list') {
-          this.offlineListInit(cacheItem.ref)
-            .then(() => resolve());
-        } else {
-          resolve();
-        }
-      }).then(() => {
-        this.af.database[cacheItem.type](cacheItem.ref)[cacheItem.method](...cacheItem.args)
-          .then(() => WriteComplete(cacheId, this.localUpdateService));
-        this.processWrites();
-      });
+      this.af.database[cacheItem.type](cacheItem.ref)[cacheItem.method](...cacheItem.args)
+        .then(() => WriteComplete(cacheId, this.localUpdateService));
+      this.processWrites();
     });
   }
   /**
@@ -106,21 +97,27 @@ export class AngularFireOfflineDatabase {
     if (!(key in this.cache)) { this.setupObject(key, query); }
     return this.cache[key].sub.asObjectObservable();
   }
-  private offlineListInit(key: string) {
+  private offlineInit(key: string, type: string) {
     return new Promise(resolve => {
-      if (this.cache[key].listInit) { return resolve(); }
-      this.cache[key].listInit = true;
-      this.localForage.getItem(`read${key}`).then(listMap => {
-        const listObject = {};
-        const promises = listMap.map(partialKey => {
-          const promise =  this.localForage.getItem(`read${key}/${partialKey}`);
-          promise.then(value => listObject[partialKey] = value);
-          return promise;
-        });
-        Promise.all(promises).then(value => {
-          if (!this.cache[key].loaded) { this.af.database.object(key).set(listObject); }
+      if (this.cache[key].offlineInit) { return resolve(); }
+      this.cache[key].offlineInit = true;
+      this.localForage.getItem(`read${key}`).then(primaryValue => {
+        if (type === 'list') {
+          const listObject = {};
+          const promises = primaryValue.map(partialKey => {
+            const promise =  this.localForage.getItem(`read${key}/${partialKey}`);
+            promise.then(value => listObject[partialKey] = value);
+            return promise;
+          });
+          Promise.all(promises).then(value => {
+            if (!this.cache[key].loaded) { this.af.database.object(key).set(listObject); }
+            resolve();
+          });
+        }
+        if (type === 'object') {
+          if (!this.cache[key].loaded) { this.af.database.object(key).set(primaryValue); }
           resolve();
-        });
+        }
       });
     });
   }
@@ -130,9 +127,9 @@ export class AngularFireOfflineDatabase {
    * - Each locally stored list uses a map to stitch together the list from individual objects
    */
   private getList(key: string) {
-    this.localForage.getItem(`read${key}`).then(listMap => {
-      if (!this.cache[key].loaded && listMap !== null) {
-        const promises = listMap.map(partialKey => {
+    this.localForage.getItem(`read${key}`).then(primaryValue => {
+      if (!this.cache[key].loaded && primaryValue !== null) {
+        const promises = primaryValue.map(partialKey => {
           return new Promise(resolve => {
             this.localForage.getItem(`read${key}/${partialKey}`).then(itemValue => {
               resolve(this.unwrap(partialKey, itemValue, () => itemValue !== null));
@@ -145,7 +142,7 @@ export class AngularFireOfflineDatabase {
           } else {
             this.cache[key].sub.next(cacheValue);
           }
-          this.offlineListInit(key);
+          this.offlineInit(key, 'list');
         });
       }
     });
@@ -173,6 +170,7 @@ export class AngularFireOfflineDatabase {
     // Create cache
     this.cache[key] = {
       loaded: false,
+      offlineInit: false,
       sub: new ReplayItem(ref, this.localUpdateService)
     };
     // Firebase
@@ -195,6 +193,7 @@ export class AngularFireOfflineDatabase {
         } else {
           this.cache[key].sub.next( cacheValue );
         }
+        this.offlineInit(key, 'object');
       }
     });
   }
@@ -205,12 +204,12 @@ export class AngularFireOfflineDatabase {
    * - Stores a map of all the objects, used to stitch together the list for local use
    */
   private setList(key: string, array: Array<any>) {
-    const listMap = array.reduce((p, c, i) => {
+    const primaryValue = array.reduce((p, c, i) => {
       this.localForage.setItem(`read${key}/${c.key}`, c.val());
       p[i] = c.key;
       return p;
     }, []);
-    this.localForage.setItem(`read${key}`, listMap);
+    this.localForage.setItem(`read${key}`, primaryValue);
   }
   /**
    * - Sets up a {@link AngularFireOfflineCache} item that provides Firebase data
@@ -231,6 +230,7 @@ export class AngularFireOfflineDatabase {
     // Create cache
     this.cache[key] = {
       loaded: false,
+      offlineInit: false,
       sub: new ReplayItem(ref, this.localUpdateService)
     };
     // Firebase

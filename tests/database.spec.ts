@@ -111,6 +111,10 @@ describe('Service: AngularFireOfflineDatabase', () => {
       expect(object.$exists()).toEqual(true);
     });
     mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
+    setTimeout(() => {
+      service.cache[key].loaded = true;
+      mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
+    });
   })));
 
   it('should return a locally stored object value (2)',
@@ -122,6 +126,10 @@ describe('Service: AngularFireOfflineDatabase', () => {
       expect(object.$exists()).toEqual(true);
     });
     mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
+    setTimeout(() => {
+      mockAngularFire.writeSetup({set: () => {}}, mockLocalForageService);
+      mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
+    });
   })));
 
   it('should not return a locally stored value if loaded', done => {
@@ -210,7 +218,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
       const key = '/list-2';
       const listKeys = ['key-1', 'key-2', 'key-3'];
       service.list(key);
-      service.cache[key].listInit = true;
+      service.cache[key].offlineInit = true;
       mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
       setTimeout(() => {
         listKeys.forEach(listKey => {
@@ -250,7 +258,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
       };
       service.cache[key] = {
         loaded: false,
-        listInit: false,
+        offlineInit: false,
         sub: undefined
       };
       service.processing.current = true;
@@ -264,17 +272,11 @@ describe('Service: AngularFireOfflineDatabase', () => {
       mockLocalForageService.update(`write`, writeCache);
       setTimeout(() => {
         service.cache[key].loaded = true;
-        mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
         setTimeout(() => {
-          listKeys.forEach(listKey => {
-            mockLocalForageService.update(`read${key}/${listKey}`, '1');
-          });
+          resolve();
           setTimeout(() => {
-            resolve();
-            setTimeout(() => {
-              expect(testObj.wasCalled).toBe(true);
-              done();
-            });
+            expect(testObj.wasCalled).toBe(true);
+            done();
           });
         });
       });

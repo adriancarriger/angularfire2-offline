@@ -41,7 +41,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
     service.list(key).subscribe(list => {
       expect(list[0].$value).toBe('xyz');
     });
-    expect(service.cache[key].loaded).toBe(false);
+    expect(service.listCache[key].loaded).toBe(false);
     mockAngularFire.update(newValue);
   })));
 
@@ -54,7 +54,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
     service.list(key).subscribe(list => {
       expect(list[0].$value).toBe('xyz');
     });
-    expect(service.cache[key].loaded).toBe(false);
+    expect(service.listCache[key].loaded).toBe(false);
     mockAngularFire.update(newValue);
   })));
 
@@ -63,13 +63,13 @@ describe('Service: AngularFireOfflineDatabase', () => {
     // Setup test - Set up list
     service.list(key, {});
     // If `setupObject` is called, then this will be false:
-    expect(service.cache[key].loaded).toBe(false);
+    expect(service.listCache[key].loaded).toBe(false);
     // Setting to true
-    service.cache[key].loaded = true;
+    service.listCache[key].loaded = true;
     // Test
     service.list(key);
     // Will still be true if `setupObject` was not called
-    expect(service.cache[key].loaded).toBe(true);
+    expect(service.listCache[key].loaded).toBe(true);
   }));
 
   it('should return an object', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
@@ -94,13 +94,13 @@ describe('Service: AngularFireOfflineDatabase', () => {
     // Setup test - Set up list
     service.object(key, {});
     // If `setupObject` is called, then this will be false:
-    expect(service.cache[key].loaded).toBe(false);
+    expect(service.objectCache[key].loaded).toBe(false);
     // Setting to true
-    service.cache[key].loaded = true;
+    service.objectCache[key].loaded = true;
     // Test
     service.object(key);
     // Will still be true if `setupObject` was not called
-    expect(service.cache[key].loaded).toBe(true);
+    expect(service.objectCache[key].loaded).toBe(true);
   }));
 
   it('should return a locally stored object value (1)',
@@ -112,7 +112,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
     });
     mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
     setTimeout(() => {
-      service.cache[key].loaded = true;
+      service.objectCache[key].loaded = true;
       mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
     });
   })));
@@ -139,7 +139,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
       service.object(key).subscribe(object => {
         returnedValue = true;
       });
-      service.cache[key].loaded = true;
+      service.objectCache[key].loaded = true;
       mockLocalForageService.update(`read${key}`, '293846488sxjfhslsl20201-4ghcjs');
       // Wait for 500 ms to see if a value is returned
       setTimeout(() => {
@@ -201,7 +201,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
           mockAngularFire.writeSetup({set: () => {}}, mockLocalForageService);
           mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
           setTimeout(() => {
-            service.cache[key].loaded = true;
+            service.listCache[key].loaded = true;
             listKeys.forEach(listKey2 => {
               mockLocalForageService.update(`read${key}/${listKey2}`, '1');
             });
@@ -212,13 +212,13 @@ describe('Service: AngularFireOfflineDatabase', () => {
     })();
   });
 
-  it('should wait during processing', done => {
+  it('should wait during processing (1 - list)', done => {
     inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
       service.processing.current = true;
       const key = '/list-2';
       const listKeys = ['key-1', 'key-2', 'key-3'];
       service.list(key);
-      service.cache[key].offlineInit = true;
+      service.listCache[key].offlineInit = true;
       mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
       setTimeout(() => {
         listKeys.forEach(listKey => {
@@ -231,7 +231,28 @@ describe('Service: AngularFireOfflineDatabase', () => {
             listKeys.forEach(listKey2 => {
               mockLocalForageService.update(`read${key}/${listKey2}`, '1');
             });
-            expect(service.processing.cache[key].length).toBe(3);
+            expect(service.processing.listCache[key].length).toBe(3);
+            mockLocalForageService.update('write', null);
+            done();
+          });
+        });
+      });
+    })();
+  });
+
+  it('should wait during processing (2 - object)', done => {
+    inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+      service.processing.current = true;
+      const key = '/object-2';
+      service.object(key);
+      service.objectCache[key].offlineInit = true;
+      mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
+      setTimeout(() => {
+        setTimeout(() => {
+          mockAngularFire.writeSetup({set: () => {}}, mockLocalForageService);
+          mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
+          setTimeout(() => {
+            expect(service.processing.objectCache[key].length).toBe(3);
             mockLocalForageService.update('write', null);
             done();
           });
@@ -256,7 +277,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
           '3': cacheItem
         }
       };
-      service.cache[key] = {
+      service.listCache[key] = {
         loaded: false,
         offlineInit: false,
         sub: undefined
@@ -271,7 +292,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
       }}, mockLocalForageService);
       mockLocalForageService.update(`write`, writeCache);
       setTimeout(() => {
-        service.cache[key].loaded = true;
+        service.listCache[key].loaded = true;
         setTimeout(() => {
           resolve();
           setTimeout(() => {
@@ -291,7 +312,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
       service.list(key).subscribe(object => {
         returnedValue = true;
       });
-      service.cache[key].loaded = true;
+      service.listCache[key].loaded = true;
       mockLocalForageService.update(`read${key}`, ['key-1', 'key-2', 'key-3']);
       setTimeout(() => {
         listKeys.forEach(listKey => {

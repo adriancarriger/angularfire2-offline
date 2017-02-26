@@ -34,7 +34,8 @@ export class AngularFireOfflineDatabase {
    * - That value can come from a Firebase subscription or from the device if there is no
    * internet connection.
    */
-  cache: AngularFireOfflineCache = {};
+  objectCache: AngularFireOfflineCache = {};
+  listCache: AngularFireOfflineCache = {};
   /**
    * Creates the {@link AngularFireOfflineDatabase}
    *
@@ -46,7 +47,8 @@ export class AngularFireOfflineDatabase {
   cacheIndex = 0;
   processing = {
     current: true,
-    cache: {}
+    listCache: {},
+    objectCache: {}
   };
   constructor(private af: AngularFire,
     @Inject(LocalForageToken) private localForage: any,
@@ -79,8 +81,8 @@ export class AngularFireOfflineDatabase {
    * [valid queries](https://goo.gl/iHiAuB)
    */
   list(key: string, query?: FirebaseListFactoryOpts): ListObservable<any[]> {
-    if (!(key in this.cache)) { this.setupList(key, query); }
-    return this.cache[key].sub.asListObservable();
+    if (!(key in this.listCache)) { this.setupList(key, query); }
+    return this.listCache[key].sub.asListObservable();
   }
   /**
    * Returns an Observable object of Firebase snapshot data
@@ -94,13 +96,14 @@ export class AngularFireOfflineDatabase {
    * [valid queries](https://goo.gl/iHiAuB) available [for objects](https://goo.gl/IV8DYA)
    */
   object(key: string, query?: FirebaseObjectFactoryOpts): ObjectObservable<any> {
-    if (!(key in this.cache)) { this.setupObject(key, query); }
-    return this.cache[key].sub.asObjectObservable();
+    if (!(key in this.objectCache)) { this.setupObject(key, query); }
+    return this.objectCache[key].sub.asObjectObservable();
   }
+  // TODO: refactor this
   private offlineInit(key: string, type: string) {
     return new Promise(resolve => {
-      if (this.cache[key].offlineInit) { return resolve(); }
-      this.cache[key].offlineInit = true;
+      if (this[`${type}Cache`][key].offlineInit) { return resolve(); }
+      this[`${type}Cache`][key].offlineInit = true;
       this.localForage.getItem(`read${key}`).then(primaryValue => {
         if (type === 'list') {
           const listObject = {};
@@ -110,12 +113,12 @@ export class AngularFireOfflineDatabase {
             return promise;
           });
           Promise.all(promises).then(value => {
-            if (!this.cache[key].loaded) { this.af.database.object(key).set(listObject); }
+            if (!this.listCache[key].loaded) { this.af.database.object(key).set(listObject); }
             resolve();
           });
         }
         if (type === 'object') {
-          if (!this.cache[key].loaded) { this.af.database.object(key).set(primaryValue); }
+          if (!this.objectCache[key].loaded) { this.af.database.object(key).set(primaryValue); }
           resolve();
         }
       });
@@ -128,7 +131,7 @@ export class AngularFireOfflineDatabase {
    */
   private getList(key: string) {
     this.localForage.getItem(`read${key}`).then(primaryValue => {
-      if (!this.cache[key].loaded && primaryValue !== null) {
+      if (!this.listCache[key].loaded && primaryValue !== null) {
         const promises = primaryValue.map(partialKey => {
           return new Promise(resolve => {
             this.localForage.getItem(`read${key}/${partialKey}`).then(itemValue => {
@@ -138,9 +141,9 @@ export class AngularFireOfflineDatabase {
         });
         Promise.all(promises).then(cacheValue => {
           if (this.processing.current) {
-            this.processing.cache[key] = cacheValue;
+            this.processing.listCache[key] = cacheValue;
           } else {
-            this.cache[key].sub.next(cacheValue);
+            this.listCache[key].sub.next(cacheValue);
           }
           this.offlineInit(key, 'list');
         });
@@ -149,8 +152,11 @@ export class AngularFireOfflineDatabase {
   }
   private processingComplete() {
     this.processing.current = false;
-    Object.keys(this.processing.cache).forEach(cacheKey => {
-      this.cache[cacheKey].sub.next( this.processing.cache[cacheKey] );
+    Object.keys(this.processing.listCache).forEach(cacheKey => {
+      this.listCache[cacheKey].sub.next( this.processing.listCache[cacheKey] );
+    });
+    Object.keys(this.processing.objectCache).forEach(cacheKey => {
+      this.objectCache[cacheKey].sub.next( this.processing.objectCache[cacheKey] );
     });
   }
   /**
@@ -168,30 +174,30 @@ export class AngularFireOfflineDatabase {
     query.preserveSnapshot = true;
     const ref: FirebaseObjectObservable<any> = this.af.database.object(key, query);
     // Create cache
-    this.cache[key] = {
+    this.objectCache[key] = {
       loaded: false,
       offlineInit: false,
       sub: new ReplayItem(ref, this.localUpdateService)
     };
     // Firebase
     ref.subscribe(snap => {
-      this.cache[key].loaded = true;
+      this.objectCache[key].loaded = true;
       const cacheValue = this.unwrap(snap.key, snap.val(), snap.exists);
       if (this.processing.current) {
-        this.processing.cache[key] = cacheValue;
+        this.processing.objectCache[key] = cacheValue;
       } else {
-        this.cache[key].sub.next( cacheValue );
+        this.objectCache[key].sub.next( cacheValue );
       }
       this.localForage.setItem(`read${key}`, snap.val());
     });
     // Local
     this.localForage.getItem(`read${key}`).then(value => {
-      if (!this.cache[key].loaded) {
+      if (!this.objectCache[key].loaded) {
         const cacheValue = this.unwrap(key.split('/').pop(), value, () => value !== null);
         if (this.processing.current) {
-          this.processing.cache[key] = cacheValue;
+          this.processing.objectCache[key] = cacheValue;
         } else {
-          this.cache[key].sub.next( cacheValue );
+          this.objectCache[key].sub.next( cacheValue );
         }
         this.offlineInit(key, 'object');
       }
@@ -228,19 +234,19 @@ export class AngularFireOfflineDatabase {
     query.preserveSnapshot = true;
     const ref: FirebaseListObservable<any[]> = this.af.database.list(key, query);
     // Create cache
-    this.cache[key] = {
+    this.listCache[key] = {
       loaded: false,
       offlineInit: false,
       sub: new ReplayItem(ref, this.localUpdateService)
     };
     // Firebase
     ref.subscribe(value => {
-      this.cache[key].loaded = true;
+      this.listCache[key].loaded = true;
       const cacheValue = value.map(snap => this.unwrap(snap.key, snap.val(), snap.exists));
       if (this.processing.current) {
-        this.processing.cache[key] = cacheValue;
+        this.processing.listCache[key] = cacheValue;
       } else {
-        this.cache[key].sub.next( cacheValue );
+        this.listCache[key].sub.next( cacheValue );
       }
       this.setList(key, value);
     });

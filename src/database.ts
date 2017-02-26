@@ -105,6 +105,7 @@ export class AngularFireOfflineDatabase {
       if (this[`${type}Cache`][key].offlineInit) { return resolve(); }
       this[`${type}Cache`][key].offlineInit = true;
       this.localForage.getItem(`read/${type}${key}`).then(primaryValue => {
+        if (primaryValue === null) { return resolve(); }
         if (type === 'list') {
           const listObject = {};
           const promises = primaryValue.map(partialKey => {

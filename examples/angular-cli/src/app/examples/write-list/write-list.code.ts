@@ -2,7 +2,7 @@ export const WriteListCode = {
   name: 'write-list',
   html:
 `
-<ul *ngIf="(groceries | async)?.length > 0">
+<ul>
   <li *ngFor="let item of groceries | async">
     {{item.text}}
     <button (click)="deleteItem(item.$key)" *ngIf="item.text === 'bread'" md-button color="primary">Make gluten free ❌ 🍞</button>

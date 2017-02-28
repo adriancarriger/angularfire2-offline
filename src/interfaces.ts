@@ -1,6 +1,5 @@
 import { ReplaySubject, Observable } from 'rxjs';
 
-import { ReplayItem } from './replay-item';
 /**
  * Each cacheItem is related to a Firebase reference.
  * - If loaded through the network, loaded is set to true
@@ -10,7 +9,7 @@ export interface AngularFireOfflineCache {
   [cacheItem: string]: {
     offlineInit: boolean;
     loaded: boolean;
-    sub: ReplayItem<any>;
+    sub: any;
   };
 }
 

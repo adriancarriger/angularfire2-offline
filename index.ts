@@ -10,8 +10,8 @@ import { AngularFire } from 'angularfire2';
 import { AngularFireOfflineDatabase } from './src/database';
 import { LOCALFORAGE_PROVIDER, LocalForageToken } from './src/localforage';
 import { LocalUpdateService, LOCAL_UPDATE_SERVICE_PROVIDER } from './src/local-update-service';
-export { ListObservable } from './src/list-observable';
-export { ObjectObservable } from './src/object-observable';
+export { AfoListObservable } from './src/afo-list-observable';
+export { AfoObjectObservable } from './src/afo-object-observable';
 
 @Injectable()
 export class AngularFireOffline {

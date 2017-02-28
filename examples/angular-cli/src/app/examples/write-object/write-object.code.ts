@@ -13,14 +13,14 @@ export const WriteObjectCode = {
 `
 import { Component, OnInit } from '@angular/core';
 
-import { AngularFireOffline, ObjectObservable } from 'angularfire2-offline';
+import { AngularFireOffline, AfoObjectObservable } from 'angularfire2-offline';
 
 @Component({
   selector: 'app-write-object',
   templateUrl: './write-object.component.html'
 })
 export class WriteObjectComponent {
-  car: ObjectObservable<any>;
+  car: AfoObjectObservable<any>;
   defaultCar = {
     'tires': 4,
     'engine': 'V8',

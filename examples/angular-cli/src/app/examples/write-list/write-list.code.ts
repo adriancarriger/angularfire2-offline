@@ -21,14 +21,14 @@ export const WriteListCode = {
 `
 import { Component, OnInit } from '@angular/core';
 
-import { AngularFireOffline, ListObservable } from 'angularfire2-offline';
+import { AngularFireOffline, AfoListObservable } from 'angularfire2-offline';
 
 @Component({
   selector: 'app-write-list',
   templateUrl: './write-list.component.html'
 })
 export class WriteListComponent {
-  groceries: ListObservable<any[]>;
+  groceries: AfoListObservable<any[]>;
   constructor(private afo: AngularFireOffline) {
     this.groceries = this.afo.database.list('/groceries');
   }

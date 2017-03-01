@@ -15,7 +15,17 @@ describe('Object Observable', () => {
   let ref;
   beforeEach(() => {
     promise = new Promise(r => resolve = r);
-    ref = {$ref: {ref: {key: 'key-1'}}};
+    ref = {$ref: {
+      ref: {key: 'key-1'},
+      toString: () => 'https://angularfire2-offline.firebaseio.com/key-1',
+      database: {
+        ref: () => {
+          return {
+            toString: () => 'https://angularfire2-offline.firebaseio.com/'
+          };
+        }
+      }
+    }};
     mockLocalForageService = new MockLocalForageService();
     localUpdateService = new LocalUpdateService( mockLocalForageService );
   });

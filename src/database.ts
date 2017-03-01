@@ -247,7 +247,6 @@ export class AngularFireOfflineDatabase {
     this.getList(key);
   }
   private updateEmulateList() { // process emulate que
-    console.log(this.checkEmulateQue);
     Object.keys(this.checkEmulateQue).forEach(listKey => {
       if (listKey in this.listCache) {
         const sub = this.listCache[listKey].sub;

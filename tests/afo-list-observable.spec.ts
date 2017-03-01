@@ -18,7 +18,15 @@ describe('List Observable', () => {
     ref = {$ref: {
       ref: {key: 'key-1'},
       push: undefined,
-      resolve: undefined
+      resolve: undefined,
+      toString: () => 'https://angularfire2-offline.firebaseio.com/key-1',
+      database: {
+        ref: () => {
+          return {
+            toString: () => 'https://angularfire2-offline.firebaseio.com/'
+          };
+        }
+      }
     }};
     let pushPromise;
     ref.$ref.push = (value, callback) => {

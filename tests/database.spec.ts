@@ -495,9 +495,26 @@ export class Database extends AngularFireDatabase {
   }
 }
 
+export const Ref = {
+  $ref: {
+    ref: {key: 'key-1'},
+    push: undefined,
+    resolve: undefined,
+    toString: () => 'https://angularfire2-offline.firebaseio.com/key-1',
+    database: {
+      ref: () => {
+        return {
+          toString: () => 'https://angularfire2-offline.firebaseio.com/'
+        };
+      }
+    }
+  }
+};
+
 @Injectable()
 export class MockFirebaseListObservable<T> extends Subject<T> {
   history = [];
+  $ref = Ref.$ref;
   constructor() {
     super();
   }
@@ -510,6 +527,7 @@ export class MockFirebaseListObservable<T> extends Subject<T> {
 @Injectable()
 export class MockFirebaseObjectObservable<T> extends Subject<T> {
   history = [];
+  $ref = Ref.$ref;
   constructor() {
     super();
   }
@@ -522,7 +540,7 @@ export class MockFirebaseObjectObservable<T> extends Subject<T> {
 export class MockAfoListObservable<T> extends AfoListObservable<T> {
   history = [];
   constructor() {
-    super(null, null);
+    super(Ref, null);
   }
   emulate(method, value) {
     this.history.push({
@@ -535,7 +553,7 @@ export class MockAfoListObservable<T> extends AfoListObservable<T> {
 export class MockAfoObjectObservable<T> extends AfoObjectObservable<T> {
   history = [];
   constructor() {
-    super(null, null);
+    super(Ref, null);
   }
   emulate(method, value) {
     this.history.push({

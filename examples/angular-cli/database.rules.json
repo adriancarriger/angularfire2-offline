@@ -2,10 +2,6 @@
   "rules": {
     ".read": "true",
     ".write": "auth != null",
-    "counter": {
-      ".write": "true",
-      ".validate": "newData.isNumber()"
-    },
     "car": {
       ".write": "true",
       ".validate": "newData.hasChildren(['tires', 'type', 'maxSpeed'])",
@@ -21,10 +17,16 @@
       "maxSpeed": {
         ".validate": "newData.isNumber() && newData.val() > 79"
       },
-      "$other": { ".validate": false }
+      "$other": { ".validate": "false" }
     },
     "groceries":{
-      ".write": "true"
+      ".write": "true",
+      "$item": {
+        "text": {
+          ".validate": "root.child('rules/groceries/' + newData.val()).exists()"
+        },
+        "$other": { ".validate": "false" }
+      }
     }
   }
 }

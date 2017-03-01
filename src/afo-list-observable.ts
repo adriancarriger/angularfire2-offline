@@ -5,8 +5,9 @@ import { OfflineWrite } from './offline-write';
 import { LocalUpdateService } from './local-update-service';
 
 export class AfoListObservable<T> extends Subject<T> {
-  value: any;
+  path: string;
   que = [];
+  value: any;
   constructor(private ref, private localUpdateService: LocalUpdateService) {
     super();
     this.init();
@@ -25,6 +26,7 @@ export class AfoListObservable<T> extends Subject<T> {
     this.updateSubscribers();
   }
   init() {
+    this.path = this.ref.$ref.toString().substring(this.ref.$ref.database.ref().toString().length - 1);
     this.subscribe(newValue => {
       this.value = newValue;
       if (this.que.length > 0) {
@@ -46,7 +48,7 @@ export class AfoListObservable<T> extends Subject<T> {
     OfflineWrite(
       promise,
       'object',
-      `/${this.ref.$ref.ref.key}/${key}`,
+      `${this.path}/${key}`,
       'set',
       [value],
       this.localUpdateService);
@@ -68,7 +70,7 @@ export class AfoListObservable<T> extends Subject<T> {
     OfflineWrite(
       promise,
       'list',
-      `/${this.ref.$ref.key}`,
+      this.path,
       type,
       args,
       this.localUpdateService);

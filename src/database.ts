@@ -185,15 +185,15 @@ export class AngularFireOfflineDatabase {
       }
     });
   }
-  private checkEmulateList(cacheItem: CacheItem) {
+  private checkEmulateList(cacheItem: CacheItem) { // add matches to que
     const refItems: string[] = cacheItem.ref.split('/');
-    const potentialList = refItems[refItems.length - 2];
+    refItems.pop();
+    const potentialList: string = refItems.join('/');
     if (potentialList !== undefined) {
-      const potentialKey = `/${potentialList}`;
-      if (!(potentialKey in this.checkEmulateQue)) {
-        this.checkEmulateQue[potentialKey] = [];
+      if (!(potentialList in this.checkEmulateQue)) {
+        this.checkEmulateQue[potentialList] = [];
       }
-      this.checkEmulateQue[potentialKey].push(cacheItem);
+      this.checkEmulateQue[potentialList].push(cacheItem);
     }
   }
   /**
@@ -246,7 +246,8 @@ export class AngularFireOfflineDatabase {
     // Local
     this.getList(key);
   }
-  private updateEmulateList() {
+  private updateEmulateList() { // process emulate que
+    console.log(this.checkEmulateQue);
     Object.keys(this.checkEmulateQue).forEach(listKey => {
       if (listKey in this.listCache) {
         const sub = this.listCache[listKey].sub;

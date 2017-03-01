@@ -82,16 +82,16 @@ In [`/src/app/app.component.ts`](https://github.com/adriancarriger/angularfire2-
 import { Component } from '@angular/core';
 import {
   AngularFireOffline,
-  ListObservable,
-  ObjectObservable } from 'angularfire2-offline';
+  AfoListObservable,
+  AfoObjectObservable } from 'angularfire2-offline';
 
 @Component({
   selector: 'project-name-app',
   templateUrl: 'app.component.html'
 })
 export class MyApp {
-  info: ObjectObservable<any>;
-  items: ListObservable<any[]>;
+  info: AfoObjectObservable<any>;
+  items: AfoListObservable<any[]>;
   constructor(afo: AngularFireOffline) {
     this.info = afo.database.object('/info');
     this.items = afo.database.list('/items');

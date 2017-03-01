@@ -144,11 +144,11 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angularfire2-offline@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-0.3.0.tgz#b6e41b2f603a9771baac09167caf6e62b93f5e35"
+angularfire2-offline@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-2.0.1.tgz#1692b83aaeaec6e4fe99b87b7696b68f600cc653"
   dependencies:
-    ng2-localforage "0.1.30"
+    localforage "^1.4.3"
 
 angularfire2@^2.0.0-beta.7:
   version "2.0.0-beta.7-pre"
@@ -1673,7 +1673,7 @@ localforage-cordovasqlitedriver@^1.5.0:
     "@types/localforage" "0.0.30"
     localforage ">=1.4.0"
 
-localforage@>=1.4.0, localforage@^1.4.2:
+localforage@>=1.4.0, localforage@^1.4.2, localforage@^1.4.3:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/localforage/-/localforage-1.4.3.tgz#a212543c39c7c76424edd12bf474c489aaca494c"
   dependencies:
@@ -1868,12 +1868,6 @@ nan@^2.3.0, nan@^2.3.2:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
-
-ng2-localforage@0.1.30:
-  version "0.1.30"
-  resolved "https://registry.yarnpkg.com/ng2-localforage/-/ng2-localforage-0.1.30.tgz#65bf06f4058a7ce2ee8b9942bd09e8c756bf2c5b"
-  dependencies:
-    localforage "^1.4.2"
 
 node-gyp@^3.3.1:
   version "3.5.0"
@@ -2519,9 +2513,9 @@ rxjs@5.0.0-beta.12:
   dependencies:
     symbol-observable "^1.0.1"
 
-rxjs@^5.0.0-beta.6, rxjs@^5.0.1:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.0.3.tgz#fc8bdf464ebf938812748e4196788f392fef9754"
+rxjs@5.1.0, rxjs@^5.0.0-beta.6, rxjs@^5.0.1:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.1.0.tgz#0aa9018b7f440b505fa42bd742b6738be550e720"
   dependencies:
     symbol-observable "^1.0.1"
 

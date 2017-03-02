@@ -3,7 +3,7 @@ export const ReadObjectCode = {
   html: `<h2>{{ (info | async)?.title }}</h2>`,
   typescript:
 `
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { AngularFireOffline, AfoObjectObservable } from 'angularfire2-offline';
 

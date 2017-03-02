@@ -1,4 +1,4 @@
-# Angular-CLI Offline Tutorial 📗
+# Angular CLI Offline Tutorial 📗
 
 How to create an app that loads Firebase data and static resources while offline.
 
@@ -13,7 +13,8 @@ How to create an app that loads Firebase data and static resources while offline
 - [Write Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#8-write-an-object)
 - [Write List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#9-write-a-list)
 - [Run App](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#10-run-your-app)
-- [Full Offline Support](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#steps-to-get-full-offline-support-optional)
+- [Full Offline Support](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#steps-to-get-full-offline-support-recommended)
+- [Testing Locally](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#testing-locally-recommended)
 
 ## Steps to create project
 
@@ -87,7 +88,7 @@ export const firebaseConfig = {
 export class AppModule { }
 ```
 
-### 6. Read an object
+### 6. Read an object - [Demo](https://angularfire2-offline.firebaseapp.com/read-object)
 
 In [`/src/app/examples/read-object/read-object.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-object/read-object.component.ts):
 
@@ -114,7 +115,7 @@ In [`/src/app/examples/read-object/read-object.component.html`](https://github.c
 <h2>{{ (info | async)?.title }}</h2>
 ```
 
-### 7. Read a list
+### 7. Read a list - [Demo](https://angularfire2-offline.firebaseapp.com/read-list)
 
 In [`/src/app/examples/read-list/read-list.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-list/read-list.component.ts):
 
@@ -145,7 +146,7 @@ In [`/src/app/examples/read-list/read-list.component.html`](https://github.com/a
 </ul>
 ```
 
-### 8. Write an object
+### 8. Write an object - [Demo](https://angularfire2-offline.firebaseapp.com/write-object)
 
 In [`/src/app/examples/write-object/write-object.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-object/write-object.component.ts):
 
@@ -204,7 +205,7 @@ In [`/src/app/examples/write-object/write-object.component.html`](https://github
 {{ car | async | json }}
 ```
 
-### 9. Write a list
+### 9. Write a list - [Demo](https://angularfire2-offline.firebaseapp.com/write-list)
 
 In [`/src/app/examples/write-list/write-list.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-list/write-list.component.ts):
 
@@ -273,9 +274,9 @@ Run the serve command and go to `localhost:4200` in your browser.
 
 ### Result
 
-At this point everything should be working, including offline support for your Firebase data. That won't help too much if the rest of your app doesn't work offline, so the optional following steps show how to add full offline support.
+At this point everything should be working, including offline support for your Firebase data. That won't help too much if the rest of your app doesn't work offline, so the recommended following steps show how to add full offline support.
 
-## Steps to get full offline support (optional)
+## Steps to get full offline support (recommended)
 
 The following steps are based on [this tutorial](https://coryrylan.com/blog/fast-offline-angular-apps-with-service-workers) by [Cory Rylan](https://coryrylan.com/)
 

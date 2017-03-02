@@ -21,7 +21,7 @@
     <h2>Try it</h2>
 
     <md-card-content>
-      <p>To test if Firebase data is being served offline, disconnect from the internet (e.g. turn off Wi-Fi) and refresh this page.</p>
+      <p>To test if Firebase data is being served offline, disconnect from the internet (e.g. turn off Wi-Fi) and refresh this page. Firebase data must be loaded at least once online (from each tab) for it to work offline.</p>
       <ul>
         <li>Firebase data cached using <a href="https://github.com/adriancarriger/angularfire2-offline">angularfire2-offline</a></li>
         <li>Static assets cached using <a href="https://github.com/GoogleChrome/sw-precache">sw-precache</a></li>
@@ -31,30 +31,6 @@
 
   </md-card>
 
-  <md-card>
-
-    <md-tab-group>
-      <md-tab label="Read Object">
-        <app-demo [code]="readObjectCode">
-          <app-read-object></app-read-object>
-        </app-demo>
-      </md-tab>
-      <md-tab label="Read List">
-        <app-demo [code]="readListCode">
-          <app-read-list></app-read-list>
-        </app-demo>
-      </md-tab>
-      <md-tab label="Write Object">
-        <app-demo [code]="writeObjectCode">
-          <app-write-object></app-write-object>
-        </app-demo>
-      </md-tab>
-      <md-tab label="Write List">
-        <app-demo [code]="writeListCode">
-          <app-write-list></app-write-list>
-        </app-demo>
-      </md-tab>
-    </md-tab-group>
-  </md-card>
+  <app-shell></app-shell>
 
 </div>

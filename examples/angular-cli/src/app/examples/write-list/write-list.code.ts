@@ -19,7 +19,7 @@ export const WriteListCode = {
 `,
   typescript:
 `
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { AngularFireOffline, AfoListObservable } from 'angularfire2-offline';
 

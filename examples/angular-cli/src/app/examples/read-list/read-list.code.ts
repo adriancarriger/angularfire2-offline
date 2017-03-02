@@ -10,7 +10,7 @@ export const ReadListCode = {
 `,
   typescript:
 `
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { AngularFireOffline, AfoListObservable } from 'angularfire2-offline';
 

@@ -1,21 +1,47 @@
 import { NgModule } from '@angular/core';
 import { MaterialModule } from '@angular/material';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireOfflineModule } from 'angularfire2-offline';
 import 'hammerjs';
 
 import { DemoComponent } from './demo.component';
 import { DemoService } from './demo.service';
-import { ShellComponent } from './shell.component';
+import { DEMO_ROUTES } from './routes';
+import {
+  ReadListTabComponent,
+  ReadObjectTabComponent,
+  ShellComponent,
+  WriteListTabComponent,
+  WriteObjectTabComponent } from './shell';
+import { ReadListComponent } from '../examples/read-list/read-list.component';
+import { ReadObjectComponent } from '../examples/read-object/read-object.component';
+import { WriteListComponent } from '../examples/write-list/write-list.component';
+import { WriteObjectComponent } from '../examples/write-object/write-object.component';
 
 @NgModule({
   declarations: [
-    DemoComponent
+    DemoComponent,
+    ReadListComponent,
+    ReadListTabComponent,
+    ReadObjectComponent,
+    ReadObjectTabComponent,
+    ShellComponent,
+    WriteListComponent,
+    WriteListTabComponent,
+    WriteObjectComponent,
+    WriteObjectTabComponent
   ],
   imports: [
-    MaterialModule
+    BrowserModule,
+    MaterialModule,
+    RouterModule.forRoot(DEMO_ROUTES),
   ],
   exports: [
     DemoComponent,
-    MaterialModule
+    MaterialModule,
+    ShellComponent
   ],
   providers: [
     DemoService

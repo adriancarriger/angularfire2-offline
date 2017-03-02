@@ -4,6 +4,17 @@ How to create an app that loads Firebase data and static resources while offline
 
 ## [View Demo](https://angularfire2-offline.firebaseapp.com/)
 
+## Table of Contents
+
+- [Setup Project](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#1-install-angular-cli)
+- [Setup @NgModule](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#5-setup-ngmodule)
+- [Read Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#6-read-an-object)
+- [Read List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#7-read-a-list)
+- [Write Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#8-write-an-object)
+- [Write List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#9-write-a-list)
+- [Run App](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#10-run-your-app)
+- [Full Offline Support](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#steps-to-get-full-offline-support-optional)
+
 ## Steps to create project
 
 ### 1. Install [angular-cli](https://github.com/angular/angular-cli)
@@ -134,7 +145,125 @@ In [`/src/app/examples/read-list/read-list.component.html`](https://github.com/a
 </ul>
 ```
 
-### 8. Run your app
+### 8. Write an object
+
+In [`/src/app/examples/write-object/write-object.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-object/write-object.component.ts):
+
+```ts
+import { Component, OnInit } from '@angular/core';
+
+import { AngularFireOffline, AfoObjectObservable } from 'angularfire2-offline';
+
+@Component({
+  selector: 'app-write-object',
+  templateUrl: './write-object.component.html'
+})
+export class WriteObjectComponent {
+  car: AfoObjectObservable<any>;
+  defaultCar = {
+    'tires': 4,
+    'engine': 'V8',
+    'type': 'Sedan',
+    'maxSpeed': 80
+  };
+  lastSpeed: number;
+  constructor(private afo: AngularFireOffline) {
+    this.car = this.afo.database.object('/car');
+    this.car.subscribe(car => this.lastSpeed = car['maxSpeed']);
+  }
+  /**
+   * Update
+   */
+  increaseSpeed() {
+    this.lastSpeed++;
+    this.car.update({maxSpeed: this.lastSpeed});
+  }
+  /**
+   * Set
+   */
+  reset() {
+    this.car.set(this.defaultCar);
+  }
+  /**
+   * Remove
+   */
+  remove(item) {
+    this.afo.database.object(`/car/${item}`).remove();
+  }
+}
+```
+
+In [`/src/app/examples/write-object/write-object.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-object/write-object.component.html):
+
+```html
+<button (click)="increaseSpeed()">Speed +1</button>
+<button (click)="remove('engine')">Remove engine</button>
+<button (click)="reset()">Reset</button>
+
+<h3>JSON Result:</h3>
+{{ car | async | json }}
+```
+
+### 9. Write a list
+
+In [`/src/app/examples/write-list/write-list.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-list/write-list.component.ts):
+
+```ts
+import { Component, OnInit } from '@angular/core';
+
+import { AngularFireOffline, AfoListObservable } from 'angularfire2-offline';
+
+@Component({
+  selector: 'app-write-list',
+  templateUrl: './write-list.component.html'
+})
+export class WriteListComponent {
+  groceries: AfoListObservable<any[]>;
+  constructor(private afo: AngularFireOffline) {
+    this.groceries = this.afo.database.list('/groceries');
+  }
+  addItem(newName: string) {
+    this.groceries.push({ text: newName });
+  }
+  deleteEverything() {
+    this.groceries.remove();
+  }
+  deleteItem(key: string) {
+    this.groceries.remove(key);
+  }
+  prioritize(item) {
+    this.groceries.update(item.$key, { text: item.text + '‼️' });
+  }
+  reset() {
+    this.groceries.remove();
+    this.groceries.push({text: 'Milk'});
+    this.groceries.push({text: 'Eggs'});
+    this.groceries.push({text: 'Bread'});
+  }
+}
+```
+
+In [`/src/app/examples/write-list/write-list.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-list/write-list.component.html):
+
+```html
+
+<ul>
+  <li *ngFor="let item of groceries | async">
+    {{item.text}}
+    <button (click)="deleteItem(item.$key)" *ngIf="item.text === 'Bread'">Make gluten free ❌ 🍞</button>
+    <button (click)="prioritize(item)" *ngIf="item.text === 'Eggs'">Make {{item.text}} important ‼️</button>
+  </li>
+</ul>
+<p *ngIf="(groceries | async)?.length === 0">List empty</p>
+
+<button (click)="addItem('Milk')">Add Milk 🥛</button>
+<button (click)="addItem('Apples')">Add Apples 🍎</button>
+<button (click)="addItem('Cucumbers')">Add Cucumbers 🥒</button>
+<button (click)="deleteEverything()">Remove Everything 🔥</button>
+<button (click)="reset()">Reset ♻️</button>
+```
+
+### 10. Run your app
 
 ```bash
 ng serve
@@ -170,7 +299,7 @@ In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/bl
 
 Create an empty file called `service-worker.js` located at [`/src/service-worker.js`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/service-worker.js)
 
-### 2. Add assets
+### 3. Add assets
 
 In [`/angular-cli.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/angular-cli.json#L10-L14) add `service-worker.js` to the assets array:
 
@@ -182,13 +311,13 @@ In [`/angular-cli.json`](https://github.com/adriancarriger/angularfire2-offline/
 ],
 ```
 
-### 3. Install sw-precache
+### 4. Install sw-precache
 
 ```bash
 npm install sw-precache --save-dev
 ```
 
-### 4. Add `package.json` scripts
+### 5. Add `package.json` scripts
 
 In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L13-L14) add the `sw` and `build:prod` scripts:
 
@@ -204,7 +333,7 @@ In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob
 }
 ```
 
-### 5. Create `sw-precache-config.js`
+### 6. Create `sw-precache-config.js`
 
 In the root of your project create a file called [`sw-precache-config.js`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/sw-precache-config.js) with the following config:
 
@@ -225,7 +354,7 @@ You can also add other items to the staticFileGlobs array such as:
 - `'dist/assets/**'` to cache assets
 - `'dist/**.ttf'` to cache fonts
 
-### 6. Build your app
+### 7. Build your app
 
 Running the following command should result in an app that will load offline after the inital visit
 

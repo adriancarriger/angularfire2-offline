@@ -12,8 +12,8 @@
 
 ## Demos
 
-- [`Angular 2+ Demo`](https://angularfire2-offline.firebaseapp.com/) -- [tutorial 📗](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/README.md)
-- [`Ionic 2+ Demo`](https://ionic-pwa-ad85b.firebaseapp.com) -- [tutorial 📘](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/ionic/README.md)
+- [`Angular 2+ Demo`](https://angularfire2-offline.firebaseapp.com/) -- [tutorial 📗](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#angular-cli-offline-tutorial-)
+- [`Ionic 2+ Demo`](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/ionic#ionic-offline-tutorial-)
 
 ## Install
 

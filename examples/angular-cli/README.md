@@ -8,10 +8,10 @@ How to create an app that loads Firebase data and static resources while offline
 
 - [Setup Project](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#1-install-angular-cli)
 - [Setup @NgModule](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#5-setup-ngmodule)
-- [Read Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#6-read-an-object)
-- [Read List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#7-read-a-list)
-- [Write Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#8-write-an-object)
-- [Write List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#9-write-a-list)
+- [Read Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#6-read-an-object---demo)
+- [Read List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#7-read-a-list---demo)
+- [Write Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#8-write-an-object---demo)
+- [Write List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#9-write-a-list---demo)
 - [Run App](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#10-run-your-app)
 - [Full Offline Support](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#steps-to-get-full-offline-support-recommended)
 - [Testing Locally](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#testing-locally-recommended)
@@ -282,7 +282,7 @@ The following steps are based on [this tutorial](https://coryrylan.com/blog/fast
 
 ### 1. Add a service worker
 
-In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/index.html#L13-L21) add the following just before the closing `body` tag:
+In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/index.html#L12-L20) add the following just before the closing `body` tag:
 
 ```html
 <script>
@@ -302,7 +302,7 @@ Create an empty file called `service-worker.js` located at [`/src/service-worker
 
 ### 3. Add assets
 
-In [`/angular-cli.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/angular-cli.json#L10-L14) add `service-worker.js` to the assets array:
+In [`/angular-cli.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/angular-cli.json#L11-L15) add `service-worker.js` to the assets array:
 
 ```json
 "assets": [
@@ -320,7 +320,7 @@ npm install sw-precache --save-dev
 
 ### 5. Add `package.json` scripts
 
-In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L13-L14) add the `sw` and `build:prod` scripts:
+In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L12-L13) add the `sw` and `build:prod` scripts:
 
 ```json
 "scripts": {

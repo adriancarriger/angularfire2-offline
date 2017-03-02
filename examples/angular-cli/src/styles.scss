@@ -8,3 +8,13 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
 }
+
+.app-content {
+  padding: 20px;
+}
+.mat-card-content, .mat-card-header .mat-card-title, .mat-card-subtitle {
+  font-size: 16px;
+}
+md-card {
+  margin-bottom: 15px;
+}

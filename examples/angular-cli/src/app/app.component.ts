@@ -7,10 +7,10 @@ import { WriteListCode } from './examples/write-list/write-list.code';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
+  // Related to showing the demo
   readObjectCode = ReadObjectCode;
   readListCode = ReadListCode;
   writeObjectCode = WriteObjectCode;

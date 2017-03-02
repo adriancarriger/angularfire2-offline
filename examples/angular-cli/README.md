@@ -40,7 +40,7 @@ Now that you have a new project setup, install [AngularFire2Offline](https://www
 
 ### 5. Setup @NgModule
 
-Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/b3eed643262c8f38f54b062c1aa664017bc85dd3/examples/angular-cli/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
+Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
 This can be found in your project at [the Firebase Console](https://console.firebase.google.com):
 
 ```ts
@@ -61,12 +61,14 @@ export const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ...OtherComponents
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireOfflineModule,
-    BrowserModule
+    BrowserModule,
+    ...OtherModules
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -74,35 +76,57 @@ export const firebaseConfig = {
 export class AppModule { }
 ```
 
-### 6. Use in a component
+### 6. Read an object
 
-In [`/src/app/app.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/b3eed643262c8f38f54b062c1aa664017bc85dd3/examples/angular-cli/src/app/app.component.ts):
+In [`/src/app/examples/read-object/read-object.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-object/read-object.component.ts):
 
 ```ts
-import { Component } from '@angular/core';
-import {
-  AngularFireOffline,
-  AfoListObservable,
-  AfoObjectObservable } from 'angularfire2-offline';
+import { Component, OnInit } from '@angular/core';
+
+import { AngularFireOffline, AfoObjectObservable } from 'angularfire2-offline';
 
 @Component({
-  selector: 'project-name-app',
-  templateUrl: 'app.component.html'
+  selector: 'app-read-object',
+  templateUrl: './read-object.component.html'
 })
-export class MyApp {
+export class ReadObjectComponent {
   info: AfoObjectObservable<any>;
-  items: AfoListObservable<any[]>;
   constructor(afo: AngularFireOffline) {
     this.info = afo.database.object('/info');
+  }
+}
+```
+
+In [`/src/app/examples/read-object/read-object.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-object/read-object.component.html):
+
+```html
+<h2>{{ (info | async)?.title }}</h2>
+```
+
+### 7. Read a list
+
+In [`/src/app/examples/read-list/read-list.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-list/read-list.component.ts):
+
+```ts
+import { Component, OnInit } from '@angular/core';
+
+import { AngularFireOffline, AfoListObservable } from 'angularfire2-offline';
+
+@Component({
+  selector: 'app-read-list',
+  templateUrl: './read-list.component.html'
+})
+export class ReadListComponent {
+  items: AfoListObservable<any[]>;
+  constructor(afo: AngularFireOffline) {
     this.items = afo.database.list('/items');
   }
 }
 ```
 
-In [`/src/app/app.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/b3eed643262c8f38f54b062c1aa664017bc85dd3/examples/angular-cli/src/app/app.component.html):
+In [`/src/app/examples/read-list/read-list.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-list/read-list.component.html):
 
 ```html
-<h1>{{ (info | async)?.name }}</h1>
 <ul>
   <li *ngFor="let item of items | async">
     {{ item?.name }}
@@ -110,7 +134,7 @@ In [`/src/app/app.component.html`](https://github.com/adriancarriger/angularfire
 </ul>
 ```
 
-### 7. Run your app
+### 8. Run your app
 
 ```bash
 ng serve

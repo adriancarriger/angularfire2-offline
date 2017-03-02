@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { DemoService } from '../demo.service';
+import { DemoService } from './demo.service';
 
 @Component({
   selector: 'app-demo',

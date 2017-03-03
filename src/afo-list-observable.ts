@@ -1,15 +1,15 @@
-import { Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 import { unwrap } from './database';
 import { OfflineWrite } from './offline-write';
 import { LocalUpdateService } from './local-update-service';
 
-export class AfoListObservable<T> extends Subject<T> {
+export class AfoListObservable<T> extends ReplaySubject<T> {
   path: string;
   que = [];
   value: any;
   constructor(private ref, private localUpdateService: LocalUpdateService) {
-    super();
+    super(1);
     this.init();
   }
   emulate(method, value = null, key?) {

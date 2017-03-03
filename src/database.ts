@@ -90,11 +90,7 @@ export class AngularFireOfflineDatabase {
    * [valid queries](https://goo.gl/iHiAuB)
    */
   list(key: string, query?: FirebaseListFactoryOpts): AfoListObservable<any[]> {
-    if (!(key in this.listCache)) {
-      this.setupList(key, query);
-    } else {
-      setTimeout(() => this.listCache[key].sub.next(this.listCache[key].sub.value));
-    }
+    if (!(key in this.listCache)) { this.setupList(key, query); }
     return this.listCache[key].sub;
   }
   /**
@@ -109,11 +105,7 @@ export class AngularFireOfflineDatabase {
    * [valid queries](https://goo.gl/iHiAuB) available [for objects](https://goo.gl/IV8DYA)
    */
   object(key: string, query?: FirebaseObjectFactoryOpts): AfoObjectObservable<any> {
-    if (!(key in this.objectCache)) {
-      this.setupObject(key, query);
-    } else {
-      setTimeout(() => this.objectCache[key].sub.next(this.objectCache[key].sub.value));
-    }
+    if (!(key in this.objectCache)) { this.setupObject(key, query); }
     return this.objectCache[key].sub;
   }
   /**

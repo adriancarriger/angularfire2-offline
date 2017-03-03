@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@angular/cli@^1.0.0-rc.1":
+"@angular/cli@1.0.0-rc.1":
   version "1.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-1.0.0-rc.1.tgz#102b2bf47a9d74a581d6d1821ce2daf0594d3145"
   dependencies:
@@ -226,9 +226,9 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angularfire2-offline@2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-2.0.2.tgz#107f2057c78bfd5cf2eced6897779ead13fae266"
+angularfire2-offline@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-2.0.3.tgz#a1f41af3e98584e966f19c8e9d490d9570ad55da"
   dependencies:
     localforage "^1.4.3"
 

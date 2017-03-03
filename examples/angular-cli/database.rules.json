@@ -19,6 +19,33 @@
       },
       "$other": { ".validate": "false" }
     },
+    "conflict": {
+      "messages": {
+        ".write": "true",
+        ".indexOn": ["timestamp"],
+        "$message": {
+          ".validate": "newData.child('timestamp').val() < (now + 5000)",
+          "timestamp": {
+            ".validate": "newData.isNumber()"
+          },
+          "text": {
+            ".validate": "root.child('rules/messages/' + newData.val()).exists()"
+          },
+          "$other": { ".validate": "false" }
+        }
+      },
+      "toggle": {
+        ".write": "true",
+        ".validate": "newData.child('timestamp').val() > data.child('timestamp').val() && newData.child('timestamp').val() < (now + 5000)",
+        "requested": {
+          ".validate": "newData.isBoolean()"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": { ".validate": "false" }
+      }
+    },
     "groceries":{
       ".write": "true",
       "$item": {

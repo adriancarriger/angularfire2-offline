@@ -10,18 +10,7 @@ import { WriteObjectCode } from '../examples/write-object/write-object.code';
  */
 @Component({
   selector: 'app-shell',
-  template: `
-  <nav md-tab-nav-bar>
-    <a md-tab-link
-       *ngFor="let tabLink of tabLinks; let i = index"
-       [routerLink]="tabLink.link"
-       [active]="activeLinkIndex === i"
-       (click)="activeLinkIndex = i">
-      {{tabLink.label}}
-    </a>
-  </nav>
-  <router-outlet></router-outlet>
-  `
+  templateUrl: './shell.component.html'
 })
 export class ShellComponent implements OnInit {
   /**
@@ -32,7 +21,8 @@ export class ShellComponent implements OnInit {
     { label: 'Read Object', link: 'read-object' },
     { label: 'Read List', link: 'read-list' },
     { label: 'Write Object', link: 'write-object' },
-    { label: 'Write List', link: 'write-list' }
+    { label: 'Write List', link: 'write-list' },
+    { label: 'Write Conflicts 😕', link: 'write-conflicts' }
   ];
   constructor(private router: Router) { }
   ngOnInit() {
@@ -66,7 +56,7 @@ export class ReadObjectTabComponent {
   `,
 })
 export class ReadListTabComponent {
-  readListCode = ReadListCode;;
+  readListCode = ReadListCode;
 }
 
 @Component({

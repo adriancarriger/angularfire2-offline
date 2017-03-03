@@ -1,0 +1,22 @@
+<h3>Structure</h3>
+<p>Let's say you have a toggle setting. If you have two devices that toggle the setting offline, then which one should win when they come back online? A simple solution to this is to use the latest time that the user made the change.</p>
+<p>You can convert boolean variables to an object that has a timestamp like the following JSON:</p>
+<md-card class="readable">
+  <pre>
+    <code [innerHtml]="structure"></code>
+  </pre>
+</md-card>
+
+<h3>Rules</h3>
+<p>To achive this, only allow writes that have a later timestamp than the last write.</p>
+<md-card class="readable">
+  <pre>
+    <code [innerHtml]="rules"></code>
+  </pre>
+</md-card>
+
+
+<h3>Code</h3>
+<app-demo [code]="conflictToggleCode">
+  <app-conflict-toggle></app-conflict-toggle>
+</app-demo>

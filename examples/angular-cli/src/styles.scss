@@ -18,3 +18,14 @@ h1, h2, h3, h4, h5, h6 {
 md-card {
   margin-bottom: 15px;
 }
+.readable {
+  margin: 15px 0 25px 0;
+  background-color: #fcfcfc;
+}
+
+pre {
+  overflow: scroll;
+  code {
+    font-size: 16px;
+  }
+}

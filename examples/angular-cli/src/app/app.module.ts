@@ -4,7 +4,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireOfflineModule } from 'angularfire2-offline';
 
 import { AppComponent } from './app.component';
-import { DemoModule } from './demo/demo.module';
+import { ShellModule } from './shell/shell.module';
 
 // Must export the config
 export const firebaseConfig = {
@@ -22,7 +22,7 @@ export const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireOfflineModule,
     BrowserModule,
-    DemoModule
+    ShellModule
   ],
   providers: [],
   bootstrap: [AppComponent]

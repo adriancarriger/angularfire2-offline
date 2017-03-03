@@ -4,8 +4,7 @@ import { DemoService } from './demo.service';
 
 @Component({
   selector: 'app-demo',
-  templateUrl: './demo.component.html',
-  styleUrls: ['./demo.component.scss']
+  templateUrl: './demo.component.html'
 })
 export class DemoComponent implements OnInit {
   @Input() code;

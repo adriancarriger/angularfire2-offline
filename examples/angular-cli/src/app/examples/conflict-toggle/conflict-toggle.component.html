@@ -1,0 +1,7 @@
+<md-slide-toggle (change)="updateFries($event.checked)" [checked]="(fries | async)?.requested">
+  Would you like fries with that?
+</md-slide-toggle>
+
+<div>
+  🍔<span *ngIf="(fries | async)?.requested"> 🍟</span>
+</div>

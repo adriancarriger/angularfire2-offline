@@ -1,0 +1,20 @@
+<h3>Structure</h3>
+<p>Let's say you are using the following data structure for a message app. You want to allow users to send messages while offline without overwriting, losing, or unorganizing data.</p>
+<md-card class="readable">
+  <pre>
+    <code [innerHtml]="structure"></code>
+  </pre>
+</md-card>
+
+<h3>Rules</h3>
+<p>To achive this, just use the `push` method and <a href="https://firebase.google.com/docs/database/security/indexing-data">.indexOn</a> the timestamp with a related query.</p>
+<md-card class="readable">
+  <pre>
+    <code [innerHtml]="rules"></code>
+  </pre>
+</md-card>
+
+<h3>Code</h3>
+<app-demo [code]="conflictMessagesCode">
+  <app-conflict-messages></app-conflict-messages>
+</app-demo>

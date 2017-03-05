@@ -18,9 +18,10 @@ import {
   ReadObjectTabComponent,
   ShellComponent,
   WriteListTabComponent,
-  WriteObjectTabComponent } from './shell.component';
-  import { ConflictMessagesComponent } from '../examples/conflict-messages/conflict-messages.component';
-  import { ConflictToggleComponent } from '../examples/conflict-toggle/conflict-toggle.component';
+  WriteObjectTabComponent
+} from './shell.component';
+import { ConflictMessagesComponent } from '../examples/conflict-messages/conflict-messages.component';
+import { ConflictToggleComponent } from '../examples/conflict-toggle/conflict-toggle.component';
 import { ReadListComponent } from '../examples/read-list/read-list.component';
 import { ReadObjectComponent } from '../examples/read-object/read-object.component';
 import { WriteListComponent } from '../examples/write-list/write-list.component';

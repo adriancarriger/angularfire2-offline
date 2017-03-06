@@ -1,6 +1,4 @@
-# AfoTest
-
-# AngularFire2 Offline Example
+# AngularFire2 Offline - Base Angular CLI project
 
 The is the example project for [AngularFire2 Offline](https://github.com/adriancarriger/angularfire2-offline).
 
@@ -8,13 +6,13 @@ The is the example project for [AngularFire2 Offline](https://github.com/adrianc
 
 - Quickly demonstraight a specific use case/scenario
 
-## Demo Link
+## Base Demo Link
 
 [https://adriancarriger.github.io/angularfire2-offline/base/angular-cli/dist](https://adriancarriger.github.io/angularfire2-offline/base/angular-cli/dist)
 
 ## Quick setup
 
-Run from root of project:
+Run from the root of this branch:
 
 ```bash
 ./setup.sh

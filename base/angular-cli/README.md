@@ -12,3 +12,15 @@ The is the example project for [AngularFire2 Offline](https://github.com/adrianc
 
 [https://adriancarriger.github.io/angularfire2-offline/base/angular-cli/dist](https://adriancarriger.github.io/angularfire2-offline/base/angular-cli/dist)
 
+## Quick setup
+
+Run from root of project:
+
+```bash
+./setup.sh
+```
+## Test locally
+
+```bash
+npm run static-serve
+```

@@ -18,6 +18,7 @@ npm-debug.log
 coverage
 *.metadata.json
 bundles
+issues
 
 #################
 ## JetBrains

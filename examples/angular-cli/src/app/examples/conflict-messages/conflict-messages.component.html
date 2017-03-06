@@ -1,9 +1,0 @@
-<h4>Recent Messages</h4>
-<ul>
-  <li *ngFor="let message of messages | async">
-    <span>{{message.timestamp | date:'mediumTime'}} - </span>
-    <span>{{message.text}}</span>
-  </li>
-</ul>
-
-<button (click)="sendMessage()" md-raised-button color="accent">Send message 💬</button>

@@ -10,4 +10,4 @@ The is the example project for [AngularFire2 Offline](https://github.com/adrianc
 
 ## Demo Link
 
-[https://adriancarriger.github.io/gh-test/issues/base/angular-cli/dist](https://adriancarriger.github.io/gh-test/issues/base/angular-cli/dist)
+[https://adriancarriger.github.io/angularfire2-offline/base/angular-cli/dist](https://adriancarriger.github.io/angularfire2-offline/base/angular-cli/dist

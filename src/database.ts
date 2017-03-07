@@ -86,11 +86,11 @@ export class AngularFireOfflineDatabase {
    * `$key` or `$exists`
    *
    * @param key the Firebase reference for this list
-   * @param query optional angularfire2 query param. Allows all
+   * @param options optional angularfire2 options param. Allows all
    * [valid queries](https://goo.gl/iHiAuB)
    */
-  list(key: string, query?: FirebaseListFactoryOpts): AfoListObservable<any[]> {
-    if (!(key in this.listCache)) { this.setupList(key, query); }
+  list(key: string, options?: FirebaseListFactoryOpts): AfoListObservable<any[]> {
+    if (!(key in this.listCache)) { this.setupList(key, options); }
     return this.listCache[key].sub;
   }
   /**
@@ -101,11 +101,11 @@ export class AngularFireOfflineDatabase {
    * `$key` or `$value`
    *
    * @param key the Firebase reference for this list
-   * @param query optional angularfire2 query param. Allows all
+   * @param options optional angularfire2 options param. Allows all
    * [valid queries](https://goo.gl/iHiAuB) available [for objects](https://goo.gl/IV8DYA)
    */
-  object(key: string, query?: FirebaseObjectFactoryOpts): AfoObjectObservable<any> {
-    if (!(key in this.objectCache)) { this.setupObject(key, query); }
+  object(key: string, options?: FirebaseObjectFactoryOpts): AfoObjectObservable<any> {
+    if (!(key in this.objectCache)) { this.setupObject(key, options); }
     return this.objectCache[key].sub;
   }
   /**
@@ -150,12 +150,12 @@ export class AngularFireOfflineDatabase {
    * the new value is sent to all app subscribers, and the value is stored locally
    *
    * @param key passed directly from {@link object}'s key param
-   * @param query passed directly from {@link object}'s query param
+   * @param options passed directly from {@link object}'s options param
    */
-  private setupObject(key: string, query: FirebaseObjectFactoryOpts = {}) {
+  private setupObject(key: string, options: FirebaseObjectFactoryOpts = {}) {
     // Get Firebase ref
-    query.preserveSnapshot = true;
-    const ref: FirebaseObjectObservable<any> = this.af.database.object(key, query);
+    options.preserveSnapshot = true;
+    const ref: FirebaseObjectObservable<any> = this.af.database.object(key, options);
     // Create cache
     this.objectCache[key] = {
       loaded: false,
@@ -220,12 +220,12 @@ export class AngularFireOfflineDatabase {
    * {@link setList}
    *
    * @param key passed directly from {@link list}'s key param
-   * @param query passed directly from {@link list}'s query param
+   * @param options passed directly from {@link list}'s options param
    */
-  private setupList(key: string, query: FirebaseListFactoryOpts = {}) {
+  private setupList(key: string, options: FirebaseListFactoryOpts = {}) {
     // Get Firebase ref
-    query.preserveSnapshot = true;
-    const ref: FirebaseListObservable<any[]> = this.af.database.list(key, query);
+    options.preserveSnapshot = true;
+    const ref: FirebaseListObservable<any[]> = this.af.database.list(key, options);
     // Create cache
     this.listCache[key] = {
       loaded: false,

@@ -5,7 +5,7 @@ export const ReadObjectCode = {
 `
 import { Component } from '@angular/core';
 
-import { AngularFireOffline, AfoObjectObservable } from 'angularfire2-offline';
+import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
 
 @Component({
   selector: 'app-read-object',

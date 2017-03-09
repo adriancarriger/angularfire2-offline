@@ -95,7 +95,7 @@ In [`/src/app/examples/read-object/read-object.component.ts`](https://github.com
 ```ts
 import { Component, OnInit } from '@angular/core';
 
-import { AngularFireOffline, AfoObjectObservable } from 'angularfire2-offline';
+import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
 
 @Component({
   selector: 'app-read-object',
@@ -122,7 +122,7 @@ In [`/src/app/examples/read-list/read-list.component.ts`](https://github.com/adr
 ```ts
 import { Component, OnInit } from '@angular/core';
 
-import { AngularFireOffline, AfoListObservable } from 'angularfire2-offline';
+import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
 
 @Component({
   selector: 'app-read-list',
@@ -153,7 +153,7 @@ In [`/src/app/examples/write-object/write-object.component.ts`](https://github.c
 ```ts
 import { Component, OnInit } from '@angular/core';
 
-import { AngularFireOffline, AfoObjectObservable } from 'angularfire2-offline';
+import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
 
 @Component({
   selector: 'app-write-object',
@@ -212,7 +212,7 @@ In [`/src/app/examples/write-list/write-list.component.ts`](https://github.com/a
 ```ts
 import { Component, OnInit } from '@angular/core';
 
-import { AngularFireOffline, AfoListObservable } from 'angularfire2-offline';
+import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
 
 @Component({
   selector: 'app-write-list',

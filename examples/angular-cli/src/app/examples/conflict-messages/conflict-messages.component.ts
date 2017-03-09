@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AngularFireOffline, AfoListObservable } from 'angularfire2-offline';
+import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
 
 import { Random } from './words';
 

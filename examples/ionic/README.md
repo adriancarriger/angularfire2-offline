@@ -43,7 +43,7 @@ This can be found in your project at [the Firebase Console](https://console.fire
 import { NgModule, ErrorHandler } from '@angular/core';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireOfflineModule } from 'angularfire2-offline';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
@@ -60,28 +60,29 @@ export const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    MyApp,
     AboutPage,
     ContactPage,
     HomePage,
+    MyApp,
     TabsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireOfflineModule,
+    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
     AboutPage,
     ContactPage,
     HomePage,
+    MyApp,
     TabsPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule { }
+
 ```
 
 ### 6. Use in a component

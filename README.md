@@ -61,9 +61,9 @@ export class AppModule { }
 ```ts
 import { Component } from '@angular/core';
 import {
-  AngularFireOffline,
   AfoListObservable,
-  AfoObjectObservable } from 'angularfire2-offline';
+  AfoObjectObservable,
+  AngularFireOffline } from 'angularfire2-offline';
 
 @Component({
   selector: 'project-name-app',

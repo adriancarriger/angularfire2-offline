@@ -13,7 +13,7 @@ export const ConflictToggleCode = {
   typescript:
 `
 import { Component } from '@angular/core';
-import { AngularFireOffline, AfoObjectObservable } from 'angularfire2-offline';
+import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
 
 @Component({
   selector: 'app-conflict-toggle',

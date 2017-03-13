@@ -1,6 +1,6 @@
 # AngularFire2 Offline [![npm version](https://badge.fury.io/js/angularfire2-offline.svg)](https://badge.fury.io/js/angularfire2-offline)
 
-🔌 A simple wrapper for [AngularFire2](https://github.com/angular/angularfire2) to cache Firebase data for offline use, even after a complete refresh.
+🔌 A simple wrapper for [AngularFire2](https://github.com/angular/angularfire2) to read and write to Firebase while offline, even after a complete refresh.
 
 [![Build Status](http://img.shields.io/travis/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://travis-ci.org/adriancarriger/angularfire2-offline)
 [![Codecov](https://img.shields.io/codecov/c/github/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://codecov.io/gh/adriancarriger/angularfire2-offline)
@@ -89,8 +89,8 @@ export class MyApp {
 ## How it works
 
  - While online, Firebase data is stored locally (as data changes the local store is updated)
- - While offline, local data is served if available
- - On reconnect, Observables update app with new Firebase data
+ - While offline, local data is served if available, and writes are stored locally
+ - On reconnect, app updates with new Firebase data, and writes are sent to Firebase
  - Even while online, local data is used first when available which results in a faster load
 
 ## License

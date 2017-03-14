@@ -107,8 +107,8 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     afo: AngularFireOffline) {
-    this.info = afo.object('/info');
-    this.items = afo.list('/items');
+    this.info = afo.database.object('/info');
+    this.items = afo.database.list('/items');
   }
 }
 ```

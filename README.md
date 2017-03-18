@@ -56,6 +56,9 @@ export class AppModule { }
 ## Usage
 
 - Methods mirror AngularFire2 database methods for [`object`](https://github.com/angular/angularfire2/blob/master/docs/2-retrieving-data-as-objects.md#retrieve-data) and [`list`](https://github.com/angular/angularfire2/blob/master/docs/3-retrieving-data-as-lists.md#retrieve-data).
+
+### Read Data Offline
+
 - [Querying lists](https://github.com/angular/angularfire2/blob/master/docs/4-querying-lists.md) is supported
 
 ```ts
@@ -85,6 +88,14 @@ export class MyApp {
   }
 }
 ```
+
+### Write data offline
+
+If writes are made offline followed by a page refresh, the writes will be sent when a connection becomes available.
+
+- [Write object](https://angularfire2-offline.firebaseapp.com/write-object)
+- [Write list](https://angularfire2-offline.firebaseapp.com/write-list)
+- [Resolve write conflicts](https://angularfire2-offline.firebaseapp.com/write-conflicts/messages)
 
 ## How it works
 

@@ -13,29 +13,35 @@ import { LocalUpdateService } from './local-update-service';
 import { WriteComplete } from './offline-write';
 
 /**
- * @whatItDoes Wraps some angularfire2 read methods for returning data from Firebase with the added
- * function of storing the data locally for offline use.
+ * @whatItDoes Wraps the [AngularFire2](https://github.com/angular/angularfire2) database methods
+ * with offline read and write support. Data should persist even after a complete refresh.
  *
  * --------------------------------------------------------
  * --------------------------------------------------------
  *
- * **Features:**
+ * **How it works:**
  * - While online, Firebase data is stored locally (as data changes the local store is updated)
- * - While offline, local data is served if available
- * - On reconnect, Observables update app with new Firebase data
+ * - While offline, local data is served if available, and writes are stored locally
+ * - On reconnect, app updates with new Firebase data, and writes are sent to Firebase
  * - Even while online, local data is used first when available which results in a faster load
- *
  */
 @Injectable()
 export class AngularFireOfflineDatabase {
   /**
-   * - In-memory cache containing `ReplayItem`s that return the latest value
+   * - In-memory cache containing `Observables`s that provide the latest value
    * for any given Firebase reference.
-   * - That value can come from a Firebase subscription or from the device if there is no
+   * - The latest value can come from a Firebase subscription or from the device if there is no
    * internet connection.
    */
   objectCache: AngularFireOfflineCache = {};
   listCache: AngularFireOfflineCache = {};
+  cacheIndex = 0;
+  checkEmulateQue = {};
+  processing = {
+    current: true,
+    listCache: {},
+    objectCache: {}
+  };
   /**
    * Creates the {@link AngularFireOfflineDatabase}
    *
@@ -44,13 +50,6 @@ export class AngularFireOfflineDatabase {
    * storing data offline using asynchronous storage (IndexedDB or WebSQL) with a simple,
    * localStorage-like API
    */
-  cacheIndex = 0;
-  checkEmulateQue = {};
-  processing = {
-    current: true,
-    listCache: {},
-    objectCache: {}
-  };
   constructor(private af: AngularFire,
     @Inject(LocalForageToken) private localForage: any,
     private localUpdateService: LocalUpdateService) {
@@ -78,15 +77,15 @@ export class AngularFireOfflineDatabase {
   }
   /**
    * Returns an Observable array of Firebase snapshot data
-   * - This method can be used in place of angularfire2's list method and it will work offline
+   * - This method can be used in place of AngularFire2's list method and it will work offline
    * - Sets up a list via {@link setupList} if {@link cache} is empty for this reference.
    * - Each list item is stored as a separate object for offline use. This allows offline access to
    * the entire list or a specific object in the list if the list is stored offline.
-   * - Does not include angularfire2 meta-fields [such as](https://goo.gl/VhmxQW)
-   * `$key` or `$exists`
+   * - Includes AngularFire2 meta-fields [such as](https://goo.gl/VhmxQW)
+   * `$key` and `$exists`
    *
    * @param key the Firebase reference for this list
-   * @param options optional angularfire2 options param. Allows all
+   * @param options optional AngularFire2 options param. Allows all
    * [valid queries](https://goo.gl/iHiAuB)
    */
   list(key: string, options?: FirebaseListFactoryOpts): AfoListObservable<any[]> {
@@ -95,14 +94,14 @@ export class AngularFireOfflineDatabase {
   }
   /**
    * Returns an Observable object of Firebase snapshot data
-   * - This method can be used in place of angularfire2's object method and it will work offline
+   * - This method can be used in place of AngularFire2's object method and it will work offline
    * - Sets up a list via {@link setupList} if {@link cache} is empty for this reference
-   * - Does not include angularfire2 meta-fields [such as](https://goo.gl/XiwE0h)
+   * - Does not include AngularFire2 meta-fields [such as](https://goo.gl/XiwE0h)
    * `$key` or `$value`
    *
    * @param key the Firebase reference for this list
-   * @param options optional angularfire2 options param. Allows all
-   * [valid queries](https://goo.gl/iHiAuB) available [for objects](https://goo.gl/IV8DYA)
+   * @param options AngularFire2 options param. Allows all [valid options](https://goo.gl/iHiAuB)
+   * available [for objects](https://goo.gl/IV8DYA)
    */
   object(key: string, options?: FirebaseObjectFactoryOpts): AfoObjectObservable<any> {
     if (!(key in this.objectCache)) { this.setupObject(key, options); }
@@ -143,11 +142,11 @@ export class AngularFireOfflineDatabase {
     });
   }
   /**
-   * - Sets up a {@link AngularFireOfflineCache} item that provides Firebase data
+   * - Sets up an {@link AngularFireOfflineCache} item that provides Firebase data
    * - Subscribes to the object's Firebase reference
    * - Gets the most recent locally stored non-null value and sends to all app subscribers
-   * - When Firebase sends a value this {@link AngularFireOfflineCache} item is set to loaded,
-   * the new value is sent to all app subscribers, and the value is stored locally
+   * - When Firebase sends a value, the related {@link AngularFireOfflineCache} item is set to
+   * loaded, the new value is sent to all app subscribers, and the value is stored locally
    *
    * @param key passed directly from {@link object}'s key param
    * @param options passed directly from {@link object}'s options param

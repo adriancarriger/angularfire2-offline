@@ -28,13 +28,18 @@ import { WriteComplete } from './offline-write';
 @Injectable()
 export class AngularFireOfflineDatabase {
   /**
-   * - In-memory cache containing `Observables`s that provide the latest value
-   * for any given Firebase reference.
-   * - The latest value can come from a Firebase subscription or from the device if there is no
-   * internet connection.
+   * In-memory cache containing `Observables`s that provide the latest value
+   * for any given Firebase object reference.
    */
   objectCache: AngularFireOfflineCache = {};
+  /**
+   * In-memory cache containing `Observables`s that provide the latest value
+   * for any given Firebase list reference.
+   */
   listCache: AngularFireOfflineCache = {};
+  /**
+   * Current item being processed in the localForage `WriteCache`
+   */
   cacheIndex = 0;
   checkEmulateQue = {};
   processing = {
@@ -55,6 +60,11 @@ export class AngularFireOfflineDatabase {
     private localUpdateService: LocalUpdateService) {
     this.processWrites();
   }
+  /**
+   * Process writes made while offline since the last page refresh.
+   *
+   * Recursive function that will continue until all writes have processed.
+   */
   processWrites() {
     this.localForage.getItem('write').then((writeCache: WriteCache) => {
       if (!writeCache) { this.processingComplete(); return; }
@@ -132,6 +142,9 @@ export class AngularFireOfflineDatabase {
       }
     });
   }
+  /**
+   * Updates subscribers with the last value found while processing during {@link processWrites}
+   */
   private processingComplete() {
     this.processing.current = false;
     Object.keys(this.processing.listCache).forEach(cacheKey => {

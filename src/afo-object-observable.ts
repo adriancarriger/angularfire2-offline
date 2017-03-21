@@ -12,6 +12,11 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
     super(1);
     this.init();
   }
+  /**
+   * Emulates an offline write assuming the remote data has not changed
+   * @param method AngularFire2 write method to emulate
+   * @param value new value to write
+   */
   emulate(method, value = null) {
     const clonedValue = JSON.parse(JSON.stringify(value));
     if (this.value === undefined) {

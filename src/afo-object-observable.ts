@@ -29,6 +29,10 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
     this.processEmulation(method, clonedValue);
     this.updateSubscribers();
   }
+  /**
+   * - Gets the path of the reference
+   * - Subscribes to the observable so that emulation is applied after there is an initial value
+   */
   init() {
     this.path = this.ref.$ref.toString().substring(this.ref.$ref.database.ref().toString().length - 1);
     this.subscribe(newValue => {
@@ -42,6 +46,15 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
       }
     });
   }
+  /**
+   * Wraps the AngularFire2 ObjectObservable remove method
+   *
+   * - Emulates a remove locally
+   * - Calls the AngularFire2 remove method (this will not reflect locally if there is no initial
+   * value)
+   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
+   * completes
+   */
   remove(): firebase.Promise<void> {
     this.emulate('remove');
     const promise = this.ref.remove();

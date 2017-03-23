@@ -47,11 +47,10 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
     });
   }
   /**
-   * Wraps the AngularFire2 ObjectObservable remove method
+   * Wraps the AngularFire2 ObjectObservable [remove](https://goo.gl/xHDx1c) method
    *
    * - Emulates a remove locally
-   * - Calls the AngularFire2 remove method (this will not reflect locally if there is no initial
-   * value)
+   * - Calls the AngularFire2 remove method
    * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
    * completes
    */
@@ -61,17 +60,44 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
     this.offlineWrite(promise, 'remove', []);
     return promise;
   }
+  /**
+   * Wraps the AngularFire2 ObjectObservable [set](https://goo.gl/78u3XB) method
+   *
+   * - Emulates a set locally
+   * - Calls the AngularFire2 set method
+   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
+   * completes
+   */
   set(value: any) {
     const promise: firebase.Promise<void> = this.ref.set(value);
     this.offlineWrite(promise, 'set', [value]);
     return promise;
   }
+  /**
+   * Wraps the AngularFire2 ObjectObservable
+   * [update](https://github.com/angular/angularfire2/blob/master/docs/2-retrieving-data-as-objects.md#updating-data) method
+   *
+   * - Emulates a update locally
+   * - Calls the AngularFire2 update method (this will not reflect locally if there is no initial
+   * value)
+   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
+   * completes
+   */
   update(value: Object) {
     this.emulate('update', value);
     const promise = this.ref.update(value);
     this.offlineWrite(promise, 'update', [value]);
     return promise;
   }
+  /**
+   * Convenience method to save an offline write
+   * 
+   * @param promise
+   * [the promise](https://github.com/angular/angularfire2/blob/master/docs/2-retrieving-data-as-objects.md#returning-promises)
+   * returned by calling an AngularFire2 method
+   * @param type the AngularFire2 method being called
+   * @param args an optional array of arguments used to call an AngularFire2 method taking the form of [newValue, options]
+   */
   private offlineWrite(promise: firebase.Promise<void>, type: string, args: any[]) {
     OfflineWrite(
       promise,

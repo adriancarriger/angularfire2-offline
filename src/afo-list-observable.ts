@@ -81,6 +81,14 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
       args,
       this.localUpdateService);
   }
+  /**
+   * Calculates the result of a given emulation without updating subscribers of this Observable
+   *
+   * - this allows for the processing of many emulations before notifying subscribers
+   * @param method the AngularFire2 method being emulated
+   * @param value the new value to be used by the given method
+   * @param key can be used for remove and required for update
+   */
   private processEmulation(method, value, key) {
     if (this.value === null) {
       this.value = [];

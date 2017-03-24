@@ -91,7 +91,7 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
   }
   /**
    * Convenience method to save an offline write
-   * 
+   *
    * @param promise
    * [the promise](https://github.com/angular/angularfire2/blob/master/docs/2-retrieving-data-as-objects.md#returning-promises)
    * returned by calling an AngularFire2 method
@@ -107,6 +107,13 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
       args,
       this.localUpdateService);
   }
+  /**
+   * Calculates the result of a given emulation without updating subscribers of this Observable
+   *
+   * - this allows for the processing of many emulations before notifying subscribers
+   * @param method the AngularFire2 method being emulated
+   * @param value the new value to be used by the given method
+   */
   private processEmulation(method, value) {
     if (method === 'update') {
       Object.keys(value).forEach(key => this.value[key] = value[key]);

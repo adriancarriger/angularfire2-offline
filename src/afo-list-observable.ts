@@ -86,6 +86,15 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
     this.offlineWrite(promise, 'update', [key, value]);
     return promise;
   }
+  /**
+   * Wraps the AngularFire2 FirebaseListObservable [remove](https://goo.gl/MkZTtv) method
+   *
+   * - Emulates a remove locally
+   * - Calls the AngularFire2 remove method
+   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
+   * completes
+   * @param remove if you omit the `key` parameter from `.remove()` it deletes the entire list.
+   */
   remove(key?: string): firebase.Promise<void> {
     this.emulate('remove', null, key);
     const promise = this.ref.remove(key);

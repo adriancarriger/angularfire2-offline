@@ -31,6 +31,10 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
     this.processEmulation(method, clonedValue, key);
     this.updateSubscribers();
   }
+  /**
+   * - Gets the path of the reference
+   * - Subscribes to the observable so that emulation is applied after there is an initial value
+   */
   init() {
     this.path = this.ref.$ref.toString().substring(this.ref.$ref.database.ref().toString().length - 1);
     this.subscribe(newValue => {
@@ -44,6 +48,14 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
       }
     });
   }
+  /**
+   * Wraps the AngularFire2 FirebaseListObservable [push](https://goo.gl/nTe7C0) method
+   *
+   * - Emulates a push locally
+   * - Calls the AngularFire2 push method
+   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
+   * completes
+   */
   push(value: any) {
     let resolve;
     let promise = new Promise(r => resolve = r);
@@ -60,6 +72,14 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
       this.localUpdateService);
     return promise;
   }
+  /**
+   * Wraps the AngularFire2 FirebaseListObservable [update](https://goo.gl/oSWgqn) method
+   *
+   * - Emulates a update locally
+   * - Calls the AngularFire2 update method
+   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
+   * completes
+   */
   update(key: string, value: any): firebase.Promise<void> {
     this.emulate('update', value, key);
     const promise = this.ref.update(key, value);

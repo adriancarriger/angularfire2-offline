@@ -62,7 +62,7 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
     });
   }
   /**
-   * Wraps the AngularFire2 ObjectObservable [remove](https://goo.gl/xHDx1c) method
+   * Wraps the AngularFire2 FirebaseObjectObservable [remove](https://goo.gl/xHDx1c) method
    *
    * - Emulates a remove locally
    * - Calls the AngularFire2 remove method
@@ -76,12 +76,13 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
     return promise;
   }
   /**
-   * Wraps the AngularFire2 ObjectObservable [set](https://goo.gl/78u3XB) method
+   * Wraps the AngularFire2 FirebaseObjectObservable [set](https://goo.gl/78u3XB) method
    *
    * - Emulates a set locally
    * - Calls the AngularFire2 set method
    * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
    * completes
+   * @param value the new value to set for the related Firebase reference
    */
   set(value: any) {
     const promise: firebase.Promise<void> = this.ref.set(value);
@@ -89,14 +90,15 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
     return promise;
   }
   /**
-   * Wraps the AngularFire2 ObjectObservable
-   * [update](https://github.com/angular/angularfire2/blob/master/docs/2-retrieving-data-as-objects.md#updating-data) method
+   * Wraps the AngularFire2 FirebaseObjectObservable
+   * [update](https://goo.gl/o2181q) method
    *
    * - Emulates a update locally
    * - Calls the AngularFire2 update method (this will not reflect locally if there is no initial
    * value)
    * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
    * completes
+   * @param update the update object required by AngularFire2
    */
   update(value: Object) {
     this.emulate('update', value);
@@ -108,7 +110,7 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    * Convenience method to save an offline write
    *
    * @param promise
-   * [the promise](https://github.com/angular/angularfire2/blob/master/docs/2-retrieving-data-as-objects.md#returning-promises)
+   * [the promise](https://goo.gl/ncNG19)
    * returned by calling an AngularFire2 method
    * @param type the AngularFire2 method being called
    * @param args an optional array of arguments used to call an AngularFire2 method taking the form of [newValue, options]

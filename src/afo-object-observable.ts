@@ -5,9 +5,24 @@ import { OfflineWrite } from './offline-write';
 import { LocalUpdateService } from './local-update-service';
 
 export class AfoObjectObservable<T> extends ReplaySubject<T> {
+  /**
+   * The Firebase path used for the related FirebaseObjectObservable
+   */
   path: string;
+  /**
+   * The current value of the {@link AfoObjectObservable}
+   */
   value: any;
+  /**
+   * An array used to store write operations that require an initial value to be set
+   * in {@link value} before being applied
+   */
   que = [];
+  /**
+   * Creates the {@link AfoObjectObservable}
+   * @param ref a reference to the related FirebaseObjectObservable
+   * @param localUpdateService the service consumed by {@link OfflineWrite}
+   */
   constructor(private ref, private localUpdateService: LocalUpdateService) {
     super(1);
     this.init();
@@ -121,6 +136,9 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
       this.value = value;
     }
   }
+  /**
+   * Sends the the current {@link value} to all subscribers
+   */
   private updateSubscribers() {
     this.next(unwrap(this.ref.$ref.key, this.value, () => this.value !== null));
   }

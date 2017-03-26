@@ -10,14 +10,14 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    */
   path: string;
   /**
-   * The current value of the {@link AfoObjectObservable}
-   */
-  value: any;
-  /**
    * An array used to store write operations that require an initial value to be set
    * in {@link value} before being applied
    */
   que = [];
+  /**
+   * The current value of the {@link AfoObjectObservable}
+   */
+  value: any;
   /**
    * Creates the {@link AfoObjectObservable}
    * @param ref a reference to the related FirebaseObjectObservable

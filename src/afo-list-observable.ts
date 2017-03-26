@@ -5,9 +5,24 @@ import { OfflineWrite } from './offline-write';
 import { LocalUpdateService } from './local-update-service';
 
 export class AfoListObservable<T> extends ReplaySubject<T> {
+  /**
+   * The Firebase path used for the related FirebaseListObservable
+   */
   path: string;
+  /**
+   * An array used to store write operations that require an initial value to be set
+   * in {@link value} before being applied
+   */
   que = [];
+  /**
+   * The current value of the {@link AfoListObservable}
+   */
   value: any;
+  /**
+   * Creates the {@link AfoListObservable}
+   * @param ref a reference to the related FirebaseListObservable
+   * @param localUpdateService the service consumed by {@link OfflineWrite}
+   */
   constructor(private ref, private localUpdateService: LocalUpdateService) {
     super(1);
     this.init();
@@ -101,6 +116,15 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
     this.offlineWrite(promise, 'remove', [key]);
     return promise;
   }
+  /**
+   * Convenience method to save an offline write
+   *
+   * @param promise
+   * [the promise](https://goo.gl/5VLgQm)
+   * returned by calling an AngularFire2 method
+   * @param type the AngularFire2 method being called
+   * @param args an optional array of arguments used to call an AngularFire2 method taking the form of [newValue, options]
+   */
   private offlineWrite(promise: firebase.Promise<void>, type: string, args: any[]) {
     OfflineWrite(
       promise,
@@ -157,6 +181,9 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
       }
     }
   }
+  /**
+   * Sends the the current {@link value} to all subscribers
+   */
   private updateSubscribers() {
     this.next(this.value);
   }

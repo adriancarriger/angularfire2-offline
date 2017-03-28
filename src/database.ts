@@ -197,11 +197,17 @@ export class AngularFireOfflineDatabase {
       }
     });
   }
+  /**
+   * Adds non-root-level references to the {@link checkEmulateQue} 
+   * @param cacheItem an item from the local write cache
+   */
   private checkEmulateList(cacheItem: CacheItem) { // add matches to que
+    // Check if root level reference
     const refItems: string[] = cacheItem.ref.split('/');
     refItems.pop();
     const potentialList: string = refItems.join('/');
     if (potentialList !== undefined) {
+      // Add 
       if (!(potentialList in this.checkEmulateQue)) {
         this.checkEmulateQue[potentialList] = [];
       }
@@ -258,6 +264,11 @@ export class AngularFireOfflineDatabase {
     // Local
     this.getList(key);
   }
+  /**
+   * Processes cache items that require emulation
+   * 
+   * - only run at startup upon the complete of the {@link processWrites} recursive function
+   */
   private updateEmulateList() { // process emulate que
     Object.keys(this.checkEmulateQue).forEach(listKey => {
       if (listKey in this.listCache) {

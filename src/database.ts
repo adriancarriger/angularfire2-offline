@@ -48,6 +48,13 @@ export class AngularFireOfflineDatabase {
    * connection is available the actual writes are made to Firebase via {@link updateEmulateList}.
    */
   checkEmulateQue = {};
+  /**
+   * Contains info about offline write processing state
+   * 
+   * - `current` is true if processing offline writes via {@link processWrites}
+   * - `objectCache` and `listCache` stores any new writes that happen while processing offline writes.
+   * After the offline writes have processed, the writes in objectCache and listCache are applied.
+   */
   processing = {
     current: true,
     listCache: {},

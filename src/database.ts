@@ -41,6 +41,12 @@ export class AngularFireOfflineDatabase {
    * Current item being processed in the localForage `WriteCache`
    */
   cacheIndex = 0;
+   /**
+   * A temporary collection of offline writes.
+   * 
+   * After a refresh, the writes are collected into this queue and emulated locally. When a
+   * connection is available the actual writes are made to Firebase via {@link updateEmulateList}.
+   */
   checkEmulateQue = {};
   processing = {
     current: true,

@@ -19,6 +19,7 @@ coverage
 *.metadata.json
 bundles
 issues
+/.vscode
 
 #################
 ## JetBrains

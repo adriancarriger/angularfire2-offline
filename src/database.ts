@@ -43,14 +43,14 @@ export class AngularFireOfflineDatabase {
   cacheIndex = 0;
    /**
    * A temporary collection of offline writes.
-   * 
+   *
    * After a refresh, the writes are collected into this queue and emulated locally. When a
    * connection is available the actual writes are made to Firebase via {@link updateEmulateList}.
    */
   checkEmulateQue = {};
   /**
    * Contains info about offline write processing state
-   * 
+   *
    * - `current` is true if processing offline writes via {@link processWrites}
    * - `objectCache` and `listCache` stores any new writes that happen while processing offline writes.
    * After the offline writes have processed, the writes in objectCache and listCache are applied.
@@ -211,7 +211,7 @@ export class AngularFireOfflineDatabase {
     });
   }
   /**
-   * Adds non-root-level references to the {@link checkEmulateQue} 
+   * Adds non-root-level references to the {@link checkEmulateQue}
    * @param cacheItem an item from the local write cache
    */
   private checkEmulateList(cacheItem: CacheItem) { // add matches to que
@@ -220,7 +220,7 @@ export class AngularFireOfflineDatabase {
     refItems.pop();
     const potentialList: string = refItems.join('/');
     if (potentialList !== undefined) {
-      // Add 
+      // Add
       if (!(potentialList in this.checkEmulateQue)) {
         this.checkEmulateQue[potentialList] = [];
       }
@@ -279,7 +279,7 @@ export class AngularFireOfflineDatabase {
   }
   /**
    * Processes cache items that require emulation
-   * 
+   *
    * - only run at startup upon the complete of the {@link processWrites} recursive function
    */
   private updateEmulateList() { // process emulate que
@@ -302,7 +302,7 @@ export function isNil(obj: any): boolean {
 }
 /**
  * The AngularFire2 unwrap function.
- * 
+ *
  * Adds the properies of `$key`, `$value`, `$exists` as required by AngularFire2
  */
 export function unwrap(key: string, value: any, exists) {

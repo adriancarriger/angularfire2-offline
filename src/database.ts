@@ -294,11 +294,17 @@ export class AngularFireOfflineDatabase {
     });
   }
 }
-
+/**
+ * Utility function used to check if an value exists.
+ */
 export function isNil(obj: any): boolean {
   return obj === undefined || obj === null;
 }
-
+/**
+ * The AngularFire2 unwrap function.
+ * 
+ * Adds the properies of `$key`, `$value`, `$exists` as required by AngularFire2
+ */
 export function unwrap(key: string, value: any, exists) {
   let unwrapped = !isNil(value) ? value : { $value: null };
   if ((/string|number|boolean/).test(typeof value)) {

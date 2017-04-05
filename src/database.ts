@@ -45,9 +45,9 @@ export class AngularFireOfflineDatabase {
    * A temporary collection of offline writes.
    *
    * After a refresh, the writes are collected into this queue and emulated locally. When a
-   * connection is available the actual writes are made to Firebase via {@link updateEmulateList}.
+   * connection is available the actual writes are made to Firebase via {@link processEmulateQue}.
    */
-  checkEmulateQue = {};
+  emulateQue = {};
   /**
    * Contains info about offline write processing state
    *
@@ -84,7 +84,7 @@ export class AngularFireOfflineDatabase {
       const cacheId = Object.keys(writeCache.cache)[this.cacheIndex];
       this.cacheIndex++;
       if (cacheId === undefined) {
-        this.updateEmulateList();
+        this.processEmulateQue();
         this.processingComplete();
         return;
       }
@@ -92,7 +92,7 @@ export class AngularFireOfflineDatabase {
       this[cacheItem.type](cacheItem.ref); // init item if needed
       const sub = this[`${cacheItem.type}Cache`][cacheItem.ref].sub;
       sub.emulate(cacheItem.method, ...cacheItem.args);
-      if (cacheItem.type === 'object' && cacheItem.method === 'set') { this.checkEmulateList(cacheItem); }
+      if (cacheItem.type === 'object' && cacheItem.method === 'set') { this.addToEmulateQue(cacheItem); }
       this.af.database[cacheItem.type](cacheItem.ref)[cacheItem.method](...cacheItem.args)
         .then(() => WriteComplete(cacheId, this.localUpdateService));
       this.processWrites();
@@ -211,20 +211,27 @@ export class AngularFireOfflineDatabase {
     });
   }
   /**
-   * Adds non-root-level references to the {@link checkEmulateQue}
+   * Temporarily store offline writes in a que that may be part of a list.
+   *
+   * On init the app checks if there were previous offline writes made to objects that may belong
+   * to a list. This function filters out non-qualifying writes, and puts potential items
+   * in the {@link emulateQue}. After all offline writes have processed, {@link processEmulateQue}
+   * runs to piece together objects that belong to a list.
+   *
+   * - Filters out root-level object writes because they cannot belong to a list
    * @param cacheItem an item from the local write cache
    */
-  private checkEmulateList(cacheItem: CacheItem) { // add matches to que
+  private addToEmulateQue(cacheItem: CacheItem) { // add matches to que
     // Check if root level reference
     const refItems: string[] = cacheItem.ref.split('/');
     refItems.pop();
-    const potentialList: string = refItems.join('/');
-    if (potentialList !== undefined) {
+    const potentialListRef: string = refItems.join('/');
+    if (potentialListRef !== undefined) {
       // Add
-      if (!(potentialList in this.checkEmulateQue)) {
-        this.checkEmulateQue[potentialList] = [];
+      if (!(potentialListRef in this.emulateQue)) {
+        this.emulateQue[potentialListRef] = [];
       }
-      this.checkEmulateQue[potentialList].push(cacheItem);
+      this.emulateQue[potentialListRef].push(cacheItem);
     }
   }
   /**
@@ -282,14 +289,14 @@ export class AngularFireOfflineDatabase {
    *
    * - only run at startup upon the complete of the {@link processWrites} recursive function
    */
-  private updateEmulateList() { // process emulate que
-    Object.keys(this.checkEmulateQue).forEach(listKey => {
+  private processEmulateQue() { // process emulate que
+    Object.keys(this.emulateQue).forEach(listKey => {
       if (listKey in this.listCache) {
         const sub = this.listCache[listKey].sub;
-        this.checkEmulateQue[listKey].forEach((cacheItem: CacheItem) => {
+        this.emulateQue[listKey].forEach((cacheItem: CacheItem) => {
           sub.emulate('update', ...cacheItem.args, cacheItem.ref.split('/').pop());
         });
-        delete this.checkEmulateQue[listKey];
+        delete this.emulateQue[listKey];
       }
     });
   }

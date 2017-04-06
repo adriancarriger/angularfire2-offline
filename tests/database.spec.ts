@@ -320,9 +320,9 @@ describe('Service: AngularFireOfflineDatabase', () => {
       })();
     });
 
-    it('5 - should add valid items to checkEmulateQue', done => {
+    it('5 - should add valid items to emulateQue', done => {
       inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
-        service.checkEmulateQue['/items'] = [];
+        service.emulateQue['/items'] = [];
         const cacheItem1: CacheItem = {
           type: 'object',
           ref: 'items/item-1',
@@ -343,7 +343,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
       })();
     });
 
-    it('6 - should add valid items to checkEmulateQue and create a new que item when empty', done => {
+    it('6 - should add valid items to emulateQue and create a new que item when empty', done => {
       inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
         const cacheItem1: CacheItem = {
           type: 'object',
@@ -382,7 +382,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
         offlineInit: false,
         sub: new MockAfoObjectObservable()
       };
-      service.checkEmulateQue = {
+      service.emulateQue = {
         'random-key': [],
         'items': [
           cacheItem

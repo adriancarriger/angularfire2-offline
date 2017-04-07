@@ -160,11 +160,10 @@ export class AngularFireOfflineDatabase {
    */
   private processingComplete() {
     this.processing.current = false;
-    Object.keys(this.processing.listCache).forEach(cacheKey => {
-      this.listCache[cacheKey].sub.next( this.processing.listCache[cacheKey] );
-    });
-    Object.keys(this.processing.objectCache).forEach(cacheKey => {
-      this.objectCache[cacheKey].sub.next( this.processing.objectCache[cacheKey] );
+    ['list', 'object'].forEach(type => {
+      Object.keys(this.processing[`${type}Cache`]).forEach(cacheKey => {
+        this[`${type}Cache`][cacheKey].sub.next( this.processing[`${type}Cache`][cacheKey] );
+      });
     });
   }
   /**

@@ -11,32 +11,32 @@ import { LocalForageToken } from './localforage';
 @Injectable()
 export class LocalUpdateService {
   cache = {};
-  que: LocalUpdateQue = {};
+  queue: LocalUpdateQueue = {};
   constructor(@Inject(LocalForageToken) private localForage: any) { }
   update(key, valueFunction) {
     return new Promise(resolve => {
-      if (!(key in this.que)) {
-        this.que[key] = {
+      if (!(key in this.queue)) {
+        this.queue[key] = {
           running: false,
           updates: [],
         };
       }
-      this.que[key].updates.push({
+      this.queue[key].updates.push({
         function: valueFunction,
         resolve: resolve
       });
-      if (!this.que[key].running) {
-        this.que[key].running = true;
+      if (!this.queue[key].running) {
+        this.queue[key].running = true;
         this.updateNext(key);
       }
     });
   }
   private updateNext(key: string) {
-    if (this.que[key].updates.length === 0) {
-      this.que[key].running = false;
+    if (this.queue[key].updates.length === 0) {
+      this.queue[key].running = false;
       return;
     }
-    const nextUpdate: LocalUpdate = this.que[key].updates.pop();
+    const nextUpdate: LocalUpdate = this.queue[key].updates.pop();
     return new Promise(resolve => this.checkCache(key)
       .then(() => this.updateValue(key, nextUpdate)
       .then(() => this.updateNext(key))));
@@ -65,7 +65,7 @@ export class LocalUpdateService {
   }
 }
 
-export interface LocalUpdateQue {
+export interface LocalUpdateQueue {
   [key: string]: {
     running: boolean;
     updates: LocalUpdate[];

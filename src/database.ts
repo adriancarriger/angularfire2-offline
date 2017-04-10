@@ -3,7 +3,6 @@
  */ /** */
 import { Inject, Injectable } from '@angular/core';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
-import { isNil } from 'angularfire2/utils';
 import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
 
 import { AfoListObservable } from './afo-list-observable';
@@ -300,6 +299,12 @@ export class AngularFireOfflineDatabase {
       }
     });
   }
+}
+/**
+ * Utility function used to check if an value exists.
+ */
+export function isNil(obj: any): boolean {
+  return obj === undefined || obj === null;
 }
 /**
  * Adds the properies of `$key`, `$value`, `$exists` as required by AngularFire2

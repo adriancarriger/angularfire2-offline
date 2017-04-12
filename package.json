@@ -5,7 +5,7 @@
   "scripts": {
     "test": "karma start",
     "test-watch": "karma start --singleRun=false --autoWatch=true",
-    "lint": "tslint index.ts  && tslint ./**/*.ts",
+    "lint": "tslint index.ts && tslint ./**/*.ts",
     "commit": "npm run prepublish && npm test && git-cz",
     "prepublish": "ngc && npm run build",
     "build": "webpack && cp bundles/angularfire2-offline.umd.js bundles/index.js",

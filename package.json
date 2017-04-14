@@ -9,7 +9,7 @@
     "commit": "npm run prepublish && npm test && git-cz",
     "prepublish": "ngc && npm run build",
     "build": "webpack && cp bundles/angularfire2-offline.umd.js bundles/index.js",
-    "clean": "rimraf index.js ./*{.d.ts,offline.js,.metadata.json} ./src/**/*.{d.ts,js,metadata.json}",
+    "clean": "rimraf index.js ./*{.d.ts,offline.js,.metadata.json} ./{src,tests}/**/*.{d.ts,js,metadata.json}",
     "semantic-release": "semantic-release pre && npm publish --tag=next && semantic-release post"
   },
   "repository": {

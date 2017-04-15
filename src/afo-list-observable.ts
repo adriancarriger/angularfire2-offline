@@ -73,10 +73,11 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
    */
   push(value: any) {
     let resolve;
-    let promise = new Promise(r => resolve = r);
+    let promise: any = new Promise(r => resolve = r);
     const key = this.ref.$ref.push(value, () => {
       resolve();
     }).key;
+    promise.key = key;
     this.emulate('push', value, key);
     OfflineWrite(
       promise,

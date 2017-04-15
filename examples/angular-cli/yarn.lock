@@ -226,13 +226,13 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angularfire2-offline@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-2.0.3.tgz#a1f41af3e98584e966f19c8e9d490d9570ad55da"
+angularfire2-offline@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-2.0.5.tgz#2e717ff987622ecd5dad3c2d455d2d3ad70fa7c6"
   dependencies:
-    localforage "^1.4.3"
+    localforage "1.5.0"
 
-angularfire2@^2.0.0-beta.7:
+angularfire2@^2.0.0-beta.8:
   version "2.0.0-beta.7-pre"
   resolved "https://registry.yarnpkg.com/angularfire2/-/angularfire2-2.0.0-beta.7-pre.tgz#596419077187f2d6e79e46e8beac2e685d92f045"
   dependencies:
@@ -3070,7 +3070,7 @@ loader-utils@^1.0.2:
     emojis-list "^2.0.0"
     json5 "^0.5.0"
 
-localforage@^1.4.3:
+localforage@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/localforage/-/localforage-1.5.0.tgz#6b994e19b56611fa85df3992df397ac4ab66e815"
   dependencies:

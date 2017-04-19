@@ -3,7 +3,7 @@
   "version": "0.0.0-development",
   "description": "Cache angularfire2 data for offline use.",
   "scripts": {
-    "test": "karma start",
+    "test": "karma start && npm run clean",
     "test-watch": "karma start --singleRun=false --autoWatch=true",
     "lint": "tslint index.ts && tslint ./**/*.ts",
     "commit": "npm run prepublish && npm test && git-cz",

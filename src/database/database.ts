@@ -52,6 +52,10 @@ export class AngularFireOfflineDatabase {
    */
   emulateQue = {};
   /**
+   * Collection to manage firebase subscriptions
+   */
+  subscriptions = [];
+  /**
    * Contains info about offline write processing state
    *
    * - `current` is true if processing offline writes via {@link processWrites}
@@ -134,6 +138,19 @@ export class AngularFireOfflineDatabase {
     return this.objectCache[key].sub;
   }
   /**
+   * Unsubscribes from all firebase subscriptions and clears the cache
+   *
+   * - run before e.g. logout to make sure there are no permission errors.
+   * @TODO: might cause data loss of unwritten data?
+   */
+  reset() {
+    this.subscriptions.forEach(subscription => { subscription.unsubscribe(); });
+    this.subscriptions = [];
+    this.listCache = {};
+    this.objectCache = {};
+    this.localForage.clear();
+  };
+  /**
    * Retrives a list if locally stored on the device
    * - Lists are stored as individual objects, to allow for better offline reuse.
    * - Each locally stored list uses a map to stitch together the list from individual objects
@@ -190,7 +207,8 @@ export class AngularFireOfflineDatabase {
       sub: new AfoObjectObservable(ref, this.localUpdateService)
     };
     // Firebase
-    ref.subscribe(snap => {
+    // push subscription to collection for further management @mechaD
+    this.subscriptions.push(ref.subscribe(snap => {
       this.objectCache[key].loaded = true;
       const cacheValue = unwrap(snap.key, snap.val(), () => !isNil(snap.val()));
       if (this.processing.current) {
@@ -199,7 +217,7 @@ export class AngularFireOfflineDatabase {
         this.objectCache[key].sub.uniqueNext( cacheValue );
       }
       this.localForage.setItem(`read/object${key}`, snap.val());
-    });
+    }));
     // Local
     this.localForage.getItem(`read/object${key}`).then(value => {
       if (!this.objectCache[key].loaded && value !== null) {
@@ -273,7 +291,8 @@ export class AngularFireOfflineDatabase {
       sub: new AfoListObservable(ref, this.localUpdateService)
     };
     // Firebase
-    ref.subscribe(value => {
+    // push subscription to collection for further management @mechaD
+    this.subscriptions.push(ref.subscribe(value => {
       this.listCache[key].loaded = true;
       const cacheValue = value.map(snap => unwrap(snap.key, snap.val(), () => !isNil(snap.val())));
       if (this.processing.current) {
@@ -282,7 +301,7 @@ export class AngularFireOfflineDatabase {
         this.listCache[key].sub.uniqueNext( cacheValue );
       }
       this.setList(key, value);
-    });
+    }));
     // Local
     this.getList(key);
   }

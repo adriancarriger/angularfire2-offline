@@ -225,7 +225,7 @@ export class AngularFireOfflineDatabase {
     const refItems: string[] = cacheItem.ref.split('/');
     refItems.pop();
     const potentialListRef: string = refItems.join('/');
-    if (potentialListRef !== undefined) {
+    if (potentialListRef) {
       // Add
       if (!(potentialListRef in this.emulateQue)) {
         this.emulateQue[potentialListRef] = [];

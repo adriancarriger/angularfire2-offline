@@ -224,8 +224,8 @@ export class AngularFireOfflineDatabase {
     // Check if root level reference
     const refItems: string[] = cacheItem.ref.split('/');
     refItems.pop();
-    const potentialListRef: string = refItems.join('/');
-    if (potentialListRef) {
+    const potentialListRef: string = '/' + refItems.join('/');
+    if (potentialListRef !== '/') {
       // Add
       if (!(potentialListRef in this.emulateQue)) {
         this.emulateQue[potentialListRef] = [];

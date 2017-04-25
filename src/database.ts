@@ -189,7 +189,7 @@ export class AngularFireOfflineDatabase {
     // Firebase
     ref.subscribe(snap => {
       this.objectCache[key].loaded = true;
-      const cacheValue = unwrap(snap.key, snap.val(), snap.exists);
+      const cacheValue = unwrap(snap.key, snap.val(), () => !isNil(snap.val()));
       if (this.processing.current) {
         this.processing.objectCache[key] = cacheValue;
       } else {
@@ -272,7 +272,7 @@ export class AngularFireOfflineDatabase {
     // Firebase
     ref.subscribe(value => {
       this.listCache[key].loaded = true;
-      const cacheValue = value.map(snap => unwrap(snap.key, snap.val(), snap.exists));
+      const cacheValue = value.map(snap => unwrap(snap.key, snap.val(), () => !isNil(snap.val())));
       if (this.processing.current) {
         this.processing.listCache[key] = cacheValue;
       } else {

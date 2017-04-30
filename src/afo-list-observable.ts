@@ -19,6 +19,10 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
    */
   value: any;
   /**
+   * The value preceding the current value.
+   */
+  private previousValue: any;
+  /**
    * Creates the {@link AfoListObservable}
    * @param ref a reference to the related FirebaseListObservable
    * @param localUpdateService the service consumed by {@link OfflineWrite}
@@ -62,6 +66,15 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
         this.updateSubscribers();
       }
     });
+  }
+  /**
+   * Only calls next if the new value is unique
+   */
+  uniqueNext(newValue) {
+    if (JSON.stringify(this.previousValue) !== JSON.stringify(newValue) ) {
+      this.previousValue = newValue;
+      this.next(newValue);
+    }
   }
   /**
    * Wraps the AngularFire2 FirebaseListObservable [push](https://goo.gl/nTe7C0) method
@@ -186,6 +199,6 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
    * Sends the the current {@link value} to all subscribers
    */
   private updateSubscribers() {
-    this.next(this.value);
+    this.uniqueNext(this.value);
   }
 }

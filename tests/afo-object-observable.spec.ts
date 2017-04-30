@@ -86,7 +86,7 @@ describe('Object Observable', () => {
         done();
       }
     });
-    objectObservable.next('a value');
+    objectObservable.uniqueNext('a value');
   });
 
   it('should emulate a que for update', done => {
@@ -107,7 +107,7 @@ describe('Object Observable', () => {
         done();
       }
     });
-    objectObservable.next({
+    objectObservable.uniqueNext({
       title: 'old title',
       key2: 'other value'
     });

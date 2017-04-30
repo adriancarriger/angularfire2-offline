@@ -200,7 +200,7 @@ describe('List Observable', () => {
       expect(x[0].$exists()).toBe(true);
       done();
     });
-    listObservable.next([]);
+    listObservable.uniqueNext([]);
   });
 });
 

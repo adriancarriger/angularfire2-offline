@@ -19,6 +19,10 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    */
   value: any;
   /**
+   * The value preceding the current value.
+   */
+  private previousValue: any;
+  /**
    * Creates the {@link AfoObjectObservable}
    * @param ref a reference to the related FirebaseObjectObservable
    * @param localUpdateService the service consumed by {@link OfflineWrite}
@@ -107,6 +111,15 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
     return promise;
   }
   /**
+   * Only calls next if the new value is unique
+   */
+  uniqueNext(newValue) {
+    if (JSON.stringify(this.previousValue) !== JSON.stringify(newValue) ) {
+      this.previousValue = newValue;
+      this.next(newValue);
+    }
+  }
+  /**
    * Convenience method to save an offline write
    *
    * @param promise
@@ -142,6 +155,6 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    * Sends the the current {@link value} to all subscribers
    */
   private updateSubscribers() {
-    this.next(unwrap(this.ref.$ref.key, this.value, () => this.value !== null));
+    this.uniqueNext(unwrap(this.ref.$ref.key, this.value, () => this.value !== null));
   }
 }

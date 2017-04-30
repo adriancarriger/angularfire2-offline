@@ -149,7 +149,7 @@ export class AngularFireOfflineDatabase {
           if (this.processing.current) {
             this.processing.listCache[key] = cacheValue;
           } else {
-            this.listCache[key].sub.next(cacheValue);
+            this.listCache[key].sub.uniqueNext(cacheValue);
           }
         });
       }
@@ -162,7 +162,7 @@ export class AngularFireOfflineDatabase {
     this.processing.current = false;
     ['list', 'object'].forEach(type => {
       Object.keys(this.processing[`${type}Cache`]).forEach(cacheKey => {
-        this[`${type}Cache`][cacheKey].sub.next( this.processing[`${type}Cache`][cacheKey] );
+        this[`${type}Cache`][cacheKey].sub.uniqueNext( this.processing[`${type}Cache`][cacheKey] );
       });
     });
   }
@@ -193,7 +193,7 @@ export class AngularFireOfflineDatabase {
       if (this.processing.current) {
         this.processing.objectCache[key] = cacheValue;
       } else {
-        this.objectCache[key].sub.next( cacheValue );
+        this.objectCache[key].sub.uniqueNext( cacheValue );
       }
       this.localForage.setItem(`read/object${key}`, snap.val());
     });
@@ -204,7 +204,7 @@ export class AngularFireOfflineDatabase {
         if (this.processing.current) {
           this.processing.objectCache[key] = cacheValue;
         } else {
-          this.objectCache[key].sub.next( cacheValue );
+          this.objectCache[key].sub.uniqueNext( cacheValue );
         }
       }
     });
@@ -276,7 +276,7 @@ export class AngularFireOfflineDatabase {
       if (this.processing.current) {
         this.processing.listCache[key] = cacheValue;
       } else {
-        this.listCache[key].sub.next( cacheValue );
+        this.listCache[key].sub.uniqueNext( cacheValue );
       }
       this.setList(key, value);
     });

@@ -3,6 +3,7 @@ import { ReplaySubject } from 'rxjs';
 import { unwrap } from './database';
 import { OfflineWrite } from './offline-write';
 import { LocalUpdateService } from './local-update-service';
+const stringify = require('json-stringify-safe');
 
 export class AfoObjectObservable<T> extends ReplaySubject<T> {
   /**
@@ -14,6 +15,10 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    * in {@link value} before being applied
    */
   que = [];
+  /**
+   * Number of times updated
+   */
+  updated: number;
   /**
    * The current value of the {@link AfoObjectObservable}
    */
@@ -114,9 +119,10 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    * Only calls next if the new value is unique
    */
   uniqueNext(newValue) {
-    if (JSON.stringify(this.previousValue) !== JSON.stringify(newValue) ) {
+    if (this.updated > 1 || (stringify(this.previousValue) !== stringify(newValue) )) {
       this.previousValue = newValue;
       this.next(newValue);
+      this.updated++;
     }
   }
   /**

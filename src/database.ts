@@ -199,8 +199,8 @@ export class AngularFireOfflineDatabase {
     });
     // Local
     this.localForage.getItem(`read/object${key}`).then(value => {
-      if (!this.objectCache[key].loaded) {
-        const cacheValue = unwrap(key.split('/').pop(), value, () => value !== null);
+      if (!this.objectCache[key].loaded && value !== null) {
+        const cacheValue = unwrap(key.split('/').pop(), value, () => true);
         if (this.processing.current) {
           this.processing.objectCache[key] = cacheValue;
         } else {

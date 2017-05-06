@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "module": "es2015",
+    "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "types": [
+      "jasmine",
+      "node"
+    ],
+    "lib": ["es2015", "dom"],
+    "baseUrl": "",
+    "mapRoot": "./",
+    "outDir": "./examples/angular-cli/node_modules/angularfire2-offline",
+    "sourceMap": true,
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
+    "paths": { 
+      "@angular/*": ["../node_modules/@angular/*"]
+    }
+  },
+  "files": [
+    "index.ts",
+    "angularfire2-offline.ts",
+    "./src/database.ts",
+    "tests/database.spec.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "bundles"
+  ],
+  "angularCompilerOptions": {
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
+  }
+}

@@ -103,6 +103,30 @@ If writes are made offline followed by a page refresh, the writes will be sent w
  - On reconnect, app updates with new Firebase data, and writes are sent to Firebase
  - Even while online, local data is used first when available which results in a faster load
 
+## Contributing to AngularFire2 Offline
+
+Pull requests are welcome! If you have a suggested enhancement, please [open an issue](https://github.com/adriancarriger/angularfire2-offline/issues/new). Thanks!
+
+Here is how you can setup a development environment:
+
+### Clone repo
+
+1. `git clone https://github.com/adriancarriger/angularfire2-offline.git`
+2. `cd angularfire2-offline`
+
+### Setup example
+
+1. `cd examples/angular-cli`
+2. `yarn`
+3. `npm start`
+
+### Setup development environment
+
+1. Open a new shell/terminal
+2. `cd angularfire2-offline`
+3. `yarn`
+4. `npm run start-dev`
+
 ## License
 
 angularfire2-offline is licensed under the MIT Open Source license. For more information, see the [LICENSE](LICENSE) file in this repository.

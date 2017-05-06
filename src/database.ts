@@ -145,6 +145,7 @@ export class AngularFireOfflineDatabase {
     this.subscriptions = [];
     this.listCache = {};
     this.objectCache = {};
+    this.localForage.clear();
   };
   /**
    * Retrives a list if locally stored on the device

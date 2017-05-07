@@ -2,19 +2,25 @@
 
 How to create an app that loads Firebase data and static resources while offline.
 
+## <span style="color:red">Important</span>
+
+### This is a legacy branch that supports AngularFire2 version 2.x
+
+For the latest version of AngularFire2 Offline **switch to the [master branch](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#angular-cli-offline-tutorial-)**
+
 ## [View Demo](https://angularfire2-offline.firebaseapp.com/)
 
 ## Table of Contents
 
-- [Setup Project](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#1-install-angular-cli)
-- [Setup @NgModule](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#5-setup-ngmodule)
-- [Read Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#6-read-an-object---demo)
-- [Read List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#7-read-a-list---demo)
-- [Write Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#8-write-an-object---demo)
-- [Write List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#9-write-a-list---demo)
-- [Run App](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#10-run-your-app)
-- [Full Offline Support](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#steps-to-get-full-offline-support-recommended)
-- [Testing Locally](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#testing-locally-recommended)
+- [Setup Project](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#1-install-angular-cli)
+- [Setup @NgModule](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#5-setup-ngmodule)
+- [Read Object](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#6-read-an-object---demo)
+- [Read List](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#7-read-a-list---demo)
+- [Write Object](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#8-write-an-object---demo)
+- [Write List](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#9-write-a-list---demo)
+- [Run App](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#10-run-your-app)
+- [Full Offline Support](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#steps-to-get-full-offline-support-recommended)
+- [Testing Locally](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#testing-locally-recommended)
 
 ## Steps to create project
 
@@ -52,7 +58,7 @@ Now that you have a new project setup, install [AngularFire2Offline](https://www
 
 ### 5. Setup @NgModule
 
-Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
+Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
 This can be found in your project at [the Firebase Console](https://console.firebase.google.com):
 
 ```ts
@@ -90,7 +96,7 @@ export class AppModule { }
 
 ### 6. Read an object - [Demo](https://angularfire2-offline.firebaseapp.com/read-object)
 
-In [`/src/app/examples/read-object/read-object.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-object/read-object.component.ts):
+In [`/src/app/examples/read-object/read-object.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/app/examples/read-object/read-object.component.ts):
 
 ```ts
 import { Component, OnInit } from '@angular/core';
@@ -109,7 +115,7 @@ export class ReadObjectComponent {
 }
 ```
 
-In [`/src/app/examples/read-object/read-object.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-object/read-object.component.html):
+In [`/src/app/examples/read-object/read-object.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/app/examples/read-object/read-object.component.html):
 
 ```html
 <h2>{{ (info | async)?.title }}</h2>
@@ -117,7 +123,7 @@ In [`/src/app/examples/read-object/read-object.component.html`](https://github.c
 
 ### 7. Read a list - [Demo](https://angularfire2-offline.firebaseapp.com/read-list)
 
-In [`/src/app/examples/read-list/read-list.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-list/read-list.component.ts):
+In [`/src/app/examples/read-list/read-list.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/app/examples/read-list/read-list.component.ts):
 
 ```ts
 import { Component, OnInit } from '@angular/core';
@@ -136,7 +142,7 @@ export class ReadListComponent {
 }
 ```
 
-In [`/src/app/examples/read-list/read-list.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-list/read-list.component.html):
+In [`/src/app/examples/read-list/read-list.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/app/examples/read-list/read-list.component.html):
 
 ```html
 <ul>
@@ -148,7 +154,7 @@ In [`/src/app/examples/read-list/read-list.component.html`](https://github.com/a
 
 ### 8. Write an object - [Demo](https://angularfire2-offline.firebaseapp.com/write-object)
 
-In [`/src/app/examples/write-object/write-object.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-object/write-object.component.ts):
+In [`/src/app/examples/write-object/write-object.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/app/examples/write-object/write-object.component.ts):
 
 ```ts
 import { Component, OnInit } from '@angular/core';
@@ -194,7 +200,7 @@ export class WriteObjectComponent {
 }
 ```
 
-In [`/src/app/examples/write-object/write-object.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-object/write-object.component.html):
+In [`/src/app/examples/write-object/write-object.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/app/examples/write-object/write-object.component.html):
 
 ```html
 <button (click)="increaseSpeed()">Speed +1</button>
@@ -207,7 +213,7 @@ In [`/src/app/examples/write-object/write-object.component.html`](https://github
 
 ### 9. Write a list - [Demo](https://angularfire2-offline.firebaseapp.com/write-list)
 
-In [`/src/app/examples/write-list/write-list.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-list/write-list.component.ts):
+In [`/src/app/examples/write-list/write-list.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/app/examples/write-list/write-list.component.ts):
 
 ```ts
 import { Component, OnInit } from '@angular/core';
@@ -244,7 +250,7 @@ export class WriteListComponent {
 }
 ```
 
-In [`/src/app/examples/write-list/write-list.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-list/write-list.component.html):
+In [`/src/app/examples/write-list/write-list.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/app/examples/write-list/write-list.component.html):
 
 ```html
 
@@ -282,7 +288,7 @@ The following steps are based on [this tutorial](https://coryrylan.com/blog/fast
 
 ### 1. Add a service worker
 
-In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/index.html#L12-L20) add the following just before the closing `body` tag:
+In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/index.html#L12-L20) add the following just before the closing `body` tag:
 
 ```html
 <script>
@@ -298,11 +304,11 @@ In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/bl
 
 ### 2. Add `service-worker.js`
 
-Create an empty file called `service-worker.js` located at [`/src/service-worker.js`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/service-worker.js)
+Create an empty file called `service-worker.js` located at [`/src/service-worker.js`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/src/service-worker.js)
 
 ### 3. Add assets
 
-In [`/angular-cli.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/angular-cli.json#L11-L15) add `service-worker.js` to the assets array:
+In [`/angular-cli.json`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/angular-cli.json#L11-L15) add `service-worker.js` to the assets array:
 
 ```json
 "assets": [
@@ -320,7 +326,7 @@ npm install sw-precache --save-dev
 
 ### 5. Add `package.json` scripts
 
-In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L12-L13) add the `sw` and `build:prod` scripts:
+In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/package.json#L12-L13) add the `sw` and `build:prod` scripts:
 
 ```json
 "scripts": {
@@ -336,7 +342,7 @@ In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob
 
 ### 6. Create `sw-precache-config.js`
 
-In the root of your project create a file called [`sw-precache-config.js`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/sw-precache-config.js) with the following config:
+In the root of your project create a file called [`sw-precache-config.js`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/sw-precache-config.js) with the following config:
 
 ```js
 module.exports = {
@@ -350,6 +356,7 @@ module.exports = {
   ]
 };
 ```
+
 You can also add other items to the staticFileGlobs array such as:
 
 - `'dist/assets/**'` to cache assets
@@ -373,7 +380,7 @@ npm install live-server --save-dev
 
 ### 2. Add `static-serve` script
 
-In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/package.json#L14) add the `static-serve` script:
+In [`/package.json`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/angular-cli/package.json#L14) add the `static-serve` script:
 
 ```json
 "scripts": {
@@ -405,4 +412,4 @@ At [localhost:4200](http://localhost:4200/) you should see your app running.
 
 ## Further help
 
-To get more help on the `angular-cli` use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+To get more help on the `angular-cli` use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/two/README.md).

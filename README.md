@@ -2,24 +2,30 @@
 
 🔌 A simple wrapper for [AngularFire2](https://github.com/angular/angularfire2) to read and write to Firebase while offline, even after a complete refresh.
 
-[![Build Status](http://img.shields.io/travis/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://travis-ci.org/adriancarriger/angularfire2-offline)
-[![Codecov](https://img.shields.io/codecov/c/github/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://codecov.io/gh/adriancarriger/angularfire2-offline)
-[![Dependency Status](https://img.shields.io/david/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline)
-[![devDependency Status](https://img.shields.io/david/dev/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline?type=dev)
+[![Build Status](http://img.shields.io/travis/adriancarriger/angularfire2-offline/two.svg?maxAge=60)](https://travis-ci.org/adriancarriger/angularfire2-offline)
+[![Codecov](https://img.shields.io/codecov/c/github/adriancarriger/angularfire2-offline/two.svg?maxAge=60)](https://codecov.io/gh/adriancarriger/angularfire2-offline)
+[![Dependency Status](https://img.shields.io/david/adriancarriger/angularfire2-offline/two.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline)
+[![devDependency Status](https://img.shields.io/david/dev/adriancarriger/angularfire2-offline/two.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline?type=dev)
 
 - [Complete changelog](https://github.com/adriancarriger/angularfire2-offline/releases)
 
+## <span style="color:red">Important</span>
+
+### This is a legacy branch that supports AngularFire2 version 2.x
+
+For the latest version of AngularFire2 Offline **switch to the [master branch](https://github.com/adriancarriger/angularfire2-offline)**
+
 ## Demos
 
-- [`Angular 2+ Demos:`](https://angularfire2-offline.firebaseapp.com/) [Read object](https://angularfire2-offline.firebaseapp.com/read-object), [Read list](https://angularfire2-offline.firebaseapp.com/read-list), [Write object](https://angularfire2-offline.firebaseapp.com/write-object), [Write list](https://angularfire2-offline.firebaseapp.com/write-list) -- [tutorial 📗](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#angular-cli-offline-tutorial-)
-- [`Ionic 2+ Demo`](https://ionic-pwa-ad85b.firebaseapp.com) -- [tutorial 📘](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/ionic#ionic-offline-tutorial-)
+- [`Angular 2+ Demos:`](https://angularfire2-offline.firebaseapp.com/) [Read object](https://angularfire2-offline.firebaseapp.com/read-object), [Read list](https://angularfire2-offline.firebaseapp.com/read-list), [Write object](https://angularfire2-offline.firebaseapp.com/write-object), [Write list](https://angularfire2-offline.firebaseapp.com/write-list) -- [tutorial 📗](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#angular-cli-offline-tutorial-)
+- [`Ionic 2+ Demo`](https://ionic-pwa-ad85b.firebaseapp.com) -- [tutorial 📘](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/ionic#ionic-offline-tutorial-)
 
-[![Example Gif](https://raw.githubusercontent.com/adriancarriger/angularfire2-offline/master/images/example.gif)](https://angularfire2-offline.firebaseapp.com/write-list)
+[![Example Gif](https://raw.githubusercontent.com/adriancarriger/angularfire2-offline/two/images/example.gif)](https://angularfire2-offline.firebaseapp.com/write-list)
 
 ## Install
 
 ```bash
-npm install angularfire2-offline angularfire2 firebase --save
+npm install angularfire2-offline@two angularfire2@2 firebase@3.6 --save
 ```
 
 ## Setup @NgModule
@@ -54,11 +60,11 @@ export class AppModule { }
 
 ## Usage
 
-- Methods mirror AngularFire2 database methods for [`object`](https://github.com/angular/angularfire2/blob/master/docs/2-retrieving-data-as-objects.md#retrieve-data) and [`list`](https://github.com/angular/angularfire2/blob/master/docs/3-retrieving-data-as-lists.md#retrieve-data).
+- Methods mirror AngularFire2 database methods for [`object`](https://github.com/angular/angularfire2/blob/two/docs/2-retrieving-data-as-objects.md#retrieve-data) and [`list`](https://github.com/angular/angularfire2/blob/two/docs/3-retrieving-data-as-lists.md#retrieve-data).
 
 ### Read Data Offline
 
-- [Querying lists](https://github.com/angular/angularfire2/blob/master/docs/4-querying-lists.md) is supported
+- [Querying lists](https://github.com/angular/angularfire2/blob/two/docs/4-querying-lists.md) is supported
 
 ```ts
 import { Component } from '@angular/core';

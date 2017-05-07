@@ -2,6 +2,12 @@
 
 How to create an app that loads Firebase data and static resources while offline.
 
+## <span style="color:red">Important</span>
+
+### This is a legacy branch that supports AngularFire2 version 2.x
+
+For the latest version of AngularFire2 Offline **switch to the [master branch](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/ionic#ionic-offline-tutorial-)**
+
 ## [View Demo](https://ionic-pwa-ad85b.firebaseapp.com)
 
 ## Steps to create project
@@ -11,6 +17,7 @@ How to create an app that loads Firebase data and static resources while offline
 ```bash
 npm install -g cordova ionic
 ```
+
 ### 2. Create a new project
 
 ```bash
@@ -36,7 +43,7 @@ Now that you have a new project setup, install [AngularFire2Offline](https://www
 
 ### 5. Setup @NgModule
 
-Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/ionic/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
+Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/ionic/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
 This can be found in your project at [the Firebase Console](https://console.firebase.google.com):
 
 ```ts
@@ -87,7 +94,7 @@ export class AppModule { }
 
 ### 6. Use in a component
 
-In [`/src/pages/home/home.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/ionic/src/pages/home/home.ts):
+In [`/src/pages/home/home.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/ionic/src/pages/home/home.ts):
 
 ```ts
 import { Component } from '@angular/core';
@@ -112,7 +119,8 @@ export class HomePage {
   }
 }
 ```
-In [`/src/pages/home/home.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/ionic/src/pages/home/home.html):
+
+In [`/src/pages/home/home.html`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/ionic/src/pages/home/home.html):
 
 ```html
 <ion-header>
@@ -145,7 +153,7 @@ At this point everything should be working, including offline support for your F
 
 ### 1. Add a service worker
 
-In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/ionic/src/index.html#L17-L23) find and uncomment the provided service worker script:
+In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/blob/two/examples/ionic/src/index.html#L17-L23) find and uncomment the provided service worker script:
 
 ```html
 <script>
@@ -162,6 +170,7 @@ In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/bl
 ```bash
 ionic serve
 ```
+
 At [localhost:8100](http://localhost:8100/) you should see your app running.
 
 ### 3. Disconnect internet and refresh

@@ -15,6 +15,7 @@ npm-debug.log
 *.d.ts
 !make.js
 !examples/**/*.js
+!tools/**/*.js
 coverage
 *.metadata.json
 bundles

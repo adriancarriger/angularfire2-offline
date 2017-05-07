@@ -18,6 +18,8 @@ For the latest version of AngularFire2 Offline **switch to the [master branch](h
 npm install -g cordova ionic
 ```
 
+**Please note**: This command will install the latest version of the Ionic Cli which will install version 4.x of Angular. This tutorial was written using version 2.x.
+
 ### 2. Create a new project
 
 ```bash
@@ -36,7 +38,7 @@ You should see a message that says *Welcome to Ionic!*
 ### 4. Install Dependencies
 
 ```bash
-npm install angularfire2-offline angularfire2 firebase --save
+npm install angularfire2-offline@two angularfire2@2 firebase@3.6 --save
 ```
 
 Now that you have a new project setup, install [AngularFire2Offline](https://www.npmjs.com/package/angularfire2-offline), [AngularFire2](https://www.npmjs.com/package/angularfire2) and [Firebase](https://www.npmjs.com/package/firebase) from npm.

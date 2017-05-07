@@ -12,7 +12,7 @@
     "build-dev": "ngc -w -p tsconfig-dev.json && npm run build",
     "start-dev": "onchange '*.ts' 'src/**/*.ts' --initial -- npm run build-dev",
     "clean": "rimraf index.js ./*{.d.ts,offline.js,.metadata.json,map} ./{src,tests}/**/*.{d.ts,js,metadata.json,map}",
-    "semantic-release": "semantic-release pre && npm publish --tag=next && semantic-release post"
+    "semantic-release": "semantic-release -branch=two pre && npm publish --tag=next && semantic-release post"
   },
   "repository": {
     "type": "git",
@@ -91,5 +91,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "publishConfig": {
+    "tag": "two"
   }
 }

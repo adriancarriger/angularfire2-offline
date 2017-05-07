@@ -11,22 +11,13 @@
       "node"
     ],
     "lib": ["es2015", "dom"],
-    "baseUrl": "",
-    "mapRoot": "./",
-    "outDir": "./examples/angular-cli/node_modules/angularfire2-offline",
-    "sourceMap": true,
-    "typeRoots": [
-      "../node_modules/@types"
-    ],
-    "paths": { 
-      "@angular/*": ["../node_modules/@angular/*"]
-    }
+    "rootDir": "src",
+    "outDir": "./examples/angular-cli/node_modules/angularfire2-offline"
   },
   "files": [
-    "index.ts",
-    "angularfire2-offline.ts",
-    "./src/database.ts",
-    "tests/database.spec.ts"
+    "src/index.ts",
+    "src/angularfire2-offline.ts",
+    "src/database.ts"
   ],
   "exclude": [
     "node_modules",

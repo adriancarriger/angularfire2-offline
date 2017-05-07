@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import {
-  AngularFireOffline,
+  AngularFireOfflineDatabase,
   AfoListObservable,
-  AfoObjectObservable } from 'angularfire2-offline';
+  AfoObjectObservable } from 'angularfire2-offline/database';
 import { NavController } from 'ionic-angular';
 
 @Component({
@@ -14,8 +14,8 @@ export class HomePage {
   items: AfoListObservable<any[]>;
   constructor(
     public navCtrl: NavController,
-    afo: AngularFireOffline) {
-    this.info = afo.database.object('/info');
-    this.items = afo.database.list('/items');
+    afoDatabase: AngularFireOfflineDatabase) {
+    this.info = afoDatabase.object('/info');
+    this.items = afoDatabase.list('/items');
   }
 }

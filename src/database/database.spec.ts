@@ -1,27 +1,27 @@
 /*tslint:disable:no-unused-variable */
 import { Injectable, ReflectiveInjector } from '@angular/core';
 import { async, inject, TestBed } from '@angular/core/testing';
-import { AngularFire, AngularFireDatabase } from 'angularfire2';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Subject } from 'rxjs/Rx';
 
-import { AfoListObservable } from '../src/afo-list-observable';
-import { AfoObjectObservable } from '../src/afo-object-observable';
-import { AngularFireOfflineDatabase } from '../src/database';
-import { LocalForageToken } from '../src/localforage';
-import { LocalUpdateService } from '../src/local-update-service';
-import { CacheItem, WriteCache } from '../src/interfaces';
+import { AfoListObservable } from './afo-list-observable';
+import { AfoObjectObservable } from './afo-object-observable';
+import { AngularFireOfflineDatabase } from './database';
+import { LocalForageToken } from './localforage';
+import { LocalUpdateService } from './local-update-service';
+import { CacheItem, WriteCache } from './interfaces';
 
 describe('Service: AngularFireOfflineDatabase', () => {
-  let mockAngularFire: MockAngularFire;
+  let mockAngularFireDatabase: MockAngularFireDatabase;
   let mockLocalForageService: MockLocalForageService;
   beforeEach(() => {
     mockLocalForageService = new MockLocalForageService();
-    mockAngularFire = new MockAngularFire( new Database() );
+    mockAngularFireDatabase = new MockAngularFireDatabase();
     TestBed.configureTestingModule({
       providers: [
         AngularFireOfflineDatabase,
         LocalUpdateService,
-        { provide: AngularFire, useValue: mockAngularFire },
+        { provide: AngularFireDatabase, useValue: mockAngularFireDatabase },
         { provide: LocalForageToken, useValue: mockLocalForageService }
       ]
     });
@@ -47,7 +47,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
         done();
       });
       expect(service.listCache[key].loaded).toBe(false);
-      mockAngularFire.database.update('list', newValue);
+      mockAngularFireDatabase.update('list', newValue);
     })();
   });
 
@@ -58,7 +58,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
         { val: () => { return 'xyz'; } }
       ];
       service.list(key);
-      mockAngularFire.database.update('list', newValue);
+      mockAngularFireDatabase.update('list', newValue);
       expect(service.processing.listCache[key][0].$value).toBe('xyz');
     })();
   });
@@ -82,7 +82,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
     service.object('/slug-2').subscribe(object => {
       expect(object.$value).toBe('abc23-7');
     });
-    mockAngularFire.database.update('object', newValue);
+    mockAngularFireDatabase.update('object', newValue);
   })));
 
   it('should return an object', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
@@ -91,7 +91,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
     service.object('/slug-2').subscribe(object => {
       expect(object.$value).toBe('abc23-7');
     });
-    mockAngularFire.database.update('object', newValue);
+    mockAngularFireDatabase.update('object', newValue);
   })));
 
   it('should not setup an object', inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
@@ -262,7 +262,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
         };
         service.processing.current = true;
         setTimeout(() => {
-          expect(mockAngularFire.database.listData$.history[0]).toBe('remove');
+          expect(mockAngularFireDatabase.listData$.history[0]).toBe('remove');
           done();
         });
       })();
@@ -428,7 +428,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
     service.object('/slug-2').subscribe(object => {
       expect(object.$value).toBe(null);
     });
-    mockAngularFire.database.update('object', newValue);
+    mockAngularFireDatabase.update('object', newValue);
   })));
 });
 
@@ -463,18 +463,11 @@ export class MockLocalForageService {
 }
 
 @Injectable()
-export class MockAngularFire extends AngularFire {
-  constructor(public database: Database) {
-    super(null, null, null);
-  }
-}
-
-@Injectable()
-export class Database extends AngularFireDatabase {
+export class MockAngularFireDatabase extends AngularFireDatabase {
   listData$: any;
   objectData$;
   constructor() {
-    super(null, null);
+    super(null);
     this.init();
   }
   init() { }

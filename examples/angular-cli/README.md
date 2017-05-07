@@ -4,15 +4,22 @@ How to create an app that loads Firebase data and static resources while offline
 
 ## [View Demo](https://angularfire2-offline.firebaseapp.com/)
 
+## Legacy Versions
+
+- You are viewing the tutorial for the latest version of AngularFire2 Offline
+- Upgrading from `2.x` to `4.x` for AngularFire2? Try the [upgrade tutorial](https://github.com/adriancarriger/angularfire2-offline/blob/master/docs/version-4-upgrade.md)
+- For legacy support checkout the [**`AngularFire2 2.x`** version of this tutorial](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#angular-cli-offline-tutorial-)
+
 ## Table of Contents
 
 - [Setup Project](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#1-install-angular-cli)
-- [Setup @NgModule](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#5-setup-ngmodule)
-- [Read Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#6-read-an-object---demo)
-- [Read List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#7-read-a-list---demo)
-- [Write Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#8-write-an-object---demo)
-- [Write List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#9-write-a-list---demo)
-- [Run App](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#10-run-your-app)
+- [Add configuration](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#5-add-configuration)
+- [Setup @NgModule](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#6-setup-ngmodule)
+- [Read Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#7-read-an-object---demo)
+- [Read List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#8-read-a-list---demo)
+- [Write Object](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#9-write-an-object---demo)
+- [Write List](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#10-write-a-list---demo)
+- [Run App](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#11-run-your-app)
 - [Full Offline Support](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#steps-to-get-full-offline-support-recommended)
 - [Testing Locally](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#testing-locally-recommended)
 
@@ -50,26 +57,34 @@ npm install angularfire2-offline angularfire2 firebase --save
 
 Now that you have a new project setup, install [AngularFire2Offline](https://www.npmjs.com/package/angularfire2-offline), [AngularFire2](https://www.npmjs.com/package/angularfire2) and [Firebase](https://www.npmjs.com/package/firebase) from npm.
 
-### 5. Setup @NgModule
+### 5. Add configuration
 
-Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.module.ts), inject the Firebase providers, and specify your Firebase configuration.
-This can be found in your project at [the Firebase Console](https://console.firebase.google.com):
+Open [`/src/environments/environment.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/environments/environment.ts) and specify your Firebase configuration. This can be found in your project at [the Firebase Console](https://console.firebase.google.com):
+
+```ts
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyBIsrtVNmZJ9dDQleuItDsz3ZXtvzhiWv8',
+    authDomain: 'https://angularfire2-offline.firebaseio.com',
+    databaseURL: 'https://angularfire2-offline.firebaseio.com',
+    storageBucket: 'gs://angularfire2-offline.appspot.com'
+  }
+};
+```
+
+### 6. Setup @NgModule
+
+Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.module.ts) and inject the Firebase providers:
 
 ```ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireOfflineModule } from 'angularfire2-offline';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { AppComponent } from './app.component';
-
-// Must export the config
-export const firebaseConfig = {
-  apiKey: '<your-key>',
-  authDomain: '<your-project-authdomain>',
-  databaseURL: '<your-database-URL>',
-  storageBucket: '<your-storage-bucket>'
-};
 
 @NgModule({
   declarations: [
@@ -77,7 +92,8 @@ export const firebaseConfig = {
     ...OtherComponents
   ],
   imports: [
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireOfflineModule,
     BrowserModule,
     ...OtherModules
@@ -88,14 +104,14 @@ export const firebaseConfig = {
 export class AppModule { }
 ```
 
-### 6. Read an object - [Demo](https://angularfire2-offline.firebaseapp.com/read-object)
+### 7. Read an object - [Demo](https://angularfire2-offline.firebaseapp.com/read-object)
 
 In [`/src/app/examples/read-object/read-object.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-object/read-object.component.ts):
 
 ```ts
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
+import { AfoObjectObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Component({
   selector: 'app-read-object',
@@ -103,8 +119,8 @@ import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
 })
 export class ReadObjectComponent {
   info: AfoObjectObservable<any>;
-  constructor(afo: AngularFireOffline) {
-    this.info = afo.database.object('/info');
+  constructor(afoDatabase: AngularFireOfflineDatabase) {
+    this.info = afoDatabase.object('/info');
   }
 }
 ```
@@ -115,14 +131,14 @@ In [`/src/app/examples/read-object/read-object.component.html`](https://github.c
 <h2>{{ (info | async)?.title }}</h2>
 ```
 
-### 7. Read a list - [Demo](https://angularfire2-offline.firebaseapp.com/read-list)
+### 8. Read a list - [Demo](https://angularfire2-offline.firebaseapp.com/read-list)
 
 In [`/src/app/examples/read-list/read-list.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/read-list/read-list.component.ts):
 
 ```ts
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
+import { AfoListObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Component({
   selector: 'app-read-list',
@@ -130,8 +146,8 @@ import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
 })
 export class ReadListComponent {
   items: AfoListObservable<any[]>;
-  constructor(afo: AngularFireOffline) {
-    this.items = afo.database.list('/items');
+  constructor(afoDatabase: AngularFireOfflineDatabase) {
+    this.items = afoDatabase.list('/items');
   }
 }
 ```
@@ -146,14 +162,14 @@ In [`/src/app/examples/read-list/read-list.component.html`](https://github.com/a
 </ul>
 ```
 
-### 8. Write an object - [Demo](https://angularfire2-offline.firebaseapp.com/write-object)
+### 9. Write an object - [Demo](https://angularfire2-offline.firebaseapp.com/write-object)
 
 In [`/src/app/examples/write-object/write-object.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-object/write-object.component.ts):
 
 ```ts
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
+import { AfoObjectObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Component({
   selector: 'app-write-object',
@@ -168,8 +184,8 @@ export class WriteObjectComponent {
     'maxSpeed': 80
   };
   lastSpeed: number;
-  constructor(private afo: AngularFireOffline) {
-    this.car = this.afo.database.object('/car');
+  constructor(private afoDatabase: AngularFireOfflineDatabase) {
+    this.car = this.afoDatabase.object('/car');
     this.car.subscribe(car => this.lastSpeed = car['maxSpeed']);
   }
   /**
@@ -189,7 +205,7 @@ export class WriteObjectComponent {
    * Remove
    */
   remove(item) {
-    this.afo.database.object(`/car/${item}`).remove();
+    this.afoDatabase.object(`/car/${item}`).remove();
   }
 }
 ```
@@ -205,14 +221,14 @@ In [`/src/app/examples/write-object/write-object.component.html`](https://github
 {{ car | async | json }}
 ```
 
-### 9. Write a list - [Demo](https://angularfire2-offline.firebaseapp.com/write-list)
+### 10. Write a list - [Demo](https://angularfire2-offline.firebaseapp.com/write-list)
 
 In [`/src/app/examples/write-list/write-list.component.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-list/write-list.component.ts):
 
 ```ts
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
+import { AfoListObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Component({
   selector: 'app-write-list',
@@ -220,8 +236,8 @@ import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
 })
 export class WriteListComponent {
   groceries: AfoListObservable<any[]>;
-  constructor(private afo: AngularFireOffline) {
-    this.groceries = this.afo.database.list('/groceries');
+  constructor(private afoDatabase: AngularFireOfflineDatabase) {
+    this.groceries = this.afoDatabase.list('/groceries');
   }
   addItem(newName: string) {
     this.groceries.push({ text: newName });
@@ -242,6 +258,7 @@ export class WriteListComponent {
     this.groceries.push({text: 'Bread'});
   }
 }
+
 ```
 
 In [`/src/app/examples/write-list/write-list.component.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/examples/write-list/write-list.component.html):
@@ -264,7 +281,7 @@ In [`/src/app/examples/write-list/write-list.component.html`](https://github.com
 <button (click)="reset()">Reset ♻️</button>
 ```
 
-### 10. Run your app
+### 11. Run your app
 
 ```bash
 ng serve
@@ -302,7 +319,7 @@ Create an empty file called `service-worker.js` located at [`/src/service-worker
 
 ### 3. Add assets
 
-In [`/angular-cli.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/angular-cli.json#L11-L15) add `service-worker.js` to the assets array:
+In [`/.angular-cli.json`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/.angular-cli.json#L10-L14) add `service-worker.js` to the assets array:
 
 ```json
 "assets": [
@@ -350,6 +367,7 @@ module.exports = {
   ]
 };
 ```
+
 You can also add other items to the staticFileGlobs array such as:
 
 - `'dist/assets/**'` to cache assets

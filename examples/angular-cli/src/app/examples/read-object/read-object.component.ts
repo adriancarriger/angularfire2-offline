@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
+import { AfoObjectObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Component({
   selector: 'app-read-object',
@@ -8,7 +8,7 @@ import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
 })
 export class ReadObjectComponent {
   info: AfoObjectObservable<any>;
-  constructor(afo: AngularFireOffline) {
-    this.info = afo.database.object('/info');
+  constructor(afoDatabase: AngularFireOfflineDatabase) {
+    this.info = afoDatabase.object('/info');
   }
 }

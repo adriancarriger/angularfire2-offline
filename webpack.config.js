@@ -19,7 +19,7 @@ module.exports = {
         extensions: ['.ts', '.js']
     },
 
-    entry: helpers.root('angularfire2-offline.ts'),
+    entry: helpers.root('src/angularfire2-offline.ts'),
 
     output: {
         path: helpers.root('bundles'),

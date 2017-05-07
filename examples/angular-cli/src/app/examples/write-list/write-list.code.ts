@@ -21,7 +21,7 @@ export const WriteListCode = {
 `
 import { Component } from '@angular/core';
 
-import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
+import { AfoListObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Component({
   selector: 'app-write-list',
@@ -29,8 +29,8 @@ import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
 })
 export class WriteListComponent {
   groceries: AfoListObservable<any[]>;
-  constructor(private afo: AngularFireOffline) {
-    this.groceries = this.afo.database.list('/groceries');
+  constructor(private afoDatabase: AngularFireOfflineDatabase) {
+    this.groceries = this.afoDatabase.list('/groceries');
   }
   addItem(newName: string) {
     this.groceries.push({ text: newName });

@@ -8,8 +8,8 @@ export function LocalForageToken() {
   return new OpaqueToken('localforage');
 }
 
-export function localforageFactory() {
-  return localforage;
+export function localforageFactory(): any {
+  return <any>localforage;
 }
 
 export const LOCALFORAGE_PROVIDER = {

@@ -13,7 +13,7 @@ export const WriteObjectCode = {
 `
 import { Component } from '@angular/core';
 
-import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
+import { AfoObjectObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Component({
   selector: 'app-write-object',
@@ -28,8 +28,8 @@ export class WriteObjectComponent {
     'maxSpeed': 80
   };
   lastSpeed: number;
-  constructor(private afo: AngularFireOffline) {
-    this.car = this.afo.database.object('/car');
+  constructor(private afoDatabase: AngularFireOfflineDatabase) {
+    this.car = this.afoDatabase.object('/car');
     this.car.subscribe(car => this.lastSpeed = car['maxSpeed']);
   }
   /**
@@ -49,7 +49,7 @@ export class WriteObjectComponent {
    * Remove
    */
   remove(item) {
-    this.afo.database.object(\`/car/\${item}\`).remove();
+    this.afoDatabase.object(\`/car/\${item}\`).remove();
   }
 }
 `

@@ -4,6 +4,12 @@ How to create an app that loads Firebase data and static resources while offline
 
 ## [View Demo](https://ionic-pwa-ad85b.firebaseapp.com)
 
+## Legacy Versions
+
+- You are viewing the tutorial for the latest version of AngularFire2 Offline
+- Upgrading from `2.x` to `4.x` for AngularFire2? Try the [upgrade tutorial](https://github.com/adriancarriger/angularfire2-offline/blob/master/docs/version-4-upgrade.md)
+- For legacy support checkout the [**`AngularFire2 2.x`** version of this tutorial](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/ionic#ionic-offline-tutorial-)
+
 ## Steps to create project
 
 ### 1. Install [ionic-cli](https://www.npmjs.com/package/ionic) and [cordova](https://www.npmjs.com/package/cordova)
@@ -11,6 +17,7 @@ How to create an app that loads Firebase data and static resources while offline
 ```bash
 npm install -g cordova ionic
 ```
+
 ### 2. Create a new project
 
 ```bash
@@ -41,15 +48,20 @@ This can be found in your project at [the Firebase Console](https://console.fire
 
 ```ts
 import { NgModule, ErrorHandler } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireOfflineModule } from 'angularfire2-offline';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
+
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
+
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCIijNJKaFfNLhlVcN_Ip8b5EiY-qy_N7w',
@@ -67,8 +79,10 @@ export const firebaseConfig = {
     TabsPage
   ],
   imports: [
+    AngularFireDatabaseModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireOfflineModule,
+    BrowserModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -79,10 +93,13 @@ export const firebaseConfig = {
     MyApp,
     TabsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+    StatusBar,
+    SplashScreen,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
+  ]
 })
-export class AppModule { }
-
+export class AppModule {}
 ```
 
 ### 6. Use in a component
@@ -92,9 +109,9 @@ In [`/src/pages/home/home.ts`](https://github.com/adriancarriger/angularfire2-of
 ```ts
 import { Component } from '@angular/core';
 import {
-  AngularFireOffline,
+  AngularFireOfflineDatabase,
   AfoListObservable,
-  AfoObjectObservable } from 'angularfire2-offline';
+  AfoObjectObservable } from 'angularfire2-offline/database';
 import { NavController } from 'ionic-angular';
 
 @Component({
@@ -106,12 +123,13 @@ export class HomePage {
   items: AfoListObservable<any[]>;
   constructor(
     public navCtrl: NavController,
-    afo: AngularFireOffline) {
-    this.info = afo.database.object('/info');
-    this.items = afo.database.list('/items');
+    afoDatabase: AngularFireOfflineDatabase) {
+    this.info = afoDatabase.object('/info');
+    this.items = afoDatabase.list('/items');
   }
 }
 ```
+
 In [`/src/pages/home/home.html`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/ionic/src/pages/home/home.html):
 
 ```html
@@ -152,7 +170,7 @@ In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/bl
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js')
       .then(() => console.log('service worker installed'))
-      .catch(err => console.log('Error', err));
+      .catch(err => console.error('Error', err));
   }
 </script>
 ```
@@ -162,6 +180,7 @@ In [`/src/index.html`](https://github.com/adriancarriger/angularfire2-offline/bl
 ```bash
 ionic serve
 ```
+
 At [localhost:8100](http://localhost:8100/) you should see your app running.
 
 ### 3. Disconnect internet and refresh

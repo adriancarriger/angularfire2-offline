@@ -6,13 +6,14 @@
     "test": "karma start && npm run clean",
     "test-watch": "karma start --singleRun=false --autoWatch=true",
     "lint": "tslint index.ts && tslint ./**/*.ts",
-    "commit": "npm run prepublish && npm test && git-cz",
-    "prepublish": "ngc && npm run build",
+    "prep": "ngc && npm run build && npm run postbuild_npm",
+    "postbuild_npm": "cp package.json README.md .npmignore dist/ && npm run rewrite_npm_package",
     "build": "webpack && cp bundles/angularfire2-offline.umd.js bundles/index.js",
-    "build-dev": "ngc -w -p tsconfig-dev.json && npm run build",
+    "build-dev": "ngc -p tsconfig-dev.json && npm run build",
     "start-dev": "onchange '*.ts' 'src/**/*.ts' --initial -- npm run build-dev",
-    "clean": "rimraf index.js ./*{.d.ts,offline.js,.metadata.json,map} ./{src,tests}/**/*.{d.ts,js,metadata.json,map}",
-    "semantic-release": "semantic-release pre && npm publish --tag=next && semantic-release post"
+    "clean": "rimraf ./src/**/*.{d.ts,js,metadata.json,map}",
+    "semantic-release": "semantic-release pre && npm run prep && npm publish dist && semantic-release post",
+    "rewrite_npm_package": "node tools/rewrite-published-package.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,9 @@
     "cache",
     "offline",
     "ng2",
+    "ng4",
     "angular2",
+    "angular4",
     "firebase"
   ],
   "author": "Adrian Carriger <hello@adriancarriger.com> (http://adriancarriger.com)",
@@ -41,27 +44,27 @@
     "localforage": "1.5.0"
   },
   "peerDependencies": {
-    "@angular/core": "^2.0.0",
-    "angularfire2": "^2.0.0-beta.7"
+    "@angular/core": "^4.0.0",
+    "angularfire2": "^4.0.0-rc.0"
   },
   "devDependencies": {
-    "@angular/common": "2.3.1",
-    "@angular/compiler": "2.3.1",
-    "@angular/compiler-cli": "2.3.1",
-    "@angular/core": "2.3.1",
-    "@angular/http": "2.3.1",
-    "@angular/platform-browser": "2.3.1",
-    "@angular/platform-browser-dynamic": "2.3.1",
-    "@angular/platform-server": "2.3.1",
+    "@angular/common": "^4.0.0",
+    "@angular/compiler": "^4.0.0",
+    "@angular/compiler-cli": "^4.0.0",
+    "@angular/core": "^4.0.0",
+    "@angular/http": "^4.0.0",
+    "@angular/platform-browser": "^4.0.0",
+    "@angular/platform-browser-dynamic": "^4.0.0",
+    "@angular/platform-server": "^4.0.0",
     "@types/jasmine": "2.5.38",
     "@types/node": "6.0.52",
-    "angularfire2": "^2.0.0-beta.7",
+    "angularfire2": "^4.0.0-rc0",
     "awesome-typescript-loader": "3.0.0-beta.17",
     "codelyzer": "2.0.0-beta.3",
     "commitizen": "2.9.2",
     "core-js": "2.4.1",
     "cz-conventional-changelog": "1.2.0",
-    "firebase": "^3.6.6",
+    "firebase": "^3.9.0",
     "istanbul-instrumenter-loader": "0.2.0",
     "jasmine-core": "2.5.2",
     "karma": "1.3.0",
@@ -83,13 +86,16 @@
     "ts-helpers": "1.1.2",
     "tslint": "^4.3.0",
     "tslint-loader": "3.3.0",
-    "typescript": "2.0.10",
+    "typescript": "~2.2.0",
     "webpack": "2.1.0-beta.27",
-    "zone.js": "0.7.2"
+    "zone.js": "0.8.4"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "publishConfig": {
+    "tag": "next"
   }
 }

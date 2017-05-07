@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
+import { AfoListObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Component({
   selector: 'app-read-list',
@@ -8,7 +8,7 @@ import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
 })
 export class ReadListComponent {
   items: AfoListObservable<any[]>;
-  constructor(afo: AngularFireOffline) {
-    this.items = afo.database.list('/items');
+  constructor(afoDatabase: AngularFireOfflineDatabase) {
+    this.items = afoDatabase.list('/items');
   }
 }

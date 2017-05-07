@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AfoListObservable, AngularFireOffline } from 'angularfire2-offline';
+import { AngularFireOfflineDatabase, AfoListObservable } from 'angularfire2-offline/database';
 
 import { Random } from './words';
 
@@ -9,8 +9,8 @@ import { Random } from './words';
 })
 export class ConflictMessagesComponent {
   messages: AfoListObservable<any[]>;
-  constructor(private afo: AngularFireOffline) {
-    this.messages = afo.database.list('conflict/messages', {
+  constructor(private afoDatabase: AngularFireOfflineDatabase) {
+    this.messages = afoDatabase.list('conflict/messages', {
       query: {
         orderByChild: 'timestamp',
         limitToLast: 5

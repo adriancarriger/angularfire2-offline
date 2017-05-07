@@ -1,3 +1,4 @@
+import * as firebase from 'firebase/app';
 import { ReplaySubject } from 'rxjs';
 
 import { unwrap } from './database';

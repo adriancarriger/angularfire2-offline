@@ -10,13 +10,14 @@
       "jasmine",
       "node"
     ],
-    "lib": ["es2015", "dom"]
+    "lib": ["es2015", "dom"],
+    "rootDir": "src",
+    "outDir": "dist"
   },
   "files": [
-    "index.ts",
-    "angularfire2-offline.ts",
-    "./src/database.ts",
-    "tests/database.spec.ts"
+    "src/index.ts",
+    "src/angularfire2-offline.ts",
+    "src/database.ts"
   ],
   "exclude": [
     "node_modules",

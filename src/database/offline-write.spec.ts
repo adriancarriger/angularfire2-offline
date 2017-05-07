@@ -3,9 +3,9 @@ import { Injectable, ReflectiveInjector } from '@angular/core';
 import { async, inject, TestBed } from '@angular/core/testing';
 import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
-import { OfflineWrite, WriteComplete } from '../src/offline-write';
-import { WriteCache } from '../src/interfaces';
-import { LocalUpdateService } from '../src/local-update-service';
+import { OfflineWrite, WriteComplete } from './offline-write';
+import { WriteCache } from './interfaces';
+import { LocalUpdateService } from './local-update-service';
 
 describe('Object Observable', () => {
   let mockLocalForageService: MockLocalForageService;

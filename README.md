@@ -16,6 +16,12 @@
 
 [![Example Gif](https://raw.githubusercontent.com/adriancarriger/angularfire2-offline/master/images/example.gif)](https://angularfire2-offline.firebaseapp.com/write-list)
 
+## Legacy Versions
+
+- Upgrading from `2.x` to `4.x` for AngularFire2? Try the [upgrade tutorial](https://github.com/adriancarriger/angularfire2-offline/blob/master/docs/version-4-upgrade.md)
+- To support **`AngularFire2 2.x`** use the [@two branch of this repo](https://github.com/adriancarriger/angularfire2-offline/tree/two) for [install instructions](https://github.com/adriancarriger/angularfire2-offline/tree/two#install) and tutorials ([Angular](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/angular-cli#angular-cli-offline-tutorial-)/[Ionic](https://github.com/adriancarriger/angularfire2-offline/tree/two/examples/ionic#ionic-offline-tutorial-)).
+- This branch (master) is a wrapper for the latest version of AngularFire2 (4.x)
+
 ## Install
 
 ```bash
@@ -29,10 +35,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireOfflineModule } from 'angularfire2-offline';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { AppComponent } from './app.component';
 
-// Must export the config
 export const firebaseConfig = {
   apiKey: '<your-key>',
   authDomain: '<your-project-authdomain>',
@@ -43,6 +49,7 @@ export const firebaseConfig = {
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    AngularFireDatabaseModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireOfflineModule,
     BrowserModule
@@ -65,7 +72,7 @@ import { Component } from '@angular/core';
 import {
   AfoListObservable,
   AfoObjectObservable,
-  AngularFireOffline } from 'angularfire2-offline';
+  AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Component({
   selector: 'project-name-app',
@@ -81,9 +88,9 @@ import {
 export class MyApp {
   info: AfoObjectObservable<any>;
   items: AfoListObservable<any[]>;
-  constructor(afo: AngularFireOffline) {
-    this.info = afo.database.object('/info');
-    this.items = afo.database.list('/items');
+  constructor(afoDatabase: AngularFireOfflineDatabase) {
+    this.info = afoDatabase.object('/info');
+    this.items = afoDatabase.list('/items');
   }
 }
 ```
@@ -98,10 +105,10 @@ If writes are made offline followed by a page refresh, the writes will be sent w
 
 ## How it works
 
- - While online, Firebase data is stored locally (as data changes the local store is updated)
- - While offline, local data is served if available, and writes are stored locally
- - On reconnect, app updates with new Firebase data, and writes are sent to Firebase
- - Even while online, local data is used first when available which results in a faster load
+- While online, Firebase data is stored locally (as data changes the local store is updated)
+- While offline, local data is served if available, and writes are stored locally
+- On reconnect, app updates with new Firebase data, and writes are sent to Firebase
+- Even while online, local data is used first when available which results in a faster load
 
 ## Contributing to AngularFire2 Offline
 

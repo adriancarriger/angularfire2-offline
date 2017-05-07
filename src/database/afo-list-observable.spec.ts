@@ -3,8 +3,8 @@ import { Injectable, ReflectiveInjector } from '@angular/core';
 import { async, inject, TestBed } from '@angular/core/testing';
 import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
-import { AfoListObservable } from '../src/afo-list-observable';
-import { LocalUpdateService } from '../src/local-update-service';
+import { AfoListObservable } from './afo-list-observable';
+import { LocalUpdateService } from './local-update-service';
 
 describe('List Observable', () => {
   let listObservable: AfoListObservable<any>;

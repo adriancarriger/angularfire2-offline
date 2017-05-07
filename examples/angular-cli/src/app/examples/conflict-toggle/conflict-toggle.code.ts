@@ -13,7 +13,7 @@ export const ConflictToggleCode = {
   typescript:
 `
 import { Component } from '@angular/core';
-import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
+import { AfoObjectObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Component({
   selector: 'app-conflict-toggle',
@@ -21,8 +21,8 @@ import { AfoObjectObservable, AngularFireOffline } from 'angularfire2-offline';
 })
 export class ConflictToggleComponent {
   fries: AfoObjectObservable<any>;
-  constructor(private afo: AngularFireOffline) {
-    this.fries = afo.database.object('conflict/toggle');
+  constructor(private afoDatabase: AngularFireOfflineDatabase) {
+    this.fries = afoDatabase.object('conflict/toggle');
   }
   updateFries(checked: boolean) {
     this.fries.set({

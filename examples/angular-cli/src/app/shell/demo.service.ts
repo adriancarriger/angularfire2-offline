@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
-const Prism = require('prismjs');
+import * as Prism from 'prismjs';
 
 @Injectable()
 export class DemoService {

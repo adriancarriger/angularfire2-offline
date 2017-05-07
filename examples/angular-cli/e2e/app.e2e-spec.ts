@@ -1,10 +1,10 @@
-import { AngularCliPage } from './app.po';
+import { Ng4Page } from './app.po';
 
-describe('angular-cli App', function() {
-  let page: AngularCliPage;
+describe('ng4 App', () => {
+  let page: Ng4Page;
 
   beforeEach(() => {
-    page = new AngularCliPage();
+    page = new Ng4Page();
   });
 
   it('should display message saying app works', () => {

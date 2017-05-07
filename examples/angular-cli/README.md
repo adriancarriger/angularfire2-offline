@@ -2,7 +2,7 @@
 
 How to create an app that loads Firebase data and static resources while offline.
 
-## <span style="color:red">Important</span>
+## Important
 
 ### This is a legacy branch that supports AngularFire2 version 2.x
 

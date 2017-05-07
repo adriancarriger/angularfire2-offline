@@ -9,7 +9,7 @@
 
 - [Complete changelog](https://github.com/adriancarriger/angularfire2-offline/releases)
 
-## <span style="color:red">Important</span>
+## Important
 
 ### This is a legacy branch that supports AngularFire2 version 2.x
 

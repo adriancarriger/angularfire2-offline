@@ -9,7 +9,7 @@ Checkout a full install tutorial for AngularFire2 Offline:
 * [Angular Cli Tutorial 📗](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/angular-cli#angular-cli-offline-tutorial-)
 * [Ionic Tutorial 📘](https://github.com/adriancarriger/angularfire2-offline/tree/master/examples/ionic#ionic-offline-tutorial-)
 
-## 1. Upgrade @NgModule
+## 1. Upgrade @NgModule ([Diff](https://github.com/adriancarriger/angularfire2-offline/commit/bdc482f760b80e92e0e85ffdcd2665172007f1ef#diff-0c822f8dd9e7bceed894fb47db7355cf))
 
 Open [`/src/app/app.module.ts`](https://github.com/adriancarriger/angularfire2-offline/blob/master/examples/angular-cli/src/app/app.module.ts) and add `AngularFireDatabaseModule` to your imports:
 
@@ -40,7 +40,7 @@ import { AppComponent } from './app.component';
 export class AppModule { }
 ```
 
-## 2. Upgrade components
+## 2. Upgrade components ([Diff](https://github.com/adriancarriger/angularfire2-offline/commit/bdc482f760b80e92e0e85ffdcd2665172007f1ef#diff-c91365cb709888a7c14525589f1fa703))
 
 ### Change your import
 

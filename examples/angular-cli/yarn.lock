@@ -220,10 +220,11 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angularfire2-offline@2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-2.0.8.tgz#441cb4345f065302d4b357d6843f781101d38b3d"
+angularfire2-offline@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-3.0.0.tgz#9e11da8f44747405d8fdd91b8de982f7aff7dbca"
   dependencies:
+    json-stringify-safe "^5.0.1"
     localforage "1.5.0"
 
 angularfire2@4.0.0-rc0:
@@ -2805,7 +2806,7 @@ json-stable-stringify@^1.0.1:
   dependencies:
     jsonify "~0.0.0"
 
-json-stringify-safe@~5.0.1:
+json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 

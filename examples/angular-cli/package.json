@@ -26,7 +26,7 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "angularfire2": "4.0.0-rc0",
-    "angularfire2-offline": "2.0.8",
+    "angularfire2-offline": "3.0.0",
     "core-js": "^2.4.1",
     "firebase": "^3.9.0",
     "hammerjs": "^2.0.8",

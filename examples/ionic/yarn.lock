@@ -157,9 +157,9 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angularfire2-offline@1.52.3:
-  version "1.52.3"
-  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-1.52.3.tgz#de6e7483bdf2f962112811f99d022c2168f5ebb1"
+angularfire2-offline@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-3.0.0.tgz#9e11da8f44747405d8fdd91b8de982f7aff7dbca"
   dependencies:
     json-stringify-safe "^5.0.1"
     localforage "1.5.0"

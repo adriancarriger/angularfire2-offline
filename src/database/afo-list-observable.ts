@@ -91,13 +91,10 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
    * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
    * completes
    */
-  push(value: any) {
-    let resolve;
-    let promise: any = new Promise(r => resolve = r);
-    const key = this.ref.$ref.push(value, () => {
-      resolve();
-    }).key;
-    promise.key = key;
+  push(value: any): firebase.Promise<void> {
+    let promise = this.ref.$ref.push(value);
+    const key = promise.key;
+
     this.emulate('push', value, key);
     OfflineWrite(
       promise,

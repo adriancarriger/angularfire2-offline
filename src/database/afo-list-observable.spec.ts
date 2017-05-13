@@ -29,9 +29,10 @@ describe('List Observable', () => {
       }
     }};
     let pushPromise;
-    ref.$ref.push = (value, callback) => {
-      callback();
-      return 'key-1';
+    ref.$ref.push = (value) => {
+      let key = 'key-1';
+      pushPromise = Promise.resolve(key);
+      return pushPromise;
     };
     mockLocalForageService = new MockLocalForageService();
     localUpdateService = new LocalUpdateService(mockLocalForageService);
@@ -39,7 +40,8 @@ describe('List Observable', () => {
 
   it('should push', done => {
     listObservable = new AfoListObservable<any>(ref, localUpdateService);
-    listObservable.push('new value').then(() => {
+    listObservable.push('new value').then((key) => {
+      expect(key).toBe('key-1');
       done();
     });
   });

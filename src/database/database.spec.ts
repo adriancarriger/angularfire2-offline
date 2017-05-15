@@ -423,6 +423,46 @@ describe('Service: AngularFireOfflineDatabase', () => {
     })));
   });
 
+  describe('Unsubscribe', () => {
+    it('should unsubscribe from an object', done => {
+      inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+        let newValue = { val: () => { return 'abc23-7'; } };
+        let afoObject = service.object('/slug-2');
+
+        afoObject.subscribe(object => {
+          expect(object.$value).toBe('abc23-7');
+        });
+        mockAngularFireDatabase.update('object', newValue);
+
+        afoObject.complete();
+
+        expect((<any>afoObject).ref.observers.length).toBe(0);
+        setTimeout(done);
+      })();
+    });
+
+    it('should unsubscribe from a list', done => {
+      inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+        const key = '/slug-2';
+        let newValue = [
+          { val: () => { return 'xyz'; } }
+        ];
+
+        service.processing.current = false;
+        const afoList = service.list(key);
+        afoList.subscribe(list => {
+          expect(list[0].$value).toBe('xyz');
+        });
+        mockAngularFireDatabase.update('list', newValue);
+
+        afoList.complete();
+
+        expect((<any>afoList).ref.observers.length).toBe(0);
+        setTimeout(done);
+      })();
+    });
+  });
+
   it('should return an unwrapped null value', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     let newValue = { val: () => { return null; } };
     service.object('/slug-2').subscribe(object => {

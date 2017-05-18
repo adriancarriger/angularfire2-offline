@@ -7,7 +7,7 @@ import {
   LocalUpdateService,
   LOCAL_UPDATE_SERVICE_PROVIDER_FACTORY } from './local-update-service';
 import { LocalForageToken } from './localforage';
-import { WriteCache } from './interfaces';
+import { WriteCache } from '../interfaces';
 
 describe('Service: LocalUpdateService', () => {
   let mockLocalForageService: MockLocalForageService;

@@ -4,11 +4,11 @@ import { async, inject, TestBed } from '@angular/core/testing';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Subject } from 'rxjs/Rx';
 
-import { AfoListObservable } from './afo-list-observable';
-import { AfoObjectObservable } from './afo-object-observable';
+import { AfoListObservable } from './list/afo-list-observable';
+import { AfoObjectObservable } from './object/afo-object-observable';
 import { AngularFireOfflineDatabase } from './database';
-import { LocalForageToken } from './localforage';
-import { LocalUpdateService } from './local-update-service';
+import { LocalForageToken } from './offline-storage/localforage';
+import { LocalUpdateService } from './offline-storage/local-update-service';
 import { CacheItem, WriteCache } from './interfaces';
 
 describe('Service: AngularFireOfflineDatabase', () => {
@@ -39,7 +39,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
     inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
       const key = '/slug-2';
       let newValue = [
-        { val: () => { return 'xyz'; } }
+        { val: () => { return 'xyz'; }, getPriority: () => {} }
       ];
       service.processing.current = false;
       service.list(key).subscribe(list => {
@@ -55,7 +55,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
     inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
       const key = '/slug-2';
       let newValue = [
-        { val: () => { return 'xyz'; } }
+        { val: () => { return 'xyz'; }, getPriority: () => {} }
       ];
       service.list(key);
       mockAngularFireDatabase.update('list', newValue);
@@ -170,7 +170,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
     });
   })));
 
-  it('get local list (2) - should not  update value if loaded', done => {
+  it('get local list (2) - should not update value if loaded', done => {
     inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
       service.processing.current = false;
       let returnedValue = false;
@@ -195,6 +195,18 @@ describe('Service: AngularFireOfflineDatabase', () => {
       });
     })();
   });
+
+  it('should unsubscribe from a list',
+    async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+    const key = '/slug-2';
+    let newValue = [
+      { val: () => { return 'xyz'; }, getPriority: () => {} }
+    ];
+    const list = service.list(key);
+    expect(list.isStopped).toBeFalsy();
+    list.unsubscribe();
+    expect(list.isStopped).toBeTruthy();
+  })));
 
   describe('Wait while processing', () => {
     it('1 - wait for a list', done => {
@@ -445,7 +457,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
       inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
         const key = '/slug-2';
         let newValue = [
-          { val: () => { return 'xyz'; } }
+          { val: () => { return 'xyz'; }, getPriority: () => {} }
         ];
 
         service.processing.current = false;
@@ -459,6 +471,18 @@ describe('Service: AngularFireOfflineDatabase', () => {
 
         expect((<any>afoList).ref.observers.length).toBe(0);
         setTimeout(done);
+      })();
+    });
+
+    it('should reset', () => {
+      inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+        service.list('/slug-2');
+        service.object('/slug-3');
+        expect(Object.keys(service.listCache).length).toBe(1);
+        expect(Object.keys(service.objectCache).length).toBe(1);
+        service.reset();
+        expect(Object.keys(service.listCache).length).toBe(0);
+        expect(Object.keys(service.objectCache).length).toBe(0);
       })();
     });
   });
@@ -500,6 +524,7 @@ export class MockLocalForageService {
   setItem(key, value) {
     return new Promise(resolve => resolve(this.values[key] = value));
   }
+  clear() { }
 }
 
 @Injectable()

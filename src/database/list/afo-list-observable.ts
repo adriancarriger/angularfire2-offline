@@ -1,10 +1,11 @@
-import * as firebase from 'firebase/app';
+import { FirebaseListFactoryOpts } from 'angularfire2/interfaces';
+import * as stringify from 'json-stringify-safe';
 import { ReplaySubject } from 'rxjs';
 
-import { unwrap } from './database';
-import { OfflineWrite } from './offline-write';
-import { LocalUpdateService } from './local-update-service';
-const stringify = require('json-stringify-safe');
+import { EmulateList } from './emulate-list';
+import { EmulateQuery } from './emulate-query';
+import { LocalUpdateService } from '../offline-storage/local-update-service';
+import { OfflineWrite } from '../offline-storage/offline-write';
 
 export class AfoListObservable<T> extends ReplaySubject<T> {
   /**
@@ -12,48 +13,42 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
    */
   path: string;
   /**
-   * An array used to store write operations that require an initial value to be set
-   * in {@link value} before being applied
-   */
-  que = [];
-  /**
    * Number of times updated
    */
   updated: number;
   /**
    * The current value of the {@link AfoListObservable}
    */
-  value: any;
+  value: any[];
   /**
    * The value preceding the current value.
    */
   private previousValue: any;
+  private emulateQuery: EmulateQuery;
+  private emulateList: EmulateList;
   /**
    * Creates the {@link AfoListObservable}
    * @param ref a reference to the related FirebaseListObservable
    * @param localUpdateService the service consumed by {@link OfflineWrite}
    */
-  constructor(private ref, private localUpdateService: LocalUpdateService) {
+  constructor(
+    private ref,
+    private localUpdateService: LocalUpdateService,
+    private options?: FirebaseListFactoryOpts) {
     super(1);
     this.init();
   }
   /**
-   * Emulates an offline write assuming the remote data has not changed
-   * @param method AngularFire2 write method to emulate
-   * @param value new value to write
-   * @param key optional key used with some write methods
+   * Emulates what would happen if the given write were to occur and shows the user that value.
+   *
+   * - If the state of the Firebase database is different than what we have during emulation,
+   * then Firebase's state will win.
+   * - For example, if your device is pushing to a list while offline it will be emulated on your
+   * device immediately, but if another device makes a push to the same reference before your
+   * device reconnects, then the other device's push will show first in the list.
    */
   emulate(method, value = null, key?) {
-    const clonedValue = JSON.parse(JSON.stringify(value));
-    if (this.value === undefined) {
-      this.que.push({
-        method: method,
-        value: clonedValue,
-        key: key
-      });
-      return;
-    }
-    this.processEmulation(method, clonedValue, key);
+    this.value = this.emulateList.emulate(this.value, method, value, key);
     this.updateSubscribers();
   }
   /**
@@ -61,14 +56,16 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
    * - Subscribes to the observable so that emulation is applied after there is an initial value
    */
   init() {
+    this.emulateQuery = new EmulateQuery();
+    this.emulateList = new EmulateList();
+
     this.path = this.ref.$ref.toString().substring(this.ref.$ref.database.ref().toString().length - 1);
-    this.subscribe(newValue => {
+    this.emulateQuery.setupQuery(this.options);
+
+    this.subscribe((newValue: any) => {
       this.value = newValue;
-      if (this.que.length > 0) {
-        this.que.forEach(queTask => {
-          this.processEmulation(queTask.method, queTask.value, queTask.key);
-        });
-        this.que = [];
+      if (this.emulateList.que.length > 0) {
+        this.value = this.emulateList.processQue(this.value);
         this.updateSubscribers();
       }
     });
@@ -84,6 +81,15 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
     }
   }
   /**
+   * Unsubscribes from child observables first, followed by the default ReplaySubject unsubscribe
+   */
+  unsubscribe() {
+    this.emulateQuery.destroy();
+    this.isStopped = true;
+    this.closed = true;
+    this.observers = null;
+  }
+  /**
    * Wraps the AngularFire2 FirebaseListObservable [push](https://goo.gl/nTe7C0) method
    *
    * - Emulates a push locally
@@ -91,15 +97,13 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
    * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
    * completes
    */
-  push(value: any): firebase.Promise<void> {
-    let promise = this.ref.$ref.push(value);
-    const key = promise.key;
-
-    this.emulate('push', value, key);
+  push(value: any) {
+    const promise = this.ref.$ref.push(value);
+    this.emulate('push', value, promise.key);
     OfflineWrite(
       promise,
       'object',
-      `${this.path}/${key}`,
+      `${this.path}/${promise.key}`,
       'set',
       [value],
       this.localUpdateService);
@@ -113,8 +117,9 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
    * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
    * completes
    */
-  update(key: string, value: any): firebase.Promise<void> {
+  update(key: string, value: any) {
     this.emulate('update', value, key);
+
     const promise = this.ref.update(key, value);
     this.offlineWrite(promise, 'update', [key, value]);
     return promise;
@@ -128,22 +133,20 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
    * completes
    * @param remove if you omit the `key` parameter from `.remove()` it deletes the entire list.
    */
-  remove(key?: string): firebase.Promise<void> {
+  remove(key?: string) {
     this.emulate('remove', null, key);
     const promise = this.ref.remove(key);
     this.offlineWrite(promise, 'remove', [key]);
     return promise;
   }
-  /**
+   /**
    * Convenience method to save an offline write
    *
-   * @param promise
-   * [the promise](https://goo.gl/5VLgQm)
-   * returned by calling an AngularFire2 method
+   * @param promise [the promise](https://goo.gl/5VLgQm) returned by calling an AngularFire2 method
    * @param type the AngularFire2 method being called
    * @param args an optional array of arguments used to call an AngularFire2 method taking the form of [newValue, options]
    */
-  private offlineWrite(promise: firebase.Promise<void>, type: string, args: any[]) {
+  private offlineWrite(promise, type: string, args: any[]) {
     OfflineWrite(
       promise,
       'list',
@@ -153,56 +156,12 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
       this.localUpdateService);
   }
   /**
-   * Calculates the result of a given emulation without updating subscribers of this Observable
-   *
-   * - this allows for the processing of many emulations before notifying subscribers
-   * @param method the AngularFire2 method being emulated
-   * @param value the new value to be used by the given method
-   * @param key can be used for remove and required for update
-   */
-  private processEmulation(method, value, key) {
-    if (this.value === null) {
-      this.value = [];
-    }
-    const newValue = unwrap(key, value, () => value !== null);
-    if (method === 'push') {
-      let found = false;
-      this.value.forEach((item, index) => {
-        if (item.$key === key) {
-          this.value[index] = newValue;
-          found = true;
-        }
-      });
-      if (!found) {
-        this.value.push(newValue);
-      }
-    } else if (method === 'update') {
-      let found = false;
-      this.value.forEach((item, index) => {
-        if (item.$key === key) {
-          found = true;
-          this.value[index] = newValue;
-        }
-      });
-      if (!found) {
-        this.value.push(newValue);
-      }
-    } else { // `remove` is the only remaining option
-      if (key === undefined) {
-        this.value = [];
-      } else {
-        this.value.forEach((item, index) => {
-          if (item.$key === key) {
-            this.value.splice(index, 1);
-          }
-        });
-      }
-    }
-  }
-  /**
    * Sends the the current {@link value} to all subscribers
    */
   private updateSubscribers() {
-    this.uniqueNext(this.value);
+    this.emulateQuery.emulateQuery(this.value).then(newValue => {
+      this.value = <any>newValue;
+      this.uniqueNext(<any>this.value);
+    });
   }
 }

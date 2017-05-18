@@ -4,7 +4,7 @@ import { async, inject, TestBed } from '@angular/core/testing';
 import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
 import { OfflineWrite, WriteComplete } from './offline-write';
-import { WriteCache } from './interfaces';
+import { WriteCache } from '../interfaces';
 import { LocalUpdateService } from './local-update-service';
 
 describe('Object Observable', () => {

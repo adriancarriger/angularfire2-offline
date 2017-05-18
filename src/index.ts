@@ -8,10 +8,12 @@ import {
 import { AngularFireDatabase } from 'angularfire2/database';
 
 import { AngularFireOfflineDatabase } from './database/database';
-import { LOCALFORAGE_PROVIDER, LocalForageToken } from './database/localforage';
-import { LocalUpdateService, LOCAL_UPDATE_SERVICE_PROVIDER } from './database/local-update-service';
-export { AfoListObservable } from './database/afo-list-observable';
-export { AfoObjectObservable } from './database/afo-object-observable';
+import { LOCALFORAGE_PROVIDER, LocalForageToken } from './database/offline-storage/localforage';
+import {
+  LocalUpdateService,
+  LOCAL_UPDATE_SERVICE_PROVIDER } from './database/offline-storage/local-update-service';
+export { AfoListObservable } from './database/list/afo-list-observable';
+export { AfoObjectObservable } from './database/object/afo-object-observable';
 export { AngularFireOfflineDatabase } from './database/database';
 
 export function ANGULARFIRE_OFFLINE_PROVIDER_FACTORY(parent: AngularFireOfflineDatabase, AngularFireDatabase, token, LocalUpdateService) {

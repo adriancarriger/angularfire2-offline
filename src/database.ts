@@ -1,3 +1,3 @@
 export { AngularFireOfflineDatabase } from './database/database';
-export { AfoListObservable } from './database/afo-list-observable';
-export { AfoObjectObservable } from './database/afo-object-observable';
+export { AfoListObservable } from './database/list/afo-list-observable';
+export { AfoObjectObservable } from './database/object/afo-object-observable';

@@ -1,4 +1,4 @@
-import { WriteCache } from './interfaces';
+import { WriteCache } from '../interfaces';
 import { LocalUpdateService } from './local-update-service';
 
 export function OfflineWrite(

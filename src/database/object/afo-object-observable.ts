@@ -1,9 +1,9 @@
 import * as firebase from 'firebase/app';
 import { ReplaySubject } from 'rxjs';
 
-import { unwrap } from './database';
-import { OfflineWrite } from './offline-write';
-import { LocalUpdateService } from './local-update-service';
+import { unwrap } from '../database';
+import { OfflineWrite } from '../offline-storage/offline-write';
+import { LocalUpdateService } from '../offline-storage/local-update-service';
 const stringify = require('json-stringify-safe');
 
 export class AfoObjectObservable<T> extends ReplaySubject<T> {

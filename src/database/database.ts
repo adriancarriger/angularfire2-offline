@@ -8,12 +8,12 @@ import {
   FirebaseObjectObservable } from 'angularfire2/database';
 import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
 
-import { AfoListObservable } from './afo-list-observable';
-import { AfoObjectObservable } from './afo-object-observable';
+import { AfoListObservable } from './list/afo-list-observable';
+import { AfoObjectObservable } from './object/afo-object-observable';
 import { AngularFireOfflineCache, CacheItem, WriteCache } from './interfaces';
-import { LocalForageToken } from './localforage';
-import { LocalUpdateService } from './local-update-service';
-import { WriteComplete } from './offline-write';
+import { LocalForageToken } from './offline-storage/localforage';
+import { LocalUpdateService } from './offline-storage/local-update-service';
+import { WriteComplete } from './offline-storage/offline-write';
 
 /**
  * @whatItDoes Wraps the [AngularFire2](https://github.com/angular/angularfire2) database methods
@@ -269,7 +269,10 @@ export class AngularFireOfflineDatabase {
    */
   private setList(key: string, array: Array<any>) {
     const primaryValue = array.reduce((p, c, i) => {
-      this.localForage.setItem(`read/object${key}/${c.key}`, c.val());
+      const itemValue = c.val();
+      const priority = c.getPriority();
+      if (priority) { itemValue.$priority = priority; }
+      this.localForage.setItem(`read/object${key}/${c.key}`, itemValue);
       p[i] = c.key;
       return p;
     }, []);
@@ -290,18 +293,22 @@ export class AngularFireOfflineDatabase {
   private setupList(key: string, options: FirebaseListFactoryOpts = {}) {
     // Get Firebase ref
     options.preserveSnapshot = true;
+    const usePriority = options && options.query && options.query.orderByPriority;
     const ref: FirebaseListObservable<any[]> = this.af.list(key, options);
     // Create cache
     this.listCache[key] = {
       loaded: false,
       offlineInit: false,
-      sub: new AfoListObservable(ref, this.localUpdateService)
+      sub: new AfoListObservable(ref, this.localUpdateService, options)
     };
 
     // Firebase
     const subscription = ref.subscribe(value => {
       this.listCache[key].loaded = true;
-      const cacheValue = value.map(snap => unwrap(snap.key, snap.val(), () => !isNil(snap.val())));
+      const cacheValue = value.map(snap => {
+        const priority = usePriority ? snap.getPriority() : null;
+        return unwrap(snap.key, snap.val(), () => !isNil(snap.val()), priority);
+      });
       if (this.processing.current) {
         this.processing.listCache[key] = cacheValue;
       } else {
@@ -343,12 +350,13 @@ export function isNil(obj: any): boolean {
 /**
  * Adds the properies of `$key`, `$value`, `$exists` as required by AngularFire2
  */
-export function unwrap(key: string, value: any, exists) {
+export function unwrap(key: string, value: any, exists, priority?) {
   let unwrapped = !isNil(value) ? value : { $value: null };
   if ((/string|number|boolean/).test(typeof value)) {
     unwrapped = { $value: value };
   }
   unwrapped.$exists = exists;
   unwrapped.$key = key;
+  if (priority) { unwrapped.$priority = priority; }
   return unwrapped;
 }

@@ -4,7 +4,7 @@ import { async, inject, TestBed } from '@angular/core/testing';
 import { Observable, ReplaySubject, Subject } from 'rxjs/Rx';
 
 import { AfoObjectObservable } from './afo-object-observable';
-import { LocalUpdateService } from './local-update-service';
+import { LocalUpdateService } from '../offline-storage/local-update-service';
 
 describe('Object Observable', () => {
   let objectObservable: AfoObjectObservable<any>;

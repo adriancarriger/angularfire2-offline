@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireOfflineModule } from 'angularfire2-offline';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { AppComponent } from './app.component';
 
@@ -20,6 +21,7 @@ export const firebaseConfig = {
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireOfflineModule,
+    AngularFireDatabaseModule,
     BrowserModule
   ],
   providers: [],

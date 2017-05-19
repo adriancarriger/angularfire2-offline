@@ -1,10 +1,10 @@
-import { AfoTestPage } from './app.po';
+import { AngularCliPage } from './app.po';
 
-describe('afo-test App', () => {
-  let page: AfoTestPage;
+describe('angular-cli App', () => {
+  let page: AngularCliPage;
 
   beforeEach(() => {
-    page = new AfoTestPage();
+    page = new AngularCliPage();
   });
 
   it('should display message saying app works', () => {

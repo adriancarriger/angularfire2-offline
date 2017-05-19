@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 import {
-  AngularFireOffline,
+  AngularFireOfflineDatabase,
   AfoListObservable,
   AfoObjectObservable
-} from 'angularfire2-offline';
+} from 'angularfire2-offline/database';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +14,8 @@ import {
 export class AppComponent {
   listExample: AfoListObservable<any[]>;
   objectExample: AfoObjectObservable<any>;
-  constructor(private afo: AngularFireOffline) {
-    this.listExample = this.afo.database.list('groceries');
-    this.objectExample = this.afo.database.object('car');
+  constructor(private afoDatabase: AngularFireOfflineDatabase) {
+    this.listExample = this.afoDatabase.list('groceries');
+    this.objectExample = this.afoDatabase.object('car');
   }
 }

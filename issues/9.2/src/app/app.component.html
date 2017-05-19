@@ -1,0 +1,27 @@
+<h1>Issue 9</h1>
+
+<h3>Filtered groceries</h3>
+<ul>
+  <li *ngFor="let item of filteredGroceries | async">
+    {{item.text}}
+    <button (click)="deleteItem(item.$key)" *ngIf="item.text === 'Bread'" md-button color="primary">Make gluten free ❌ 🍞</button>
+    <button (click)="prioritize(item)" *ngIf="item.text === 'Eggs'" md-button color="primary">Make {{item.text}} important ‼️</button>
+  </li>
+</ul>
+<p *ngIf="(filteredGroceries | async)?.length === 0">List empty</p>
+
+<button (click)="addItem('Milk')" md-raised-button>Add Milk 🥛</button>
+<button (click)="addItem('Apples')" md-raised-button>Add Apples 🍎</button>
+<button (click)="addItem('Cucumbers')" md-raised-button>Add Cucumbers 🥒</button>
+<button (click)="deleteEverything()" md-raised-button>Remove Everything 🔥</button>
+<button (click)="reset()" md-raised-button>Reset ♻️</button>
+
+<h3>Unfiltered groceries</h3>
+<ul>
+  <li *ngFor="let item of groceries | async">
+    {{item.text}}
+    <button (click)="deleteItem(item.$key)" *ngIf="item.text === 'Bread'" md-button color="primary">Make gluten free ❌ 🍞</button>
+    <button (click)="prioritize(item)" *ngIf="item.text === 'Eggs'" md-button color="primary">Make {{item.text}} important ‼️</button>
+  </li>
+</ul>
+<p *ngIf="(groceries | async)?.length === 0">List empty</p>

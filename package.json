@@ -11,7 +11,7 @@
     "build": "webpack && cp bundles/angularfire2-offline.umd.js bundles/index.js",
     "build-dev": "ngc -p tsconfig-dev.json && npm run build",
     "start-dev": "onchange '*.ts' 'src/**/*.ts' --initial -- npm run build-dev",
-    "clean": "rimraf ./src/**/*.{d.ts,js,metadata.json,map}",
+    "clean": "rimraf ./src/**/*.{d.ts,js,metadata.json,map} dist coverage bundles",
     "semantic-release": "semantic-release pre && npm run prep && npm publish dist && semantic-release post",
     "rewrite_npm_package": "node tools/rewrite-published-package.js"
   },

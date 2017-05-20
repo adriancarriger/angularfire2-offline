@@ -5,6 +5,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { Subject } from 'rxjs/Rx';
 
 import { AfoListObservable } from './list/afo-list-observable';
+import { InternalListObservable } from './list/internal-list-observable';
 import { AfoObjectObservable } from './object/afo-object-observable';
 import { AngularFireOfflineDatabase } from './database';
 import { LocalForageToken } from './offline-storage/localforage';
@@ -270,7 +271,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
         service.listCache[key] = {
           loaded: false,
           offlineInit: false,
-          sub: new MockAfoListObservable()
+          sub: new MockInternalListObservable()
         };
         service.processing.current = true;
         setTimeout(() => {
@@ -413,7 +414,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
       service.listCache['items'] = {
         loaded: false,
         offlineInit: false,
-        sub: new MockAfoListObservable()
+        sub: new MockInternalListObservable()
       };
       service.processing.listCache['items'] = ['item-1', 'item-2'];
       service.listCache['items'].sub.subscribe(x => testResults.items = x);
@@ -469,7 +470,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
 
         afoList.complete();
 
-        expect((<any>afoList).ref.observers.length).toBe(0);
+        expect(afoList.observers.length).toBe(0);
         setTimeout(done);
       })();
     });
@@ -595,7 +596,7 @@ export class MockFirebaseObjectObservable<T> extends Subject<T> {
   }
 }
 
-export class MockAfoListObservable<T> extends AfoListObservable<T> {
+export class MockInternalListObservable<T> extends InternalListObservable<T> {
   history = [];
   constructor() {
     super(Ref, null);

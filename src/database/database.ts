@@ -8,6 +8,7 @@ import {
   FirebaseObjectObservable } from 'angularfire2/database';
 import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
 
+import { InternalListObservable } from './list/internal-list-observable';
 import { AfoListObservable } from './list/afo-list-observable';
 import { AfoObjectObservable } from './object/afo-object-observable';
 import { AngularFireOfflineCache, CacheItem, WriteCache } from './interfaces';
@@ -116,7 +117,7 @@ export class AngularFireOfflineDatabase {
    */
   list(key: string, options?: FirebaseListFactoryOpts): AfoListObservable<any[]> {
     if (!(key in this.listCache)) { this.setupList(key, options); }
-    return this.listCache[key].sub;
+    return new AfoListObservable(this.listCache[key].sub, options);
   }
   /**
    * Returns an Observable object of Firebase snapshot data
@@ -291,15 +292,15 @@ export class AngularFireOfflineDatabase {
    * @param options passed directly from {@link list}'s options param
    */
   private setupList(key: string, options: FirebaseListFactoryOpts = {}) {
-    // Get Firebase ref
     options.preserveSnapshot = true;
     const usePriority = options && options.query && options.query.orderByPriority;
+    // Get Firebase ref
     const ref: FirebaseListObservable<any[]> = this.af.list(key, options);
     // Create cache
     this.listCache[key] = {
       loaded: false,
       offlineInit: false,
-      sub: new AfoListObservable(ref, this.localUpdateService, options)
+      sub: new InternalListObservable(ref, this.localUpdateService, options)
     };
 
     // Firebase

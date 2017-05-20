@@ -46,7 +46,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
         expect(list[0].$value).toBe('xyz');
         done();
       });
-      expect(service.listCache[key].loaded).toBe(false);
+      expect(service.listCache[u(key)].loaded).toBe(false);
       mockAngularFireDatabase.update('list', newValue);
     })();
   });
@@ -59,22 +59,22 @@ describe('Service: AngularFireOfflineDatabase', () => {
       ];
       service.list(key);
       mockAngularFireDatabase.update('list', newValue);
-      expect(service.processing.listCache[key][0].$value).toBe('xyz');
+      expect(service.processing.listCache[u(key)][0].$value).toBe('xyz');
     })();
   });
 
   it('should not setup a list', inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
     const key = '/slug-2';
     // Setup test - Set up list
-    service.list(key, {});
+    service.list(key);
     // If `setupObject` is called, then this will be false:
-    expect(service.listCache[key].loaded).toBe(false);
+    expect(service.listCache[u(key)].loaded).toBe(false);
     // Setting to true
-    service.listCache[key].loaded = true;
+    service.listCache[u(key)].loaded = true;
     // Test
     service.list(key);
     // Will still be true if `setupObject` was not called
-    expect(service.listCache[key].loaded).toBe(true);
+    expect(service.listCache[u(key)].loaded).toBe(true);
   }));
 
   it('should return an object', async(inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
@@ -187,7 +187,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
         returnedValue = true;
       });
       // Fake loading
-      service.listCache[key].loaded = true;
+      service.listCache[u(key)].loaded = true;
       // Wait for result
       setTimeout(() => {
         expect(returnedValue).toBe(false);
@@ -223,9 +223,9 @@ describe('Service: AngularFireOfflineDatabase', () => {
         service.list(key);
         // Wait for results
         setTimeout(() => {
-          const isDefined = service.processing.listCache[key] !== undefined;
+          const isDefined = service.processing.listCache[u(key)] !== undefined;
           expect(isDefined).toBe(true);
-          if (isDefined) { expect(service.processing.listCache[key].length).toBe(3); }
+          if (isDefined) { expect(service.processing.listCache[u(key)].length).toBe(3); }
           done();
         });
       })();
@@ -619,4 +619,13 @@ export class MockAfoObjectObservable<T> extends AfoObjectObservable<T> {
       value: value
     });
   }
+}
+
+/**
+ * Creates a unique key
+ * @param key input key
+ */
+function u(key, query?) {
+  const test = key + JSON.stringify(query);
+  return test;
 }

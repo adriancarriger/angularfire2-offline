@@ -115,8 +115,9 @@ export class AngularFireOfflineDatabase {
    * [valid queries](https://goo.gl/iHiAuB)
    */
   list(key: string, options?: FirebaseListFactoryOpts): AfoListObservable<any[]> {
-    if (!(key in this.listCache)) { this.setupList(key, options); }
-    return this.listCache[key].sub;
+    const uniqueKey = key + JSON.stringify(options);
+    if (!(uniqueKey in this.listCache)) { this.setupList(key, uniqueKey, options); }
+    return this.listCache[uniqueKey].sub;
   }
   /**
    * Returns an Observable object of Firebase snapshot data
@@ -157,9 +158,9 @@ export class AngularFireOfflineDatabase {
    * - Lists are stored as individual objects, to allow for better offline reuse.
    * - Each locally stored list uses a map to stitch together the list from individual objects
    */
-  private getList(key: string) {
+  private getList(key: string, uniqueKey) {
     this.localForage.getItem(`read/list${key}`).then(primaryValue => {
-      if (!this.listCache[key].loaded && primaryValue !== null) {
+      if (!this.listCache[uniqueKey].loaded && primaryValue !== null) {
         const promises = primaryValue.map(partialKey => {
           return new Promise(resolve => {
             this.localForage.getItem(`read/object${key}/${partialKey}`).then(itemValue => {
@@ -169,9 +170,9 @@ export class AngularFireOfflineDatabase {
         });
         Promise.all(promises).then(cacheValue => {
           if (this.processing.current) {
-            this.processing.listCache[key] = cacheValue;
+            this.processing.listCache[uniqueKey] = cacheValue;
           } else {
-            this.listCache[key].sub.uniqueNext(cacheValue);
+            this.listCache[uniqueKey].sub.uniqueNext(cacheValue);
           }
         });
       }
@@ -290,39 +291,39 @@ export class AngularFireOfflineDatabase {
    * @param key passed directly from {@link list}'s key param
    * @param options passed directly from {@link list}'s options param
    */
-  private setupList(key: string, options: FirebaseListFactoryOpts = {}) {
+  private setupList(key: string, uniqueKey: string, options: FirebaseListFactoryOpts = {}) {
     // Get Firebase ref
     options.preserveSnapshot = true;
     const usePriority = options && options.query && options.query.orderByPriority;
     const ref: FirebaseListObservable<any[]> = this.af.list(key, options);
     // Create cache
-    this.listCache[key] = {
+    this.listCache[uniqueKey] = {
       loaded: false,
       offlineInit: false,
-      sub: new AfoListObservable(ref, this.localUpdateService, options)
+      sub: new AfoListObservable(ref, this.localUpdateService, options),
     };
 
     // Firebase
     const subscription = ref.subscribe(value => {
-      this.listCache[key].loaded = true;
+      this.listCache[uniqueKey].loaded = true;
       const cacheValue = value.map(snap => {
         const priority = usePriority ? snap.getPriority() : null;
         return unwrap(snap.key, snap.val(), () => !isNil(snap.val()), priority);
       });
       if (this.processing.current) {
-        this.processing.listCache[key] = cacheValue;
+        this.processing.listCache[uniqueKey] = cacheValue;
       } else {
-        this.listCache[key].sub.uniqueNext( cacheValue );
+        this.listCache[uniqueKey].sub.uniqueNext( cacheValue );
       }
       this.setList(key, value);
     });
 
-    this.listCache[key].sub.subscribe({
+    this.listCache[uniqueKey].sub.subscribe({
       complete: () => subscription.unsubscribe()
     });
 
     // Local
-    this.getList(key);
+    this.getList(key, uniqueKey);
   }
   /**
    * Processes cache items that require emulation

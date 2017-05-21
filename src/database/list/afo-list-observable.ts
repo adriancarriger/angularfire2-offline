@@ -17,7 +17,7 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
       this.init();
     }
   emulate(method, value = null, key?) {
-    this.internalListObservable.emulate(method, value = null, key);
+    this.internalListObservable.emulate(method, value, key);
   }
   init () {
     this.emulateQuery = new EmulateQuery();

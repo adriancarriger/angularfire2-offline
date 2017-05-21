@@ -152,13 +152,32 @@ export class AngularFireOfflineDatabase {
     this.listCache = {};
     this.localForage.clear();
   };
+  private getListFirebase(key: string, ref, options) {
+    const usePriority = options && options.query && options.query.orderByPriority;
+    const subscription = ref.subscribe(value => {
+      this.listCache[key].loaded = true;
+      const cacheValue = value.map(snap => {
+        const priority = usePriority ? snap.getPriority() : null;
+        return unwrap(snap.key, snap.val(), () => !isNil(snap.val()), priority);
+      });
+      if (this.processing.current) {
+        this.processing.listCache[key] = cacheValue;
+      } else {
+        this.listCache[key].sub.uniqueNext( cacheValue );
+      }
+      this.setList(key, value);
+    });
 
+    this.listCache[key].sub.subscribe({
+      complete: () => subscription.unsubscribe()
+    });
+  }
   /**
    * Retrives a list if locally stored on the device
    * - Lists are stored as individual objects, to allow for better offline reuse.
    * - Each locally stored list uses a map to stitch together the list from individual objects
    */
-  private getList(key: string) {
+  private getListLocal(key: string) {
     this.localForage.getItem(`read/list${key}`).then(primaryValue => {
       if (!this.listCache[key].loaded && primaryValue !== null) {
         const promises = primaryValue.map(partialKey => {
@@ -283,7 +302,7 @@ export class AngularFireOfflineDatabase {
    * - Sets up a {@link AngularFireOfflineCache} item that provides Firebase data
    * - Subscribes to the list's Firebase reference
    * - Gets the most recent locally stored non-null value and sends to all app subscribers
-   * via {@link getList}
+   * via {@link getListLocal}
    * - When Firebase sends a value this {@link AngularFireOfflineCache} item is set to loaded,
    * the new value is sent to all app subscribers, and the value is stored locally via
    * {@link setList}
@@ -293,7 +312,6 @@ export class AngularFireOfflineDatabase {
    */
   private setupList(key: string, options: FirebaseListFactoryOpts = {}) {
     options.preserveSnapshot = true;
-    const usePriority = options && options.query && options.query.orderByPriority;
     // Get Firebase ref
     const ref: FirebaseListObservable<any[]> = this.af.list(key, options);
     // Create cache
@@ -304,26 +322,10 @@ export class AngularFireOfflineDatabase {
     };
 
     // Firebase
-    const subscription = ref.subscribe(value => {
-      this.listCache[key].loaded = true;
-      const cacheValue = value.map(snap => {
-        const priority = usePriority ? snap.getPriority() : null;
-        return unwrap(snap.key, snap.val(), () => !isNil(snap.val()), priority);
-      });
-      if (this.processing.current) {
-        this.processing.listCache[key] = cacheValue;
-      } else {
-        this.listCache[key].sub.uniqueNext( cacheValue );
-      }
-      this.setList(key, value);
-    });
-
-    this.listCache[key].sub.subscribe({
-      complete: () => subscription.unsubscribe()
-    });
+    this.getListFirebase(key, ref, options);
 
     // Local
-    this.getList(key);
+    this.getListLocal(key);
   }
   /**
    * Processes cache items that require emulation

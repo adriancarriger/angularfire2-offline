@@ -559,6 +559,12 @@ export const Ref = {
     ref: {key: 'key-1'},
     push: undefined,
     resolve: undefined,
+    handlers: {
+      // dumb handler to avoid checks
+      'child_added': () => {}
+    },
+    on(event, callback) { this.handlers[event] = callback; },
+    off(event) { this.handlers[event] = () => {}; },
     toString: () => 'https://angularfire2-offline.firebaseio.com/key-1',
     database: {
       ref: () => {
@@ -571,9 +577,11 @@ export const Ref = {
 };
 
 @Injectable()
-export class MockFirebaseListObservable<T> extends Subject<T> {
+export class MockFirebaseListObservable<T> extends Subject<Array<T>> {
   history = [];
   $ref = Ref.$ref;
+  oldValue: Array<T> = [];
+
   constructor() {
     super();
   }
@@ -581,6 +589,25 @@ export class MockFirebaseListObservable<T> extends Subject<T> {
     this.history.push('remove');
     return new Promise(resolve => resolve());
   }
+
+  next(value: Array<T>) {
+    let i = 0, j = 0;
+
+    while (i < this.oldValue.length && j < value.length) {
+      if ((<any>value[i]).key < (<any>this.oldValue[j]).key) {
+        this.child_added(value[i], j === 0 ? null : (<any>this.oldValue[j - 1]).key);
+      } else if ((<any>value[i]).key > (<any>this.oldValue[j]).key) {
+        j++; // TODO call child_removed
+      } else if ((<any>value[i]).val() !== (<any>this.oldValue[j]).val()) {
+        i++; j++; // TODO call child_changed
+      }
+    }
+
+    this.oldValue = value;
+    super.next(value);
+  }
+  child_added = (value, previousChild) =>
+    this.$ref.handlers['child_added'](value, previousChild);
 }
 
 @Injectable()

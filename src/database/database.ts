@@ -315,11 +315,25 @@ export class AngularFireOfflineDatabase {
       } else {
         this.listCache[key].sub.uniqueNext( cacheValue );
       }
-      this.setList(key, value);
+    });
+
+    ref.$ref.on('child_added', (childSnapshot: any, prevChildName: any) => {
+      let parentKey = childSnapshot.ref.parent.key;
+      this.localForage.setItem(`read/object${parentKey}/${childSnapshot.key}`, childSnapshot.val());
+      this.localForage.getItem(`read/list${parentKey}`)
+        .then(keys => keys.reduce(
+          (arr, _key) => {
+            _key === prevChildName ? arr.push(_key, childSnapshot.key) : arr.push(_key);
+            return arr;
+          }), [])
+        .then(keys => this.localForage.setItem(`read/list${parentKey}`, keys));
     });
 
     this.listCache[key].sub.subscribe({
-      complete: () => subscription.unsubscribe()
+      complete: () => {
+        subscription.unsubscribe();
+        ref.$ref.off('child_added');
+      }
     });
 
     // Local

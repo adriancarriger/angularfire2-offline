@@ -31,8 +31,7 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
    */
   constructor(
     private ref,
-    private localUpdateService: LocalUpdateService,
-    private options?: FirebaseListFactoryOpts) {
+    private localUpdateService: LocalUpdateService) {
     super(1);
     this.init();
   }

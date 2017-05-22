@@ -1,0 +1,15 @@
+<h1>Issue 9</h1>
+
+<h2>Query Example #1: only show items equal to A</h2>
+<ul>
+  <li *ngFor="let item of listEqualToA | async">
+    {{item.child_test}}
+  </li>
+</ul>
+
+<h2>Query Example #2: only show items equal to B</h2>
+<ul>
+  <li *ngFor="let item2 of listEqualToB | async">
+    {{item2.child_test}}
+  </li>
+</ul>

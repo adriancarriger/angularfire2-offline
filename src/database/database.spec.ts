@@ -42,9 +42,15 @@ describe('Service: AngularFireOfflineDatabase', () => {
       let newValue = [
         { val: () => { return 'xyz'; }, getPriority: () => {} }
       ];
+      const options = {
+        query: {
+          orderByPriority: true
+        }
+      };
       service.processing.current = false;
-      service.list(key).subscribe(list => {
+      service.list(key, options).subscribe(list => {
         expect(list[0].$value).toBe('xyz');
+        expect(list[0].$exists()).toBe(true);
         done();
       });
       expect(service.listCache[key].loaded).toBe(false);
@@ -271,7 +277,8 @@ describe('Service: AngularFireOfflineDatabase', () => {
         service.listCache[key] = {
           loaded: false,
           offlineInit: false,
-          sub: new MockInternalListObservable()
+          sub: new MockInternalListObservable(),
+          options: []
         };
         service.processing.current = true;
         setTimeout(() => {

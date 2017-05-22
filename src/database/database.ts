@@ -116,7 +116,7 @@ export class AngularFireOfflineDatabase {
    * [valid queries](https://goo.gl/iHiAuB)
    */
   list(key: string, options?: FirebaseListFactoryOpts): AfoListObservable<any[]> {
-    if (!(key in this.listCache)) { this.setupList(key, options); }
+    this.setupList(key, options);
     return new AfoListObservable(this.listCache[key].sub, options);
   }
   /**
@@ -152,8 +152,16 @@ export class AngularFireOfflineDatabase {
     this.listCache = {};
     this.localForage.clear();
   };
-  private getListFirebase(key: string, ref, options) {
+  private getListFirebase(key: string) {
+    const options = this.listCache[key].firebaseOptions;
     const usePriority = options && options.query && options.query.orderByPriority;
+    // Get Firebase ref
+    const ref: FirebaseListObservable<any[]> = this.af.list(key, options);
+    // Create cache observable if none exists
+    if (!this.listCache[key].sub) {
+      this.listCache[key].sub = new InternalListObservable(ref, this.localUpdateService);
+    }
+    // Firebase
     const subscription = ref.subscribe(value => {
       this.listCache[key].loaded = true;
       const cacheValue = value.map(snap => {
@@ -311,15 +319,12 @@ export class AngularFireOfflineDatabase {
    * @param options passed directly from {@link list}'s options param
    */
   private setupList(key: string, options: FirebaseListFactoryOpts = {}) {
-    options.preserveSnapshot = true;
-    // Get Firebase ref
-    const ref: FirebaseListObservable<any[]> = this.af.list(key, options);
     // Create cache if none exists
     if (!(key in this.listCache)) {
       this.listCache[key] = {
         loaded: false,
         offlineInit: false,
-        sub: new InternalListObservable(ref, this.localUpdateService),
+        sub: undefined,
         options: [],
         firebaseOptions: undefined
       };
@@ -328,7 +333,7 @@ export class AngularFireOfflineDatabase {
     this.listCache[key].options.push(options);
     // Firebase
     if (this.optionsHaveChanged(key)) {
-      this.getListFirebase(key, ref, options);
+      this.getListFirebase(key);
     }
     // Local
     this.getListLocal(key);

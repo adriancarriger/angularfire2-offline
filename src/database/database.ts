@@ -314,16 +314,22 @@ export class AngularFireOfflineDatabase {
     options.preserveSnapshot = true;
     // Get Firebase ref
     const ref: FirebaseListObservable<any[]> = this.af.list(key, options);
-    // Create cache
-    this.listCache[key] = {
-      loaded: false,
-      offlineInit: false,
-      sub: new InternalListObservable(ref, this.localUpdateService)
-    };
-
+    // Create cache if none exists
+    if (!(key in this.listCache)) {
+      this.listCache[key] = {
+        loaded: false,
+        offlineInit: false,
+        sub: new InternalListObservable(ref, this.localUpdateService),
+        options: [],
+        firebaseOptions: undefined
+      };
+    }
+    // Store options
+    this.listCache[key].options.push(options);
     // Firebase
-    this.getListFirebase(key, ref, options);
-
+    if (this.optionsHaveChanged(key)) {
+      this.getListFirebase(key, ref, options);
+    }
     // Local
     this.getListLocal(key);
   }
@@ -342,6 +348,22 @@ export class AngularFireOfflineDatabase {
         delete this.emulateQue[listKey];
       }
     });
+  }
+  private optionsHaveChanged(key) {
+    const initialOptions = this.listCache[key].firebaseOptions;
+    // Base options
+    const newOptions = {
+      preserveSnapshot: true,
+      query: { }
+    };
+
+    // Get latest set of options
+    const optionsLength = this.listCache[key].options.length;
+    const latestOptions = this.listCache[key].options[optionsLength - 1];
+    if (latestOptions.query) { newOptions.query = latestOptions.query; }
+
+    this.listCache[key].firebaseOptions = newOptions;
+    return JSON.stringify(initialOptions) !== JSON.stringify(newOptions);
   }
 }
 /**

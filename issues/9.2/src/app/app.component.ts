@@ -15,11 +15,19 @@ import { AngularFireDatabase } from 'angularfire2/database';
 })
 export class AppComponent {
   groceries: AfoListObservable<any[]>;
-  filteredGroceries: AfoListObservable<any[]>;
+  filteredGroceriesMilk: AfoListObservable<any[]>;
+  filteredGroceriesApples: AfoListObservable<any[]>;
   constructor(private afoDatabase: AngularFireOfflineDatabase) {
     this.groceries = this.afoDatabase.list('/groceries');
 
-    this.filteredGroceries = this.afoDatabase.list('/groceries', {
+    this.filteredGroceriesMilk = this.afoDatabase.list('/groceries', {
+      query: {
+        orderByChild: 'text',
+        equalTo: 'Milk'
+      }
+    });
+
+    this.filteredGroceriesApples = this.afoDatabase.list('/groceries', {
       query: {
         orderByChild: 'text',
         equalTo: 'Apples'

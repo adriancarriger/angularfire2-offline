@@ -362,10 +362,11 @@ export class AngularFireOfflineDatabase {
       query: { }
     };
 
-    // Get latest set of options
-    const optionsLength = this.listCache[key].options.length;
-    const latestOptions = this.listCache[key].options[optionsLength - 1];
-    if (latestOptions.query) { newOptions.query = latestOptions.query; }
+    if (this.listCache[key].options.length === 1) {
+      newOptions.query = this.listCache[key].options[0].query;
+    } else {
+      // Get the entire list, run query locally
+    }
 
     this.listCache[key].firebaseOptions = newOptions;
     return JSON.stringify(initialOptions) !== JSON.stringify(newOptions);

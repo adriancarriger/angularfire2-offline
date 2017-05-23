@@ -1,0 +1,16 @@
+<h1>Issue 34</h1>
+
+<h2>(Make sure to look at the console)</h2>
+
+<h2>Save object Af</h2>
+<button (click)="increaseSpeedUsingAf()" md-raised-button color="accent">Speed +1 using only AngularFire2</button>
+
+<h3>JSON Result Af:</h3>
+{{ carAf | async | json }}
+
+
+<h2>Save object Afo</h2>
+<button (click)="increaseSpeedUsingAfo()" md-raised-button color="accent">Speed +1 using AngularFire2 Offline</button>
+
+<h3>JSON Result Afo:</h3>
+{{ carAf | async | json }}

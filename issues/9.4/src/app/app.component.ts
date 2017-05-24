@@ -13,16 +13,20 @@ import {
 })
 export class AppComponent {
   urlPath = '/issues/9/9-4';
+  read;
+  notRead;
 
   constructor(private afoDatabase: AngularFireOfflineDatabase) {
 
     // First query
     this.query(this.urlPath, 'READ').subscribe((readResultList) => {
       console.log('\n\nQueries matching read:', readResultList);
+      this.read = readResultList;
 
        // Second query
       this.query(this.urlPath, 'NOT_READ').subscribe((unReadList) => {
         console.log('\n\nQueries matching not read:', unReadList);
+        this.notRead = unReadList;
       });
     });
 
@@ -35,7 +39,7 @@ export class AppComponent {
         equalTo: status,
         limitToFirst: 15
       }
-    });
+    }).first();
   }
 
 }

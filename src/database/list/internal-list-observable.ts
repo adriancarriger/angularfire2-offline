@@ -69,6 +69,10 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
    * Only calls next if the new value is unique
    */
   uniqueNext(newValue) {
+    // Sort
+    if (this.previousValue) { this.previousValue.sort((a, b) => a.$key - b.$key); }
+    if (newValue) { newValue.sort((a, b) => a.$key - b.$key); }
+
     if (this.updated > 1 || (stringify(this.previousValue) !== stringify(newValue)) ) {
       this.previousValue = newValue;
       this.next(newValue);

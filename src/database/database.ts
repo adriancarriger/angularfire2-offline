@@ -382,7 +382,10 @@ export function isNil(obj: any): boolean {
  * Adds the properies of `$key`, `$value`, `$exists` as required by AngularFire2
  */
 export function unwrap(key: string, value: any, exists, priority = null) {
-  let unwrapped = isNil(value) ? { } : value;
+  let primitive = (/string|number|boolean/).test(typeof value);
+  let unwrapped = isNil(value) || primitive ? { } : value;
+
+  // Change Nil values to null
   if (isNil(value)) {
     Object.defineProperty(unwrapped, '$value', {
       enumerable: false,
@@ -391,9 +394,8 @@ export function unwrap(key: string, value: any, exists, priority = null) {
    }
 
   let initialValues = { key, value, exists, priority };
-  let primitive = (/string|number|boolean/).test(typeof value);
 
-  return ['exists', 'key', 'priority'].reduce((p, c) => {
+  return ['value', 'exists', 'key', 'priority'].reduce((p, c) => {
     if ((c === 'value' && !primitive ) || !initialValues[c]) { return p; }
     Object.defineProperty(p, `$${c}`, {
       enumerable: false,

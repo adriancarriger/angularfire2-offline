@@ -143,10 +143,10 @@ export class AngularFireOfflineDatabase {
    */
   reset() {
     Object.keys(this.objectCache).forEach(key => {
-      this.objectCache[key].sub.complete();
+      this.objectCache[key].firebaseSubscription.unsubscribe();
     });
     Object.keys(this.listCache).forEach(key => {
-      this.listCache[key].sub.complete();
+      this.listCache[key].firebaseSubscription.unsubscribe();
     });
     this.objectCache = {};
     this.listCache = {};
@@ -156,13 +156,16 @@ export class AngularFireOfflineDatabase {
     const options = this.listCache[key].firebaseOptions;
     const usePriority = options && options.query && options.query.orderByPriority;
     // Get Firebase ref
+    if (this.listCache[key].firebaseSubscription) {
+      this.listCache[key].firebaseSubscription.unsubscribe();
+    }
     const ref: FirebaseListObservable<any[]> = this.af.list(key, options);
     // Create cache observable if none exists
     if (!this.listCache[key].sub) {
       this.listCache[key].sub = new InternalListObservable(ref, this.localUpdateService);
     }
     // Firebase
-    const subscription = ref.subscribe(value => {
+    this.listCache[key].firebaseSubscription = ref.subscribe(value => {
       this.listCache[key].loaded = true;
       const cacheValue = value.map(snap => {
         const priority = usePriority ? snap.getPriority() : null;
@@ -176,9 +179,6 @@ export class AngularFireOfflineDatabase {
       this.setList(key, value);
     });
 
-    this.listCache[key].sub.subscribe({
-      complete: () => subscription.unsubscribe()
-    });
   }
   /**
    * Retrives a list if locally stored on the device
@@ -238,7 +238,7 @@ export class AngularFireOfflineDatabase {
     };
 
     // Firebase
-    const subscription = ref.subscribe(snap => {
+    this.objectCache[key].firebaseSubscription = ref.subscribe(snap => {
       this.objectCache[key].loaded = true;
       const cacheValue = unwrap(snap.key, snap.val(), () => !isNil(snap.val()));
       if (this.processing.current) {
@@ -247,10 +247,6 @@ export class AngularFireOfflineDatabase {
         this.objectCache[key].sub.uniqueNext( cacheValue );
       }
       this.localForage.setItem(`read/object${key}`, snap.val());
-    });
-
-    this.objectCache[key].sub.subscribe({
-      complete: () => subscription.unsubscribe()
     });
 
     // Local

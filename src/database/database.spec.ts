@@ -444,24 +444,24 @@ describe('Service: AngularFireOfflineDatabase', () => {
   });
 
   describe('Unsubscribe', () => {
-    it('should unsubscribe from an object', done => {
+    it('should unsubscribe from an object', () => {
       inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+        const key = '/slug-2';
         let newValue = { val: () => { return 'abc23-7'; } };
-        let afoObject = service.object('/slug-2');
+        let afoObject = service.object(key);
 
         afoObject.subscribe(object => {
           expect(object.$value).toBe('abc23-7');
         });
         mockAngularFireDatabase.update('object', newValue);
 
-        afoObject.complete();
+        service.objectCache[key].firebaseSubscription.unsubscribe();
 
-        expect((<any>afoObject).ref.observers.length).toBe(0);
-        setTimeout(done);
+        expect(service.objectCache[key].firebaseSubscription.isStopped).toBeTruthy();
       })();
     });
 
-    it('should unsubscribe from a list', done => {
+    it('should unsubscribe from a list', () => {
       inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
         const key = '/slug-2';
         let newValue = [
@@ -475,10 +475,9 @@ describe('Service: AngularFireOfflineDatabase', () => {
         });
         mockAngularFireDatabase.update('list', newValue);
 
-        afoList.complete();
+        service.listCache[key].firebaseSubscription.unsubscribe();
 
-        expect(afoList.observers.length).toBe(0);
-        setTimeout(done);
+        expect(service.listCache[key].firebaseSubscription.isStopped).toBeTruthy();
       })();
     });
 

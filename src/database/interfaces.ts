@@ -11,6 +11,7 @@ export interface AngularFireOfflineCache {
     offlineInit: boolean;
     loaded: boolean;
     sub: any;
+    firebaseSubscription?: any;
     options?: FirebaseListFactoryOpts[];
     firebaseOptions?: FirebaseListFactoryOpts;
   };

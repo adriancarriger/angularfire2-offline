@@ -141,7 +141,46 @@ export class AngularFireOfflineDatabase {
    * - run before e.g. logout to make sure there are no permission errors.
    * @TODO: might cause data loss of unwritten data?
    */
-  reset() {
+  reset(optionalRef?) {
+    if (optionalRef) {
+      this.resetRef(optionalRef);
+    } else {
+      this.resetAll();
+    }
+  };
+  private resetRef(key) {
+    if (key in this.objectCache) {
+      this.objectCache[key].sub.uniqueNext(null);
+      this.objectCache[key].sub.unsubscribe();
+      this.objectCache[key].firebaseSubscription.unsubscribe();
+      delete this.objectCache[key];
+    }
+    if (key in this.listCache) {
+      this.listCache[key].sub.uniqueNext(null);
+      this.listCache[key].sub.unsubscribe();
+      this.listCache[key].firebaseSubscription.unsubscribe();
+      delete this.listCache[key];
+    }
+    // Check if list
+    this.localForage.getItem(`read/list${key}`).then(primaryValue => {
+      console.log(primaryValue);
+      if (primaryValue === null) {
+        // key refers to a object
+        this.localForage.removeItem(`read/object${key}`);
+      } else {
+        // key refers to a list
+        primaryValue.map(partialKey => {
+          // Remove object from list
+          this.localForage.removeItem(`read/object${key}/${partialKey}`);
+        });
+        // Remove list
+        this.localForage.removeItem(`read/list${key}`);
+        // Remove pending writes
+        this.localForage.removeItem('write');
+      }
+    });
+  }
+  private resetAll() {
     Object.keys(this.objectCache).forEach(key => {
       this.objectCache[key].firebaseSubscription.unsubscribe();
     });
@@ -151,7 +190,7 @@ export class AngularFireOfflineDatabase {
     this.objectCache = {};
     this.listCache = {};
     this.localForage.clear();
-  };
+  }
   private getListFirebase(key: string) {
     const options = this.listCache[key].firebaseOptions;
     const usePriority = options && options.query && options.query.orderByPriority;

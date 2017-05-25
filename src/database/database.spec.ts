@@ -481,7 +481,43 @@ describe('Service: AngularFireOfflineDatabase', () => {
       })();
     });
 
-    it('should reset', () => {
+    it('should reset a list', (done) => {
+      inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+
+        service.processing.current = false;
+        const key = '/list-2';
+        const listKeys = ['key-1', 'key-2', 'key-3'];
+        // Prepare return values for localForage
+        mockLocalForageService.values[`read/list${key}`] = listKeys;
+        listKeys.forEach(listKey => {
+          mockLocalForageService.values[`read/object${key}/${listKey}`] = '1';
+        });
+
+        service.list(key).subscribe(() => {
+          service.reset(key);
+          expect(service.listCache[key]).toBeUndefined();
+          done();
+        });
+      })();
+    });
+
+    it('should reset an object', (done) => {
+      inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
+        const key = '/slug-2';
+        service.processing.current = false;
+        mockLocalForageService.values[`read/list${key}`] = null;
+        mockLocalForageService.values[`read/object${key}`] = '293846488sxjfhslsl20201-4ghcjs';
+        service.object(key).subscribe(object => {
+          setTimeout(() => {
+            service.reset(key);
+            expect(service.objectCache[key]).toBeUndefined();
+            done();
+          });
+        });
+      })();
+    });
+
+    it('should reset everything', () => {
       inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
         service.list('/slug-2');
         service.object('/slug-3');
@@ -531,6 +567,7 @@ export class MockLocalForageService {
   setItem(key, value) {
     return new Promise(resolve => resolve(this.values[key] = value));
   }
+  removeItem() {}
   clear() { }
 }
 

@@ -66,6 +66,7 @@ export class AppModule { }
 ### Read Data Offline
 
 - [Querying lists](https://github.com/angular/angularfire2/blob/master/docs/4-querying-lists.md) is supported
+- [preserveSnapshot](https://github.com/angular/angularfire2/blob/master/docs/2-retrieving-data-as-objects.md#retrieving-the-snapshot) is not supported
 
 ```ts
 import { Component } from '@angular/core';

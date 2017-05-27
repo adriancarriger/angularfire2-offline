@@ -15,10 +15,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyCIijNJKaFfNLhlVcN_Ip8b5EiY-qy_N7w',
-  authDomain: 'https://ionic-pwa-ad85b.firebaseio.com/',
-  databaseURL: 'https://ionic-pwa-ad85b.firebaseio.com/',
-  storageBucket: 'gs://ionic-pwa-ad85b.appspot.com'
+  apiKey: 'AIzaSyBIsrtVNmZJ9dDQleuItDsz3ZXtvzhiWv8',
+  authDomain: 'https://angularfire2-offline.firebaseio.com',
+  databaseURL: 'https://angularfire2-offline.firebaseio.com',
+  storageBucket: 'gs://angularfire2-offline.appspot.com'
 };
 
 @NgModule({

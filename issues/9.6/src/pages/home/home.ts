@@ -28,7 +28,7 @@ export class HomePage {
   }
 
   doInfinite(infiniteScroll) {
-    // Add 10 Per page load
+    // Add 10 per page load
     this.limit += 10;
 
     // Update subject

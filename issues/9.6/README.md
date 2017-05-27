@@ -1,20 +1,11 @@
-Ionic App Base
-=====================
+# Issue: 9.6
 
-This is the base template for Ionic starter apps.
+**After adding to the remote gh-pages branch this version will be visible at:
 
-## Using this project
+https://adriancarriger.github.io/angularfire2-offline/issues/9.6/dist
 
-Install the latest Ionic CLI:
+## You can test locally by running:
 
-```bash
-$ npm install -g ionic
-```
+cd issues/9.6
+npm run static-serve
 
-Then run:
-
-```bash
-$ ionic start myApp
-```
-
-More info on this can be found on the Ionic [Getting Started](http://ionicframework.com/docs/v2/getting-started/) page.

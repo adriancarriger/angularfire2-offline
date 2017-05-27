@@ -2,7 +2,7 @@
 
 **After adding to the remote gh-pages branch this version will be visible at:
 
-https://adriancarriger.github.io/angularfire2-offline/issues/9.6/dist
+https://adriancarriger.github.io/angularfire2-offline/issues/9.6/www/
 
 ## You can test locally by running:
 

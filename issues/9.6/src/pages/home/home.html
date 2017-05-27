@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Issue 9</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  {{ items | async | json }}
+  <!--<ion-list>
+    <ion-item class="text" *ngFor="let item of items | async">
+      {{item.$value}}
+    </ion-item>
+  </ion-list>-->
+
+</ion-content>

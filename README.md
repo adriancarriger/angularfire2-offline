@@ -120,20 +120,20 @@ Here is how you can setup a development environment:
 ### Clone repo
 
 1. `git clone https://github.com/adriancarriger/angularfire2-offline.git`
-2. `cd angularfire2-offline`
+1. `cd angularfire2-offline`
 
 ### Setup example
 
 1. `cd examples/angular-cli`
-2. `yarn`
-3. `npm start`
+1. `yarn`
+1. `npm start`
 
 ### Setup development environment
 
 1. Open a new shell/terminal
-2. `cd angularfire2-offline`
-3. `yarn`
-4. `npm run start-dev`
+1. `cd angularfire2-offline`
+1. `yarn`
+1. `npm run start-dev`
 
 ## License
 

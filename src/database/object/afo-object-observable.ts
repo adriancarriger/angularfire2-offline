@@ -120,7 +120,7 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    * Only calls next if the new value is unique
    */
   uniqueNext(newValue) {
-    if (this.updated > 1 || (stringify(this.previousValue) !== stringify(newValue) )) {
+    if (this.updated > 1 || (this.comparableValue(this.previousValue) !== this.comparableValue(newValue) )) {
       this.previousValue = newValue;
       this.next(newValue);
       this.updated++;
@@ -163,5 +163,11 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    */
   private updateSubscribers() {
     this.uniqueNext(unwrap(this.ref.$ref.key, this.value, () => this.value !== null));
+  }
+  private comparableValue(initialValue) {
+    if (initialValue && '$value' in initialValue) {
+      return stringify(initialValue.$value);
+    }
+    return stringify(initialValue);
   }
 }

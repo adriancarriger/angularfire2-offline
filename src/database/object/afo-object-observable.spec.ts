@@ -86,7 +86,7 @@ describe('Object Observable', () => {
         done();
       }
     });
-    objectObservable.uniqueNext('a value');
+    objectObservable.uniqueNext({$value: 'a value'});
   });
 
   it('should emulate a que for update', done => {

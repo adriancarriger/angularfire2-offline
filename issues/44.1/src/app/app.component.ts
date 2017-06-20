@@ -12,16 +12,34 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  listExample: AfoListObservable<any[]>;
   objectExample: AfoObjectObservable<any>;
+  defaultCar = {
+    'tires': 4,
+    'engine': 'V8',
+    'type': 'Sedan',
+    'maxSpeed': 80
+  };
   constructor(private afoDatabase: AngularFireOfflineDatabase) {
-    this.listExample = this.afoDatabase.list('groceries');
     this.objectExample = this.afoDatabase.object('car');
+    this.resetExample();
   }
 
-  // updatePerson(key: string, data) {
-  //   this.afoDatabase.object(`/projectPersons/${this.personsKey}/${personKey}`)
-  //     .update(data )
-  //     .then(console.log('ProjectDbService:: receveived person update'));
-  // }
+  simulateTwoWrites() {
+
+    setTimeout(() => {
+      console.log('starting write #1');
+      this.objectExample.update({maxSpeed: 100});
+      setTimeout(() => {
+        console.log('starting write #2');
+        this.objectExample.update({engine: null});
+      }, 3);
+    }, 2000);
+  }
+
+  resetExample() {
+    console.log('resetting example...');
+    this.objectExample.set(this.defaultCar)
+      .then(() => console.log('example has been reset'));
+  }
+
 }

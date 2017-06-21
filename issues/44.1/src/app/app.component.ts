@@ -21,7 +21,6 @@ export class AppComponent {
   };
   constructor(private afoDatabase: AngularFireOfflineDatabase) {
     this.objectExample = this.afoDatabase.object('car');
-    this.resetExample();
   }
 
   simulateTwoWrites() {

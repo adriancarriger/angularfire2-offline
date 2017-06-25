@@ -163,7 +163,6 @@ export class AngularFireOfflineDatabase {
     }
     // Check if list
     this.localForage.getItem(`read/list${key}`).then(primaryValue => {
-      console.log(primaryValue);
       if (primaryValue === null) {
         // key refers to a object
         this.localForage.removeItem(`read/object${key}`);

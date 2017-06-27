@@ -148,7 +148,7 @@ export class AngularFireOfflineDatabase {
       this.resetAll();
     }
   };
-  private resetRef(key) {
+  private resetRef(key: string) {
     if (key in this.objectCache) {
       this.objectCache[key].sub.uniqueNext(null);
       this.objectCache[key].sub.unsubscribe();
@@ -388,7 +388,7 @@ export class AngularFireOfflineDatabase {
       }
     });
   }
-  private optionsHaveChanged(key) {
+  private optionsHaveChanged(key: string): boolean {
     const initialOptions = this.listCache[key].firebaseOptions;
     // Base options
     const newOptions = {

@@ -29,15 +29,40 @@ export class AfoListObservable<T> extends ReplaySubject<T> {
           .then(newValue => this.next(<any>newValue));
       });
   }
+  /**
+   * Wraps the AngularFire2 FirebaseListObservable [push](https://goo.gl/nTe7C0) method
+   *
+   * - Emulates a push locally
+   * - Calls the AngularFire2 push method
+   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
+   * completes
+   */
   push(value: any) {
     return this.internalListObservable.push(value);
   }
+  /**
+   * Wraps the AngularFire2 FirebaseListObservable [remove](https://goo.gl/MkZTtv) method
+   *
+   * - Emulates a remove locally
+   * - Calls the AngularFire2 remove method
+   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
+   * completes
+   * @param remove if you omit the `key` parameter from `.remove()` it deletes the entire list.
+   */
   remove(key?: string) {
     return this.internalListObservable.remove(key);
   }
   uniqueNext(newValue) {
     this.internalListObservable.uniqueNext(newValue);
   }
+  /**
+   * Wraps the AngularFire2 FirebaseListObservable [update](https://goo.gl/oSWgqn) method
+   *
+   * - Emulates a update locally
+   * - Calls the AngularFire2 update method
+   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
+   * completes
+   */
   update(key: string, value: any) {
     return this.internalListObservable.update(key, value);
   }

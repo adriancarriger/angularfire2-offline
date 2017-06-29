@@ -79,14 +79,6 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
       this.updated++;
     }
   }
-  /**
-   * Wraps the AngularFire2 FirebaseListObservable [push](https://goo.gl/nTe7C0) method
-   *
-   * - Emulates a push locally
-   * - Calls the AngularFire2 push method
-   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
-   * completes
-   */
   push(value: any) {
     const promise = this.ref.$ref.push(value);
     this.emulate('push', value, promise.key);
@@ -99,14 +91,6 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
       this.localUpdateService);
     return promise;
   }
-  /**
-   * Wraps the AngularFire2 FirebaseListObservable [update](https://goo.gl/oSWgqn) method
-   *
-   * - Emulates a update locally
-   * - Calls the AngularFire2 update method
-   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
-   * completes
-   */
   update(key: string, value: any) {
     this.emulate('update', value, key);
 
@@ -114,15 +98,6 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
     this.offlineWrite(promise, 'update', [key, value]);
     return promise;
   }
-  /**
-   * Wraps the AngularFire2 FirebaseListObservable [remove](https://goo.gl/MkZTtv) method
-   *
-   * - Emulates a remove locally
-   * - Calls the AngularFire2 remove method
-   * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
-   * completes
-   * @param remove if you omit the `key` parameter from `.remove()` it deletes the entire list.
-   */
   remove(key?: string) {
     this.emulate('remove', null, key);
     const promise = this.ref.remove(key);

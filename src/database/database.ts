@@ -141,7 +141,7 @@ export class AngularFireOfflineDatabase {
    * - run before e.g. logout to make sure there are no permission errors.
    * @TODO: might cause data loss of unwritten data?
    */
-  reset(optionalRef?) {
+  reset(optionalRef?: string) {
     if (optionalRef) {
       this.resetRef(optionalRef);
     } else {

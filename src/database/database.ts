@@ -139,7 +139,7 @@ export class AngularFireOfflineDatabase {
    * Unsubscribes from all firebase subscriptions and clears the cache
    *
    * - run before e.g. logout to make sure there are no permission errors.
-   * @TODO: might cause data loss of unwritten data?
+   * - will cause data loss of offline writes that have not syncronized with Firebase
    */
   reset(optionalRef?: string) {
     if (optionalRef) {
@@ -148,6 +148,9 @@ export class AngularFireOfflineDatabase {
       this.resetAll();
     }
   };
+  /**
+   * Removes a specific reference from memeory and device storage
+   */
   private resetRef(key: string) {
     if (key in this.objectCache) {
       this.objectCache[key].sub.uniqueNext(null);
@@ -179,6 +182,9 @@ export class AngularFireOfflineDatabase {
       }
     });
   }
+  /**
+   * Removes all data from memory and device storage
+   */
   private resetAll() {
     Object.keys(this.objectCache).forEach(key => {
       this.objectCache[key].firebaseSubscription.unsubscribe();

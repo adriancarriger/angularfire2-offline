@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AfoTest</title>
+  <base href="angularfire2-offline">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+<link href="styles.d41d8cd98f00b204e980.bundle.css" rel="stylesheet"/></head>
+<body>
+  <app-root>Loading...</app-root>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+        console.log('Service Worker registered');
+      }).catch(function(err) {
+        console.log('Service Worker registration failed: ', err);
+      });
+    }
+  </script>
+<script type="text/javascript" src="inline.1e71e3784dbc33fe0b44.bundle.js"></script><script type="text/javascript" src="polyfills.7306ee46c4105d171c4b.bundle.js"></script><script type="text/javascript" src="vendor.fb5182949cc3f7835d1c.bundle.js"></script><script type="text/javascript" src="main.8101870c85cae4473963.bundle.js"></script></body>
+</html>

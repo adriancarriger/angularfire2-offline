@@ -14,7 +14,7 @@ import {
 export class AppComponent {
   demoBase = '/issues/45/45-1';
   balance;
-  counter = 0;
+  counter = -3;
   lastUserId;
   test;
   constructor(private afoDatabase: AngularFireOfflineDatabase) {

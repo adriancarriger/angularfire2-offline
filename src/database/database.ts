@@ -436,7 +436,7 @@ export function unwrap(key: string, value: any, exists, priority = null) {
   let initialValues = { key, value, exists, priority };
 
   return ['value', 'exists', 'key', 'priority'].reduce((p, c) => {
-    if ((c === 'value' && !primitive ) || !initialValues[c]) { return p; }
+    if ((c === 'value' && !primitive ) || isNil(initialValues[c])) { return p; }
     Object.defineProperty(p, `$${c}`, {
       enumerable: false,
       value: initialValues[c]

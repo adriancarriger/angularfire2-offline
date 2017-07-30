@@ -1,0 +1,13 @@
+{
+  "objectExample": {
+    "tires": 4,
+    "engine": "V8",
+    "type": "Sedan",
+    "maxSpeed": 93
+  },
+  "listExample": [
+    {"text": "Milk"},
+    {"text": "Apples"},
+    {"text": "Cucumbers"}
+  ]
+}

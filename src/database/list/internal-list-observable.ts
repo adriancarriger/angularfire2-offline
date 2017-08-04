@@ -82,7 +82,7 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
   push(value: any) {
     const promise = this.ref.$ref.push(value);
     this.emulate('push', value, promise.key);
-    OfflineWrite(
+    promise.offline = OfflineWrite(
       promise,
       'object',
       `${this.path}/${promise.key}`,
@@ -95,13 +95,13 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
     this.emulate('update', value, key);
 
     const promise = this.ref.update(key, value);
-    this.offlineWrite(promise, 'update', [key, value]);
+    promise.offline = this.offlineWrite(promise, 'update', [key, value]);
     return promise;
   }
   remove(key?: string) {
     this.emulate('remove', null, key);
     const promise = this.ref.remove(key);
-    this.offlineWrite(promise, 'remove', [key]);
+    promise.offline = this.offlineWrite(promise, 'remove', [key]);
     return promise;
   }
    /**
@@ -112,7 +112,7 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
    * @param args an optional array of arguments used to call an AngularFire2 method taking the form of [newValue, options]
    */
   private offlineWrite(promise, type: string, args: any[]) {
-    OfflineWrite(
+    return OfflineWrite(
       promise,
       'list',
       this.path,

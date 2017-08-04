@@ -8,7 +8,7 @@ export function OfflineWrite(
   method: string,
   args: any[],
   localUpdateService: LocalUpdateService) {
-  localUpdateService.update('write', (writeCache: WriteCache) => {
+  return localUpdateService.update('write', (writeCache: WriteCache) => {
     if (!writeCache) {
       writeCache = {
         lastId: 0,

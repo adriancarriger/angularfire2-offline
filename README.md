@@ -120,6 +120,32 @@ const promise = this.afoDatabase.object('car').update({maxSpeed: 100});
 promise.offline.then(() => console.log('offline data saved to device storage!'));
 ```
 
+### `reset` - delete offline data
+
+The `reset` method is useful for deleting sensitive data when a user signs out of an application. This also helps prevent permission errors when using Firebase auth.
+
+#### Use `reset` with caution
+
+If writes are made while offline `reset` will delete them before they can reach Firebase.
+
+#### `reset` example
+
+```ts
+onUserSignout() {
+  this.afoDatabase.reset()
+}
+```
+
+#### Calling `reset` on specific references
+
+You can `reset` a specific Firebase reference by passing the reference string to the `reset` method
+
+```ts
+onUserSignout() {
+  this.afoDatabase.reset('my/firebase/ref')
+}
+```
+
 ## How it works
 
 - While online, Firebase data is stored locally (as data changes the local store is updated)

@@ -104,6 +104,22 @@ If writes are made offline followed by a page refresh, the writes will be sent w
 - [Write list](https://angularfire2-offline.firebaseapp.com/write-list)
 - [Resolve write conflicts](https://angularfire2-offline.firebaseapp.com/write-conflicts/messages)
 
+## AngularFire2 Offline specific features
+
+In addition to wrapping most database features from [AngularFire2](https://github.com/angular/angularfire2), a minimal amount of offline specific features are provided:
+
+### Offline promises
+
+- **Regular promises** - Making a write to Firebase will return a promise as expected. The promise will complete after the data has been saved to Firebase.
+- **Offline promises** - If you application only needs to know when the write has been saved offline (which will sync on reconnect) you can access the offline promise within the regular promise by calling `promise.offline.then()`.
+
+#### Offline promise example
+
+```ts
+const promise = this.afoDatabase.object('car').update({maxSpeed: 100});
+promise.offline.then(() => console.log('offline data saved to device storage!'));
+```
+
 ## How it works
 
 - While online, Firebase data is stored locally (as data changes the local store is updated)

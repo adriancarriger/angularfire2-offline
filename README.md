@@ -118,7 +118,10 @@ In addition to wrapping most database features from [AngularFire2](https://githu
 ```ts
 const promise = this.afoDatabase.object('car').update({maxSpeed: 100});
 promise.offline.then(() => console.log('offline data saved to device storage!'));
+promise.then(() => console.log('data saved to Firebase!'));
 ```
+
+Also see [working with promises](https://github.com/adriancarriger/angularfire2-offline/blob/master/docs/working-with-promises.md)
 
 ### `reset` - delete offline data
 

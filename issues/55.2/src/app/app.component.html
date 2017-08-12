@@ -1,0 +1,10 @@
+<h1>55.1</h1>
+
+<h2>List Example</h2>
+<ul>
+  <li *ngFor="let item of groceries | async">
+    {{item.text}}
+  </li>
+</ul>
+
+<button (click)="addMilk()">Add Milk</button>

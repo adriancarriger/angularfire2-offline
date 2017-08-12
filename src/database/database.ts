@@ -64,6 +64,10 @@ export class AngularFireOfflineDatabase {
     listCache: {},
     objectCache: {}
   };
+  offlineWrites = {
+    writeCache: undefined,
+    skipEmulation: {}
+  };
   /**
    * Creates the {@link AngularFireOfflineDatabase}
    *
@@ -75,7 +79,30 @@ export class AngularFireOfflineDatabase {
   constructor(private af: AngularFireDatabase,
     @Inject(LocalForageToken) private localForage: any,
     private localUpdateService: LocalUpdateService) {
-    this.processWrites();
+      this.processWritesInit().then(() => this.processWrites());
+  }
+  /**
+   * Happens once before the recurrsive `processWrites` function
+   */
+  processWritesInit() {
+    return this.localForage.getItem('write')
+      .then((writeCache: WriteCache) => {
+        this.offlineWrites.writeCache = writeCache;
+        if (!this.offlineWrites.writeCache || !this.offlineWrites.writeCache.cache) { return; }
+        /**
+         * The gathers a list of references that contain a `set` or `remove`
+         *
+         * Emulation will not be called inside `processWrites` for these references.
+         */
+        this.offlineWrites.skipEmulation = Object.keys(this.offlineWrites.writeCache.cache)
+          .map(key => this.offlineWrites.writeCache.cache[key])
+          .reduce((p, c) => {
+            if (['set', 'remove'].find(method => method === c.method)) {
+              p[c.ref] = true;
+            }
+            return p;
+          }, {});
+      });
   }
   /**
    * Process writes made while offline since the last page refresh.
@@ -83,24 +110,61 @@ export class AngularFireOfflineDatabase {
    * Recursive function that will continue until all writes have processed.
    */
   processWrites() {
-    this.localForage.getItem('write').then((writeCache: WriteCache) => {
-      if (!writeCache) { this.processingComplete(); return; }
-      const cacheId = Object.keys(writeCache.cache)[this.cacheIndex];
-      this.cacheIndex++;
-      if (cacheId === undefined) {
-        this.processEmulateQue();
-        this.processingComplete();
-        return;
-      }
-      const cacheItem: CacheItem = writeCache.cache[cacheId];
-      this[cacheItem.type](cacheItem.ref); // init item if needed
-      const sub = this[`${cacheItem.type}Cache`][cacheItem.ref].sub;
+    // If there are now offline writes to process
+    if (!this.offlineWrites.writeCache) { this.processingComplete(); return; }
+    // Get current `cacheId` to process
+    const cacheId = Object.keys(this.offlineWrites.writeCache.cache)[this.cacheIndex];
+    // Increment cacheIndex for next item in this recursive function
+    this.cacheIndex++;
+    /**
+     * If all items have finished processing then call the final steps and
+     * end recursive functino calls
+     */
+    if (cacheId === undefined) {
+      this.processEmulateQue();
+      this.processingComplete();
+      return;
+    }
+    // `cacheItem` is the current offline write object to process
+    const cacheItem: CacheItem = this.offlineWrites.writeCache.cache[cacheId];
+    // initialize the list or object (it will only init if needed)
+    this[cacheItem.type](cacheItem.ref);
+    // Gets the observable for the current reference
+    const sub = this[`${cacheItem.type}Cache`][cacheItem.ref].sub;
+    /**
+     * Emulates the current state given what is known about the reference
+     *
+     * - This is tricky because unless there is a `set` or `remove` we don't know what the
+     * eventual state will be when a connection is made to Firebase.
+     * - We don't want to assume that the current state of our app is true if there is
+     * just a `push` or `update`.
+     * - However, with a `remove` or `set` we do know for sure that the enitre state is being changed.
+     * - The `/read` local storage state is only updated if there is a `remove` or `set`
+     * - Therefore, skip emulation for a reference if there `set` or `remove` is present
+     * in any offline write operations.
+     */
+    if (!(cacheItem.ref in this.offlineWrites.skipEmulation)) {
       sub.emulate(cacheItem.method, ...cacheItem.args);
-      if (cacheItem.type === 'object' && cacheItem.method === 'set') { this.addToEmulateQue(cacheItem); }
-      this.af[cacheItem.type](cacheItem.ref)[cacheItem.method](...cacheItem.args)
-        .then(() => WriteComplete(cacheId, this.localUpdateService));
-      this.processWrites();
-    });
+    }
+    /**
+     * If an object is set and that object is also part of a list, then the list observable should
+     * also be update. Because this is only updating a list and we cannot know the Firebase state
+     * of that list, the change should be emulated.
+     */
+    if (cacheItem.type === 'object' && cacheItem.method === 'set') { this.addToEmulateQue(cacheItem); }
+    /**
+     * Calls the original AngularFire2 method with the original arguments
+     *
+     * This simply replays the writes in the order that was given by the app.
+     */
+    this.af[cacheItem.type](cacheItem.ref)[cacheItem.method](...cacheItem.args)
+      /**
+       * When the write is made to Firebase it will then be removed from the offline writes (`write`)
+       * portion of the device's storage and the resulting state will be stored under `read/` as usual.
+       */
+      .then(() => WriteComplete(cacheId, this.localUpdateService));
+    // Re-calls this (recursive) function
+    this.processWrites();
   }
   /**
    * Returns an Observable array of Firebase snapshot data
@@ -368,6 +432,8 @@ export class AngularFireOfflineDatabase {
         options: [],
         firebaseOptions: undefined
       };
+      // Local
+      this.getListLocal(key);
     }
     // Store options
     this.listCache[key].options.push(options);
@@ -375,8 +441,6 @@ export class AngularFireOfflineDatabase {
     if (this.optionsHaveChanged(key)) {
       this.getListFirebase(key);
     }
-    // Local
-    this.getListLocal(key);
   }
   /**
    * Processes cache items that require emulation
@@ -388,7 +452,7 @@ export class AngularFireOfflineDatabase {
       if (listKey in this.listCache) {
         const sub = this.listCache[listKey].sub;
         this.emulateQue[listKey].forEach((cacheItem: CacheItem) => {
-          sub.emulate('update', ...cacheItem.args, cacheItem.ref.split('/').pop());
+          sub.emulate('update', cacheItem.ref.split('/').pop(), ...cacheItem.args);
         });
         delete this.emulateQue[listKey];
       }

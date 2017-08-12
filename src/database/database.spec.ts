@@ -400,7 +400,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
       service.listCache['items'] = {
         loaded: false,
         offlineInit: false,
-        sub: new MockAfoObjectObservable()
+        sub: new MockAfoListObservable()
       };
       service.emulateQue = {
         'random-key': [],
@@ -644,7 +644,7 @@ export class MockInternalListObservable<T> extends InternalListObservable<T> {
   constructor() {
     super(Ref, null);
   }
-  emulate(method, value) {
+  emulate(method, key, value) {
     this.history.push({
       method: method,
       value: value
@@ -663,4 +663,18 @@ export class MockAfoObjectObservable<T> extends AfoObjectObservable<T> {
       value: value
     });
   }
+}
+
+export class MockAfoListObservable<T> extends AfoListObservable<T> {
+  history = [];
+  constructor() {
+    super(null);
+  }
+  emulate(method, key, value) {
+    this.history.push({
+      method: method,
+      value: value
+    });
+  }
+  init() {}
 }

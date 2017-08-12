@@ -44,7 +44,7 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
    * device immediately, but if another device makes a push to the same reference before your
    * device reconnects, then the other device's push will show first in the list.
    */
-  emulate(method, value = null, key?) {
+  emulate(method, key = null, value?) {
     this.value = this.emulateList.emulate(this.value, method, value, key);
     this.updateSubscribers();
   }
@@ -81,25 +81,19 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
   }
   push(value: any) {
     const promise = this.ref.$ref.push(value);
-    this.emulate('push', value, promise.key);
-    promise.offline = OfflineWrite(
-      promise,
-      'object',
-      `${this.path}/${promise.key}`,
-      'set',
-      [value],
-      this.localUpdateService);
+    this.emulate('update', promise.key, value);
+    promise.offline = this.offlineWrite(promise, 'update', [promise.key, value]);
     return promise;
   }
   update(key: string, value: any) {
-    this.emulate('update', value, key);
+    this.emulate('update', key, value);
 
     const promise = this.ref.update(key, value);
     promise.offline = this.offlineWrite(promise, 'update', [key, value]);
     return promise;
   }
   remove(key?: string) {
-    this.emulate('remove', null, key);
+    this.emulate('remove', key, null);
     const promise = this.ref.remove(key);
     promise.offline = this.offlineWrite(promise, 'remove', [key]);
     return promise;

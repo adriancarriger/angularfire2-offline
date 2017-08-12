@@ -85,7 +85,7 @@ export class EmulateList {
         this.observableValue.push(newValue);
       }
     } else { // `remove` is the only remaining option
-      if (key === undefined) {
+      if (!key) {
         this.observableValue = [];
       } else {
         this.observableValue.forEach((item, index) => {

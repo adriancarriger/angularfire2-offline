@@ -73,7 +73,7 @@ describe('List Observable', () => {
       expect(x[0].$value).toBe('a special value');
       done();
     });
-    listObservable.emulate('push', 'a special value', 'key-1');
+    listObservable.emulate('push', 'key-1', 'a special value');
   });
 
   it('should emulate push if existing value is an array', done => {
@@ -94,7 +94,7 @@ describe('List Observable', () => {
     setTimeout(() => {
       done();
     });
-    listObservable.emulate('push', 'a special value', 'key-1');
+    listObservable.emulate('push', 'key-1', 'a special value');
   });
 
   it('should update an existing value', done => {
@@ -116,7 +116,7 @@ describe('List Observable', () => {
     setTimeout(() => {
       done();
     });
-    listObservable.emulate('update', 'a special value', 'key-2');
+    listObservable.emulate('update', 'key-2', 'a special value');
   });
 
   it('should update by pushing to the array if the value does not exist', done => {
@@ -138,7 +138,7 @@ describe('List Observable', () => {
     setTimeout(() => {
       done();
     });
-    listObservable.emulate('update', 'a special value', 'key-3');
+    listObservable.emulate('update', 'key-3', 'a special value');
   });
 
   it('should remove a list', done => {
@@ -185,7 +185,7 @@ describe('List Observable', () => {
     setTimeout(() => {
       done();
     });
-    listObservable.emulate('remove', null, 'key-2');
+    listObservable.emulate('remove', 'key-2', null);
   });
 
   // it('should emulate a que for push', done => {

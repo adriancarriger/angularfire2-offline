@@ -14,7 +14,7 @@ export class WriteObjectComponent {
     'type': 'Sedan',
     'maxSpeed': 80
   };
-  lastSpeed: number;
+  lastSpeed = 80;
   constructor(private afoDatabase: AngularFireOfflineDatabase) {
     this.car = this.afoDatabase.object('/car');
     this.car.subscribe(car => this.lastSpeed = car['maxSpeed']);

@@ -12,12 +12,76 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  groceries: AfoListObservable<any[]>;
+  groceriesList: AfoListObservable<any[]>;
+  groceriesObject: AfoObjectObservable<any>;
+  processing = false;
+  max = 49;
+  currentId = 1;
+  totalTime: number;
+  totalToAdd = 50;
+
   constructor(private afoDatabase: AngularFireOfflineDatabase) {
-    this.groceries = this.afoDatabase.list('groceries');
+    this.groceriesList = this.afoDatabase.list('groceries');
+    this.groceriesObject = this.afoDatabase.object('groceries');
   }
 
-  addMilk() {
-    this.groceries.push({text: 'Milk'});
+  removeAll() {
+    const startTime = performance.now();
+    this.processing = true;
+    this.groceriesList.remove()
+      .then(() => {
+        this.processing = false;
+        this.updateTime(startTime);
+      });
+  }
+
+  usingPush() {
+    const startTime = performance.now();
+    this.processing = true;
+    const updates = [];
+    const max = this.max + this.currentId;
+    for (this.currentId; this.currentId <= max; ++this.currentId) {
+      updates.push(this.groceriesList.push({text: 'Milk'}));
+    }
+    Promise.all(updates)
+      .then(() => {
+        this.processing = false;
+        this.updateTime(startTime);
+      });
+  }
+
+  usingUpdate() {
+    const startTime = performance.now();
+    this.processing = true;
+    const updates = [];
+    const max = this.max + this.currentId;
+    for (this.currentId; this.currentId <= max; ++this.currentId) {
+      updates.push(this.groceriesList.update(`${this.currentId}`, {text: 'Milk'}));
+    }
+    Promise.all(updates)
+      .then(() => {
+        this.processing = false;
+        this.updateTime(startTime);
+      });
+  }
+
+  usingSet() {
+    const startTime = performance.now();
+    this.processing = true;
+    const max = this.max + this.currentId;
+    const updateData = {};
+    for (this.currentId; this.currentId <= max; ++this.currentId) {
+      updateData[this.currentId] = {text: 'Milk'};
+    }
+    this.groceriesObject.set(updateData)
+      .then(() => {
+        this.processing = false;
+        this.updateTime(startTime);
+      });
+  }
+
+  private updateTime(startTime) {
+    const total = performance.now() - startTime;
+    this.totalTime = Math.round(total * 100) / 100;
   }
 }

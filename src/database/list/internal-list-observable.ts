@@ -74,7 +74,7 @@ export class InternalListObservable<T> extends ReplaySubject<T> {
     if (newValue) { newValue.sort((a, b) => a.$key - b.$key); }
 
     if (this.updated > 1 || (stringify(this.previousValue) !== stringify(newValue)) ) {
-      this.previousValue = newValue;
+      this.previousValue = Object.assign([], newValue);
       this.next(newValue);
       this.updated++;
     }

@@ -19,12 +19,8 @@ export class AppComponent {
   currentId = 1;
   totalTime: number;
   totalToAdd = 50;
-  type = 'af';
 
-  constructor(private afDatabase: AngularFireDatabase,) {
-    this.groceriesList = this.afDatabase.list('groceries');
-    this.groceriesObject = this.afDatabase.object('groceries');
-
+  constructor(private afDatabase: AngularFireDatabase) {
     this.groceriesList = this.afDatabase.list('groceries');
     this.groceriesObject = this.afDatabase.object('groceries');
   }

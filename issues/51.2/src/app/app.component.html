@@ -1,7 +1,7 @@
-<h1>51.1 - AngularFire2 Offline</h1>
-Also, try this demo using <a target="_blank" href="https://adriancarriger.github.io/angularfire2-offline/issues/51.2/dist">AngularFire2 Only</a>
+<h1>51.2 - AngularFire2 Only</h1>
+Also, try this demo using <a target="_blank" href="https://adriancarriger.github.io/angularfire2-offline/issues/51.1/dist">AngularFire2 Offline</a>
 
-<h2>Add lots of milk ({{max + 1}} items)</h2>
+<h2>Add milk ({{max + 1}} items) using AngularFire2<span *ngIf="offline"> Offline</span></h2>
 <button [disabled]="processing" (click)="removeAll()">Remove all</button>
 <button [disabled]="processing" (click)="usingPush()">Use multiple pushes</button>
 <button [disabled]="processing" (click)="usingUpdate()">Use multiple update</button>

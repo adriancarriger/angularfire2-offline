@@ -14,6 +14,8 @@ export interface AngularFireOfflineCache {
     firebaseSubscription?: any;
     options?: FirebaseListFactoryOpts[];
     firebaseOptions?: FirebaseListFactoryOpts;
+    lastValue?: any;
+    timeout?: any;
   };
 }
 

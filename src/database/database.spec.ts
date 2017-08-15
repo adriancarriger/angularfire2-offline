@@ -58,7 +58,7 @@ describe('Service: AngularFireOfflineDatabase', () => {
     })();
   });
 
-  it('should return a list (2 - while processing)', () => {
+  it('should return a list (2 - while processing)', (done) => {
     inject([AngularFireOfflineDatabase], (service: AngularFireOfflineDatabase) => {
       const key = '/slug-2';
       let newValue = [
@@ -66,7 +66,10 @@ describe('Service: AngularFireOfflineDatabase', () => {
       ];
       service.list(key);
       mockAngularFireDatabase.update('list', newValue);
-      expect(service.processing.listCache[key][0].$value).toBe('xyz');
+      setTimeout(() => {
+        expect(service.processing.listCache[key][0].$value).toBe('xyz');
+        done();
+      });
     })();
   });
 

@@ -274,17 +274,23 @@ export class AngularFireOfflineDatabase {
     }
     // Firebase
     this.listCache[key].firebaseSubscription = ref.subscribe(value => {
-      this.listCache[key].loaded = true;
-      const cacheValue = value.map(snap => {
-        const priority = usePriority ? snap.getPriority() : null;
-        return unwrap(snap.key, snap.val(), () => !isNil(snap.val()), priority);
+      this.listCache[key].lastValue = value;
+      if (this.listCache[key].timeout) { return; }
+
+      this.listCache[key].timeout = setTimeout(() => {
+        this.listCache[key].loaded = true;
+        const cacheValue = this.listCache[key].lastValue.map(snap => {
+          const priority = usePriority ? snap.getPriority() : null;
+          return unwrap(snap.key, snap.val(), () => !isNil(snap.val()), priority);
+        });
+        if (this.processing.current) {
+          this.processing.listCache[key] = cacheValue;
+        } else {
+          this.listCache[key].sub.uniqueNext( cacheValue );
+        }
+        this.setList(key, value);
+        this.listCache[key].timeout = undefined;
       });
-      if (this.processing.current) {
-        this.processing.listCache[key] = cacheValue;
-      } else {
-        this.listCache[key].sub.uniqueNext( cacheValue );
-      }
-      this.setList(key, value);
     });
 
   }

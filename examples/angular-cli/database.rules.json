@@ -1,8 +1,9 @@
 {
   "rules": {
-    ".read": "true",
-    ".write": "auth != null",
+    ".read": "false",
+    ".write": "false",
     "car": {
+      ".read": "true",
       ".write": "true",
       ".validate": "newData.hasChildren(['tires', 'type', 'maxSpeed'])",
       "tires": {
@@ -20,6 +21,7 @@
       "$other": { ".validate": "false" }
     },
     "conflict": {
+      ".read": "true",
       "messages": {
         ".write": "true",
         ".indexOn": ["timestamp"],
@@ -47,12 +49,18 @@
       }
     },
     "groceries":{
+      ".read": "true",
       ".write": "true",
       "$item": {
         "text": {
           ".validate": "root.child('rules/groceries/' + newData.val()).exists()"
         },
         "$other": { ".validate": "false" }
+      }
+    },
+    "issues": {
+      "58": {
+        ".read": "auth != null"
       }
     }
   }

@@ -5,14 +5,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item class="text" *ngFor="let item of items | async">
-      {{item.name}}, categoryId: {{item.categoryId}}
-    </ion-item>
-  </ion-list>
-
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  <h1>You're logged {{ (user | async) ? 'in' : 'out' }}</h1>
+  <button *ngIf="!(user | async)" (click)="login()">Login</button>
+  <button *ngIf="(user | async)" (click)="logout()">Logout</button>
 
 </ion-content>

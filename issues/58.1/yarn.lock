@@ -157,14 +157,14 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angularfire2-offline@^4.1.4:
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-4.1.4.tgz#87617ba1745f28a2f2b921acec105f785b2d0ee5"
+angularfire2-offline@4.2.4:
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/angularfire2-offline/-/angularfire2-offline-4.2.4.tgz#32436a9c3c8068f1c88b2bc0fc35a77149f3202c"
   dependencies:
     json-stringify-safe "^5.0.1"
     localforage "1.5.0"
 
-angularfire2@^4.0.0-rc.0:
+angularfire2@4.0.0-rc.0:
   version "4.0.0-rc.0"
   resolved "https://registry.yarnpkg.com/angularfire2/-/angularfire2-4.0.0-rc.0.tgz#bc911f6874fc9546b535ec8e308c8b374d0fbf0c"
 
@@ -2100,13 +2100,13 @@ localforage-cordovasqlitedriver@~1.5.0:
     "@types/localforage" "0.0.30"
     localforage ">=1.4.0"
 
-localforage@1.5.0, localforage@>=1.4.0:
+localforage@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/localforage/-/localforage-1.5.0.tgz#6b994e19b56611fa85df3992df397ac4ab66e815"
   dependencies:
     lie "3.0.2"
 
-localforage@~1.4.2:
+localforage@>=1.4.0, localforage@~1.4.2:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/localforage/-/localforage-1.4.3.tgz#a212543c39c7c76424edd12bf474c489aaca494c"
   dependencies:

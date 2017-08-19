@@ -1,40 +1,39 @@
 import { Component } from '@angular/core';
 import {
-  AngularFireOfflineDatabase,
-  AfoListObservable } from 'angularfire2-offline/database';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+  AngularFireOfflineDatabase } from 'angularfire2-offline/database';
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
+import { Observable } from 'rxjs/Observable';
+import { NavController } from 'ionic-angular';
+
+import { AboutPage } from '../about/about';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-  // Properties
-  items: AfoListObservable<any[]>;
-  limit = 20;
-  limitObservable = new ReplaySubject(20);
 
-  constructor(private afoDatabase: AngularFireOfflineDatabase) {
-    // Set initial limit
-    this.limitObservable.next(this.limit);
+  user: Observable<firebase.User>;
+  constructor(public navCtrl: NavController,
+    public afAuth: AngularFireAuth,
+    private afoDatabase: AngularFireOfflineDatabase) {
+      this.user = afAuth.authState;
+    }
 
-    // Subscribe to list
-    this.items = afoDatabase.list('/issues/9/9-6', {
-      query: {
-        orderByChild: 'categoryId',
-        limitToFirst: this.limitObservable
-      }
+  login() {
+    this.afAuth.auth.signInWithEmailAndPassword(
+      'afo@example.com',
+      '123456'
+    ).then(() => {
+      this.navCtrl.setRoot(AboutPage);
     });
   }
 
-  doInfinite(infiniteScroll) {
-    // Add 10 per page load
-    this.limit += 10;
-
-    // Update subject
-    this.limitObservable.next(this.limit);
-
-    // Call complete
-    setTimeout(() => infiniteScroll.complete(), 1500);
+  logout() {
+    this.afoDatabase.reset();
+    this.afAuth.auth.signOut().then(() => {
+      this.navCtrl.setRoot(HomePage);
+    });
   }
 }

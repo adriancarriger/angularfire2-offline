@@ -1,0 +1,15 @@
+<h1>Issue 61</h1>
+
+<h2>Search Example</h2>
+
+<label>
+  Search
+  <input #searchInput type="text" (input)="searchTerm = searchInput.value">
+</label>
+
+<h3>Search results:</h3>
+<ul>
+  <li *ngFor="let item of groceries | async | search:searchTerm:searchKeys">
+    {{item.text}}
+  </li>
+</ul>

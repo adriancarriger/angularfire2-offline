@@ -1,7 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
 
-import jsonFile from './json-file-example.json';
-
 import {
   AngularFireOfflineDatabase,
   AfoListObservable,

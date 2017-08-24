@@ -1,0 +1,12 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Issue 58</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h1>You're logged {{ (user | async) ? 'in' : 'out' }}</h1>
+  <button *ngIf="!(user | async)" (click)="login()">Login</button>
+  <button *ngIf="(user | async)" (click)="logout()">Logout</button>
+
+</ion-content>

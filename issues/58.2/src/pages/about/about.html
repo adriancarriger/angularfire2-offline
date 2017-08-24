@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      About
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item class="text" *ngFor="let item of items | async">
+      {{item.name}}
+    </ion-item>
+  </ion-list>
+  <button (click)="logout()">Logout</button>
+</ion-content>

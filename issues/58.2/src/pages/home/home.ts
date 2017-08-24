@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { NavController } from 'ionic-angular';
 
 import { AboutPage } from '../about/about';
+import { AuthService } from '../../app/auth.service';
 
 @Component({
   selector: 'page-home',
@@ -15,25 +16,25 @@ import { AboutPage } from '../about/about';
 export class HomePage {
 
   user: Observable<firebase.User>;
-  constructor(public navCtrl: NavController,
+  userId: string;
+
+  constructor(public nav: NavController,
     public afAuth: AngularFireAuth,
-    private afoDatabase: AngularFireOfflineDatabase) {
+    private afoDatabase: AngularFireOfflineDatabase,
+    private authService: AuthService) {
       this.user = afAuth.authState;
     }
 
   login() {
-    this.afAuth.auth.signInWithEmailAndPassword(
-      'afo@example.com',
-      '123456'
-    ).then(() => {
-      this.navCtrl.setRoot(AboutPage);
+    this.authService.loginUser().then(() => {
+      this.nav.setRoot(AboutPage);
     });
   }
 
   logout() {
     this.afoDatabase.reset();
     this.afAuth.auth.signOut().then(() => {
-      this.navCtrl.setRoot(HomePage);
+      this.nav.setRoot(HomePage);
     });
   }
 }

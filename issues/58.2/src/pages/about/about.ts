@@ -24,15 +24,15 @@ export class AboutPage {
       this.items = this.afoDatabase.list('/issues/58/list');
     }
 
-  performLogout(){
+  performLogout() {
     // delete users device token
-    this.pushNotificationService.deleteToken(this.authService.userId).then(() => {
-      this.authService.logoutUser().then(() => {
-        this.nav.setRoot(AboutPage);
+    this.pushNotificationService.deleteToken(this.authService.userId)
+      .then(() => {
+        this.authService.logoutUser()
+          .then(() => this.nav.setRoot(AboutPage))
+          .catch(console.log);
       })
       .catch(console.log);
-    })
-    .catch(console.log);
   }
 
 }

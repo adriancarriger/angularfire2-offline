@@ -1,8 +1,8 @@
-import { FirebaseListFactoryOpts } from 'angularfire2/interfaces';
 import * as stringify from 'json-stringify-safe';
 import { ReplaySubject } from 'rxjs';
 
 import { EmulateList } from './emulate-list';
+import { FirebaseListFactoryOpts } from '../angularfire2-interfaces';
 import { LocalUpdateService } from '../offline-storage/local-update-service';
 import { OfflineWrite } from '../offline-storage/offline-write';
 

@@ -6,8 +6,8 @@ import {
   AngularFireDatabase,
   FirebaseListObservable,
   FirebaseObjectObservable } from 'angularfire2/database';
-import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from 'angularfire2/interfaces';
 
+import { FirebaseListFactoryOpts, FirebaseObjectFactoryOpts } from './angularfire2-interfaces';
 import { InternalListObservable } from './list/internal-list-observable';
 import { AfoListObservable } from './list/afo-list-observable';
 import { AfoObjectObservable } from './object/afo-object-observable';

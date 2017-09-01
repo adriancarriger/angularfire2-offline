@@ -1,9 +1,9 @@
-import { FirebaseListFactoryOpts } from 'angularfire2/interfaces';
 import { Subscription } from 'rxjs/Subscription';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { InternalListObservable } from './internal-list-observable';
 import { EmulateQuery } from './emulate-query';
+import { FirebaseListFactoryOpts } from '../angularfire2-interfaces';
 
 export class AfoListObservable<T> extends ReplaySubject<T> {
   emulateQuery: EmulateQuery;

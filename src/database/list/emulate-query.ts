@@ -1,5 +1,6 @@
-import { FirebaseListFactoryOpts } from 'angularfire2/interfaces';
 import { Observable } from 'rxjs/Observable';
+
+import { FirebaseListFactoryOpts } from '../angularfire2-interfaces';
 
 export class EmulateQuery {
   orderKey: string;

@@ -6,6 +6,7 @@
 [![Codecov](https://img.shields.io/codecov/c/github/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://codecov.io/gh/adriancarriger/angularfire2-offline)
 [![Dependency Status](https://img.shields.io/david/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline)
 [![devDependency Status](https://img.shields.io/david/dev/adriancarriger/angularfire2-offline/master.svg?maxAge=60)](https://david-dm.org/adriancarriger/angularfire2-offline?type=dev)
+[![Downloads](https://img.shields.io/npm/dt/angularfire2-offline.svg)](https://www.npmjs.com/package/angularfire2-offline)
 
 - [Complete changelog](https://github.com/adriancarriger/angularfire2-offline/releases)
 

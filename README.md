@@ -17,6 +17,10 @@
 
 [![Example Gif](https://raw.githubusercontent.com/adriancarriger/angularfire2-offline/master/images/example.gif)](https://angularfire2-offline.firebaseapp.com/write-list)
 
+## Version Support
+
+The latest version of angularfire2-offline only supports Angular 4. If you would like to upgrade to a more recent version, please try out [Cloud Firestore](https://firebase.google.com/docs/firestore/) which comes with offline support. For more info see [issue #89](https://github.com/adriancarriger/angularfire2-offline/issues/89).
+
 ## Legacy Versions
 
 - Upgrading from `2.x` to `4.x` for AngularFire2? Try the [upgrade tutorial](https://github.com/adriancarriger/angularfire2-offline/blob/master/docs/version-4-upgrade.md)

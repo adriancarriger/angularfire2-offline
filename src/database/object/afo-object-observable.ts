@@ -79,7 +79,7 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    * - Saves the write locally in case the browser is refreshed before the AngularFire2 promise
    * completes
    */
-  remove(): firebase.Promise<void> {
+  remove(): Promise<void> {
     this.emulate('remove');
     const promise = this.ref.remove();
     promise['offline'] = this.offlineWrite(promise, 'remove', []);
@@ -95,7 +95,7 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    * @param value the new value to set for the related Firebase reference
    */
   set(value: any) {
-    const promise: firebase.Promise<void> = this.ref.set(value);
+    const promise: Promise<void> = this.ref.set(value);
     promise['offline'] = this.offlineWrite(promise, 'set', [value]);
     return promise;
   }
@@ -135,7 +135,7 @@ export class AfoObjectObservable<T> extends ReplaySubject<T> {
    * @param type the AngularFire2 method being called
    * @param args an optional array of arguments used to call an AngularFire2 method taking the form of [newValue, options]
    */
-  private offlineWrite(promise: firebase.Promise<void>, type: string, args: any[]) {
+  private offlineWrite(promise: Promise<void>, type: string, args: any[]) {
     return OfflineWrite(
       promise,
       'object',
